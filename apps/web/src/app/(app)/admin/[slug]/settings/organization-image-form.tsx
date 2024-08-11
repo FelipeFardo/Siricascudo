@@ -1,9 +1,11 @@
 'use client'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { AlertTriangle } from 'lucide-react'
 import Image from 'next/image'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Skeleton } from '@/components/ui/skeleton'
 import {
   getOrganization,
@@ -18,6 +20,13 @@ export function OrganizationImageForm() {
     slug: string
     project: string
   }>()
+  const [response, setResponse] = useState<{
+    success: boolean
+    message: string
+  } | null>(null)
+
+  const success = response?.success
+  const message = response?.message
 
   const [previewImage, setPreviewImage] = useState<string | null>(null)
   const queryClient = useQueryClient()
@@ -46,14 +55,17 @@ export function OrganizationImageForm() {
   }
 
   function handlePreviewImage(previewUrl: string) {
+    setResponse(null)
     setPreviewImage(previewUrl)
   }
   function cleanPreview() {
     setPreviewImage(null)
   }
   async function saveImage(newUrl: string) {
-    await updateImageOrganizationAction(newUrl)
+    const result = await updateImageOrganizationAction(newUrl)
+
     onUpdateOrganizationCache(newUrl)
+    setResponse({ message: result.message, success: result.success })
     cleanPreview()
   }
 
@@ -73,6 +85,24 @@ export function OrganizationImageForm() {
       )}
 
       <div className="space-y-3">
+        {success === false && message && (
+          <Alert variant="destructive">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Save organization failed!</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
+        )}
+        {success === true && message && (
+          <Alert variant="success">
+            <AlertTriangle className="size-4" />
+            <AlertTitle>Success!</AlertTitle>
+            <AlertDescription>
+              <p>{message}</p>
+            </AlertDescription>
+          </Alert>
+        )}
         <OrganizationInputImage
           canSave={canSave}
           onUploadImage={handlePreviewImage}
