@@ -30,16 +30,6 @@ This project contains all the necessary boilerplate to setup a multi-tenant SaaS
 - [X] It should be able to get organization members;
 - [X] It should be able to update a member role;
 
-### Projects
-
-- [x] It should be able to get projects within a organization;
-- [X] It should be able to create a new project (name, url, description);
-- [X] It should be able to update a project (name, url, description);
-- [X] It should be able to delete a project;
-
-### Billing
-
-- [X] It should be able to get billing details for organization ($20 per project / $10 per member excluding billing role);
 
 ## 🛡️ RBAC
 
@@ -65,12 +55,6 @@ Roles & permissions.
 | Transfer ownership       | ⚠️            | ❌     | ❌      | ❌        |
 | Update member role       | ✅            | ❌     | ❌      | ❌        |
 | Delete member            | ✅            | ⚠️     | ❌      | ❌        |
-| List projects            | ✅            | ✅     | ✅      | ❌        |
-| Create a new project     | ✅            | ✅     | ❌      | ❌        |
-| Update a project         | ✅            | ⚠️     | ❌      | ❌        |
-| Delete a project         | ✅            | ⚠️     | ❌      | ❌        |
-| Get billing details      | ✅            | ❌     | ✅      | ❌        |
-| Export billing details   | ✅            | ❌     | ✅      | ❌        |
 
 > ✅ = allowed
 > ❌ = not allowed
@@ -104,7 +88,7 @@ This project was developed with the following technologies:
 
 ## Documentation
 
-[felipefardo.github.io/Next-Saas-RBAC/](https://felipefardo.github.io/Next-Saas-RBAC/)
+http://localhost:3333/docs
 
 
 
