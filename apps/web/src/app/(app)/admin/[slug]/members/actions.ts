@@ -32,6 +32,7 @@ export async function updateMemberAction(memberId: string, role: Role) {
   })
   revalidateTag(`${currentOrg}/members`)
 }
+
 export async function transferOwnershipAction(memberId: string) {
   const currentOrg = getCurrentOrg()
 

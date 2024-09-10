@@ -1,25 +1,16 @@
 import { api } from '../api-client'
-import type { CategoryOrganization } from '../orgs/get-organizations'
 
 export interface GetCartDetailsResponse {
   cart: {
-    quantityItems: number
     totalInCents: number
+    quantityItems: number
     items: {
       id: string
-      product: {
-        id: string
-        name: string
-        priceInCents: number
-      }
+      productId: string
       quantity: number
       subTotalInCents: number
     }[]
-    organization: {
-      id: string
-      name: string
-      category: CategoryOrganization
-    }
+    organizationSlug: string | null
   }
 }
 

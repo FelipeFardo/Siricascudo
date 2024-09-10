@@ -2,6 +2,7 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
+import { categoryOrganization } from '@/@types/category-organization'
 import { db, members, organizations } from '@/db/connection'
 import { createSlug } from '@/utils/create-slug'
 
@@ -23,7 +24,8 @@ export async function createOrganization(app: FastifyInstance) {
             name: z.string(),
             domain: z.string().nullish(),
             shouldAttachUsersByDomain: z.boolean().optional(),
-            avatarUrl: z.string(),
+            // avatarUrl: z.string(),
+            category: z.enum(categoryOrganization),
           }),
           response: {
             201: z.object({
@@ -34,7 +36,7 @@ export async function createOrganization(app: FastifyInstance) {
       },
       async (request, reply) => {
         const userId = await request.getCurrentUserId()
-        const { name, domain, shouldAttachUsersByDomain, avatarUrl } =
+        const { name, domain, shouldAttachUsersByDomain, category } =
           request.body
 
         if (domain) {
@@ -61,8 +63,9 @@ export async function createOrganization(app: FastifyInstance) {
               slug: createSlug(name),
               domain,
               shouldAttachUsersByDomain,
+              category,
               ownerId: userId,
-              avatarUrl,
+              // avatarUrl,
             })
             .returning()
 

@@ -10,7 +10,7 @@ import {
 import { carts, products } from '.'
 
 export const cartsItems = pgTable(
-  'carts',
+  'cart_items',
   {
     id: uuid('id').primaryKey().defaultRandom(),
     cartId: uuid('cart_id')
@@ -18,12 +18,13 @@ export const cartsItems = pgTable(
         onDelete: 'cascade',
       })
       .notNull(),
-    productId: uuid('cart_id')
+    productId: uuid('product_id')
       .references(() => products.id, {
         onDelete: 'cascade',
       })
       .notNull(),
-    quantity: integer('quantity').default(1),
+    quantity: integer('quantity').notNull().default(1),
+    subTotalInCents: integer('sub_total_in_cents').notNull().default(0),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
   (table) => {
@@ -35,7 +36,7 @@ export const cartsItems = pgTable(
   },
 )
 
-export const cartsRelations = relations(carts, ({ one }) => ({
+export const cartsItemsRelations = relations(cartsItems, ({ one }) => ({
   cart: one(carts, {
     fields: [cartsItems.cartId],
     references: [carts.id],

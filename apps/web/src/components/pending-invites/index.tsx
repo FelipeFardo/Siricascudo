@@ -7,7 +7,7 @@ import { useState } from 'react'
 
 import { getPendingInvites } from '@/http/invites/get-pending-invites'
 
-import { Button } from '../ui/button'
+import { Button } from '..//ui/button'
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover'
 import { acceptInviteAction, rejectInviteAction } from './actions'
 dayjs.extend(relativeTime)

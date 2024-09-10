@@ -1,22 +1,15 @@
 import type { FastifyInstance } from 'fastify'
 import { fastifyPlugin } from 'fastify-plugin'
 
-import { db, sessions } from '../../db/connection'
+import { UnauthorizedError } from '../routes/_errors/unauthorized-error'
 
-export const session = fastifyPlugin(async (app: FastifyInstance) => {
-  app.addHook('onRequest', async (request, reply) => {
-    if (!request.cookies.session) {
-      const [session] = await db.insert(sessions).values({}).returning()
-
-      reply.setCookie('session', session.id, {
-        path: '/',
-        httpOnly: true,
-        secure: false,
-        maxAge: 3600 * 24 * 7,
-      })
-    }
+export const visitorSession = fastifyPlugin(async (app: FastifyInstance) => {
+  app.addHook('preHandler', async (request) => {
     request.getCurrentSession = () => {
-      return request.cookies.session!
+      if (!request.cookies.visitor) {
+        throw new UnauthorizedError('Invalid Session')
+      }
+      return request.cookies.visitor
     }
   })
 })

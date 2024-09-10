@@ -1,8 +1,8 @@
 import { ShoppingCart } from 'lucide-react'
 import Link from 'next/link'
 
+import { Button } from '@/components//ui/button'
 import { NavLink } from '@/components/nav-link'
-import { Button } from '@/components/ui/button'
 import { getCart } from '@/http/cart/get-cart'
 
 import { ProfileButton } from './profile-button'

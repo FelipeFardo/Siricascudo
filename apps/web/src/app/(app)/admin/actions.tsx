@@ -3,6 +3,7 @@
 import { HTTPError } from 'ky'
 import { revalidateTag } from 'next/cache'
 import { z } from 'zod'
+import { createServerAction } from 'zsa'
 
 import { getCurrentOrg } from '@/auth/auth'
 import { createOrganization } from '@/http/orgs/create-organization'
@@ -55,110 +56,108 @@ const organizationSchema = z
 
 export type OrganizationSchema = z.infer<typeof organizationSchema>
 
-export async function createOrganizationAction(data: FormData) {
-  const result = organizationSchema.safeParse(Object.fromEntries(data))
-
-  if (!result.success) {
-    const errors = result.error.flatten().fieldErrors
-
-    return { success: false, message: null, errors }
-  }
-
-  const { name, domain, shouldAttachUsersByDomain } = result.data
-
-  try {
-    await createOrganization({
-      name,
-      domain,
-      shouldAttachUsersByDomain,
-    })
-    revalidateTag('member-organizations')
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message } = await err.response.json()
-
-      return { success: false, message, errors: null }
-    }
-
-    console.log(err)
-    return {
-      success: false,
-      message: 'Unexpected error, try again in a few minutes.',
-      errors: null,
-    }
-  }
-
-  return {
-    success: true,
-    message: 'Successfully saved the organization.',
-    errors: null,
-  }
-}
-
-export async function updateOrganizationAction(data: FormData) {
-  const currentOrg = getCurrentOrg()
-  const result = organizationSchema.safeParse(Object.fromEntries(data))
-
-  if (!result.success) {
-    const errors = result.error.flatten().fieldErrors
+export const createOrganizationAction = createServerAction()
+  .input(organizationSchema, { type: 'formData' })
+  .onInputParseError(async (error) => {
+    const errors = error.flatten().fieldErrors
 
     return { success: false, message: null, errors }
-  }
+  })
+  .handler(async ({ input }) => {
+    const { domain, name, shouldAttachUsersByDomain, category } = input
 
-  const { name, domain, shouldAttachUsersByDomain, category } = result.data
+    try {
+      await createOrganization({
+        name,
+        domain,
+        shouldAttachUsersByDomain,
+        category,
+      })
+      revalidateTag('member-organizations')
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const { message } = await err.response.json()
 
-  try {
-    await updateOrganization({
-      org: currentOrg!,
-      name,
-      domain,
-      category,
-      shouldAttachUsersByDomain,
-    })
-
-    revalidateTag('member-organizations')
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message } = await err.response.json()
-
-      return { success: false, message, errors: null }
+        return { success: false, message, errors: null }
+      }
     }
-
-    console.log(err)
     return {
-      success: false,
-      message: 'Unexpected error, try again in a few minutes.',
+      success: true,
+      message: 'Successfully saved the organization.',
       errors: null,
     }
-  }
+  })
 
-  return {
-    success: true,
-    message: 'Successfully saved the organization.',
-    errors: null,
-  }
-}
+export const updateOrganizationAction = createServerAction()
+  .input(organizationSchema, { type: 'formData' })
+  .onInputParseError(async (error) => {
+    const errors = error.flatten().fieldErrors
 
-export async function updateImageOrganizationAction(url: string) {
-  const currentOrg = getCurrentOrg()
-  try {
-    await updateImageOrganization({
-      org: currentOrg!,
-      url,
-    })
+    return { success: false, message: null, errors }
+  })
+  .handler(async ({ input }) => {
+    const currentOrg = getCurrentOrg()
+    const { name, domain, shouldAttachUsersByDomain, category } = input
 
-    revalidateTag('organization')
-  } catch (err) {
+    try {
+      await updateOrganization({
+        org: currentOrg!,
+        name,
+        domain,
+        category,
+        shouldAttachUsersByDomain,
+      })
+
+      revalidateTag('member-organizations')
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const { message } = await err.response.json()
+
+        return { success: false, message, errors: null }
+      }
+
+      console.log(err)
+      return {
+        success: false,
+        message: 'Unexpected error, try again in a few minutes.',
+        errors: null,
+      }
+    }
+
     return {
-      success: false,
-      message: 'Unexpected error, try again in a few minutes.',
+      success: true,
+      message: 'Successfully saved the organization.',
       errors: null,
     }
-  }
+  })
 
-  return {
-    success: true,
-    message: 'A imagem foi salva com sucesso!',
-    errors: null,
-  }
-}
+export const updateImageOrganizationAction = createServerAction()
+  .input(z.string(), { type: 'formData' })
+  .onInputParseError(async (error) => {
+    const errors = error.flatten().fieldErrors
+
+    return { success: false, message: null, errors }
+  })
+  .handler(async ({ input: url }) => {
+    const currentOrg = getCurrentOrg()
+    try {
+      await updateImageOrganization({
+        org: currentOrg!,
+        url,
+      })
+
+      revalidateTag('organization')
+    } catch (err) {
+      return {
+        success: false,
+        message: 'Unexpected error, try again in a few minutes.',
+        errors: null,
+      }
+    }
+
+    return {
+      success: true,
+      message: 'A imagem foi salva com sucesso!',
+      errors: null,
+    }
+  })

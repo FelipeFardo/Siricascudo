@@ -3,8 +3,8 @@ import relativeTime from 'dayjs/plugin/relativeTime'
 import { ArrowRight } from 'lucide-react'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { Button } from '@/components//ui/button'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
 import {
   Card,
   CardDescription,

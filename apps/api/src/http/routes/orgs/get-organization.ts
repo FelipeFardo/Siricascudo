@@ -3,20 +3,21 @@ import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
 import { categoryOrganization } from '@/@types/category-organization'
+import { db } from '@/db/connection'
 
-import { auth } from '../../middlewares/auth'
+import { BadRequestError } from '../_errors/bad-request-error'
 
 export async function getOrganization(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .register(auth)
+    // .register(auth)
     .get(
       '/organizations/:slug',
       {
         schema: {
           tags: ['organizations'],
           summary: 'Get details from organization',
-          security: [{ bearerAuth: [] }],
+          //   security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),
           }),
@@ -40,7 +41,16 @@ export async function getOrganization(app: FastifyInstance) {
       },
       async (request) => {
         const { slug } = request.params
-        const { organization } = await request.getUserMembership(slug)
+
+        const organization = await db.query.organizations.findFirst({
+          where(fields, { eq }) {
+            return eq(fields.slug, slug)
+          },
+        })
+
+        if (!organization) {
+          throw new BadRequestError('Organization Not Found')
+        }
 
         return {
           organization,

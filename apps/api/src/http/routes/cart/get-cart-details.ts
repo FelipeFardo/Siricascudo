@@ -2,40 +2,27 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { categoryOrganization } from '@/@types/category-organization'
-import { db } from '@/db/connection'
-
-import { auth } from '../../middlewares/auth'
+import { visitorSession } from '@/http/middlewares/session'
+import { CartRepository } from '@/repositories/cart-repository'
 
 export async function getCartDetails(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .register(auth)
+    .register(visitorSession)
     .get(
       '/cart/details',
       {
         schema: {
           tags: ['carts'],
           summary: 'Get cart details',
-          security: [{ bearerAuth: [] }],
           response: {
             200: z.object({
               cart: z.object({
-                organization: z
-                  .object({
-                    id: z.string(),
-                    name: z.string(),
-                    category: z.enum(categoryOrganization),
-                  })
-                  .nullable(),
+                organizationSlug: z.string().nullable(),
                 items: z.array(
                   z.object({
                     id: z.string(),
-                    product: z.object({
-                      id: z.string(),
-                      name: z.string(),
-                      priceInCents: z.number(),
-                    }),
+                    productId: z.string(),
                     quantity: z.number(),
                     subTotalInCents: z.number(),
                   }),
@@ -48,60 +35,35 @@ export async function getCartDetails(app: FastifyInstance) {
         },
       },
       async (request) => {
-        const userId = await request.getCurrentUserId()
+        let userId: string | null = null
+        try {
+          const { sub } = await request.jwtVerify<{ sub: string }>()
+          userId = sub
+        } catch {}
 
-        const cart = await db.query.carts.findMany({
-          columns: {
-            id: true,
-            quantity: true,
-          },
-          with: {
-            product: {
-              columns: {
-                id: true,
-                name: true,
-                priceInCents: true,
-              },
-              with: {
-                organization: {
-                  columns: {
-                    id: true,
-                    name: true,
-                    category: true,
-                  },
-                },
-              },
-            },
-          },
-          where(fields, { eq, and }) {
-            return and(eq(fields.customerId, userId))
-          },
+        const sessionId = request.getCurrentSession()
+
+        const cartRepository = new CartRepository()
+        const cart = userId
+          ? await cartRepository.getCartWithItemsAndOrgSlugByCustomerId(userId)
+          : await cartRepository.getCartWithItemsAndOrgSlugBySessionId(
+              sessionId,
+            )
+
+        const cartItemsFormat = cart?.items.map((item) => {
+          return {
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            subTotalInCents: item.subTotalInCents,
+          }
         })
 
-        const organization =
-          cart.length > 0 ? cart[0].product.organization : null
-
-        const items = cart.map((item) => ({
-          id: item.id,
-          product: {
-            id: item.product.id,
-            name: item.product.name,
-            priceInCents: item.product.priceInCents,
-          },
-          quantity: item.quantity,
-          subTotalInCents: item.quantity * item.product.priceInCents,
-        }))
-
-        const totalInCents = items.reduce(
-          (total, product) => total + product.subTotalInCents,
-          0,
-        )
-
         const cartFomart = {
-          quantityItems: items.length,
-          totalInCents,
-          items,
-          organization,
+          quantityItems: cart?.quantityItems || 0,
+          totalInCents: cart?.totalInCents || 0,
+          items: cartItemsFormat || [],
+          organizationSlug: cart?.organization?.slug || null,
         }
 
         return {

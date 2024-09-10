@@ -2,8 +2,9 @@
 
 import { HTTPError } from 'ky'
 import { z } from 'zod'
+import { createServerAction } from 'zsa'
 
-import { signUp } from '@/http/sign-up'
+import { signUp } from '@/http/auth/sign-up'
 
 const signUpSchema = z
   .object({
@@ -23,41 +24,42 @@ const signUpSchema = z
     path: [`password_confirmation`],
   })
 
-export async function signUpAction(data: FormData) {
-  const result = signUpSchema.safeParse(Object.fromEntries(data))
-
-  if (!result.success) {
-    const errors = result.error.flatten().fieldErrors
+export const signUpAction = createServerAction()
+  .input(signUpSchema, {
+    type: 'formData',
+  })
+  .onInputParseError((error) => {
+    const errors = error.flatten().fieldErrors
 
     return { success: false, message: null, errors }
-  }
+  })
+  .handler(async ({ input }) => {
+    const { name, email, password } = input
 
-  const { name, email, password } = result.data
+    try {
+      await signUp({
+        name,
+        email,
+        password,
+      })
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const { message } = await err.response.json()
 
-  try {
-    await signUp({
-      name,
-      email,
-      password,
-    })
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message } = await err.response.json()
+        return { success: false, message, errors: null }
+      }
 
-      return { success: false, message, errors: null }
+      console.log(err)
+      return {
+        success: false,
+        message: 'Unexpected error, try again in a few minutes.',
+        errors: null,
+      }
     }
 
-    console.log(err)
     return {
-      success: false,
-      message: 'Unexpected error, try again in a few minutes.',
+      success: true,
+      message: null,
       errors: null,
     }
-  }
-
-  return {
-    success: true,
-    message: null,
-    errors: null,
-  }
-}
+  })

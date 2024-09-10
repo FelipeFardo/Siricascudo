@@ -3,6 +3,7 @@
 import { HTTPError } from 'ky'
 import { cookies } from 'next/headers'
 import { z } from 'zod'
+import { createServerAction } from 'zsa'
 
 import { signInWithPassword } from '@/http/auth/sign-in-with-password'
 import { acceptInvite } from '@/http/invites/accept-invite'
@@ -14,54 +15,51 @@ const signInSchema = z.object({
   password: z.string().min(1, { message: 'Please, provide your password.' }),
 })
 
-export async function signInWithEmailAndPassword(data: FormData) {
-  const result = signInSchema.safeParse(Object.fromEntries(data))
-
-  if (!result.success) {
-    const errors = result.error.flatten().fieldErrors
-
+export const signInWithEmailAndPassword = createServerAction()
+  .input(signInSchema, { type: 'formData' })
+  .onInputParseError((error) => {
+    const errors = error.flatten().fieldErrors
     return { success: false, message: null, errors }
-  }
+  })
+  .handler(async ({ input }) => {
+    const { email, password } = input
+    try {
+      const { token } = await signInWithPassword({
+        email,
+        password,
+      })
 
-  const { email, password } = result.data
+      cookies().set('token', token, {
+        path: '/',
+        maxAge: 60 * 60 * 24 * 7, // 7 days
+      })
 
-  try {
-    const { token } = await signInWithPassword({
-      email,
-      password,
-    })
+      const inviteId = cookies().get('inviteId')?.value
 
-    cookies().set('token', token, {
-      path: '/',
-      maxAge: 60 * 60 * 24 * 7, // 7 days
-    })
+      if (inviteId) {
+        try {
+          await acceptInvite(inviteId)
+          cookies().delete('inviteId')
+        } catch {}
+      }
+    } catch (err) {
+      if (err instanceof HTTPError) {
+        const { message } = await err.response.json()
 
-    const inviteId = cookies().get('inviteId')?.value
+        return { success: false, message, errors: null }
+      }
 
-    if (inviteId) {
-      try {
-        await acceptInvite(inviteId)
-        cookies().delete('inviteId')
-      } catch {}
+      console.log(err)
+      return {
+        success: false,
+        message: 'Unexpected error, try again in a few minutes.',
+        errors: null,
+      }
     }
-  } catch (err) {
-    if (err instanceof HTTPError) {
-      const { message } = await err.response.json()
 
-      return { success: false, message, errors: null }
-    }
-
-    console.log(err)
     return {
-      success: false,
-      message: 'Unexpected error, try again in a few minutes.',
+      success: true,
+      message: null,
       errors: null,
     }
-  }
-
-  return {
-    success: true,
-    message: null,
-    errors: null,
-  }
-}
+  })

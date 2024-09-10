@@ -83,6 +83,7 @@ async function seed() {
         description: faker.lorem.paragraph(),
         ownerId: user.id,
         slug: 'acme-admin',
+        avatarUrl: faker.image.url(),
         category: 'Hambúrgueres',
       },
       {
@@ -90,6 +91,7 @@ async function seed() {
         description: faker.lorem.paragraph(),
         ownerId: user.id,
         slug: 'acme-member',
+        avatarUrl: faker.image.url(),
         category: 'Sushi e Sashimi',
       },
       {
@@ -97,6 +99,7 @@ async function seed() {
         description: faker.lorem.paragraph(),
         ownerId: user.id,
         slug: 'acme-billing',
+        avatarUrl: faker.image.url(),
         category: 'Carnes',
       },
     ])
@@ -135,6 +138,7 @@ async function seed() {
     return {
       name: faker.commerce.productName(),
       organizationId: organizationAdmin.id,
+      imageUrl: faker.image.url(),
       description: faker.commerce.productDescription(),
       priceInCents: Number(
         faker.commerce.price({ min: 190, max: 490, dec: 0 }),

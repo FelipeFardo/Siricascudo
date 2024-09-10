@@ -8,6 +8,7 @@ import {
 } from 'drizzle-orm/pg-core'
 
 import { organizations, sessions, users } from '.'
+import { cartsItems } from './cart-items'
 
 export const carts = pgTable(
   'carts',
@@ -16,12 +17,13 @@ export const carts = pgTable(
     customerId: uuid('customer_id').references(() => users.id, {
       onDelete: 'cascade',
     }),
-    sessionId: uuid('session_id').references(() => users.id, {
+    sessionId: uuid('session_id').references(() => sessions.id, {
       onDelete: 'cascade',
     }),
     organizationId: uuid('organization_id').references(() => organizations.id, {
       onDelete: 'cascade',
     }),
+    totalInCents: integer('total_in_cents').default(0).notNull(),
     quantityItems: integer('quantity_items').default(0).notNull(),
     createdAt: timestamp('created_at').defaultNow().notNull(),
   },
@@ -39,7 +41,8 @@ export const carts = pgTable(
   },
 )
 
-export const cartsRelations = relations(carts, ({ one }) => ({
+export const cartsRelations = relations(carts, ({ one, many }) => ({
+  items: many(cartsItems),
   organization: one(organizations, {
     fields: [carts.organizationId],
     references: [organizations.id],

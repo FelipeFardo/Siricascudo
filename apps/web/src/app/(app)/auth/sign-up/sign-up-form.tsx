@@ -3,62 +3,67 @@ import { AlertTriangle, Loader2 } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import { useServerAction } from 'zsa-react'
 
 import githubIcon from '@/assets/github-icon.svg'
+import { Button } from '@/components//ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Separator } from '@/components/ui/separator'
-import { useFormState } from '@/hooks/use-form-state'
 
 import { signInWithGithub } from '../actions'
 import { signUpAction } from './actions'
 export function SignUpForm() {
   const router = useRouter()
 
-  const [{ errors, message, success }, handleSubmit, isPending] = useFormState(
+  const { executeFormAction, isPending, error, data } = useServerAction(
     signUpAction,
-    () => {
-      router.push('/auth/sign-in')
+    {
+      onSuccess: () => {
+        router.push('/auth/sign-in')
+      },
     },
   )
+
+  const { executeFormAction: signInWithGithubAction } =
+    useServerAction(signInWithGithub)
   return (
     <div className="space-y-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        {success === false && message && (
+      <form action={executeFormAction} className="space-y-4">
+        {data?.success === false && data.message && (
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
             <AlertTitle>Sign in failed!</AlertTitle>
             <AlertDescription>
-              <p>{message}</p>
+              <p>{data.message}</p>
             </AlertDescription>
           </Alert>
         )}
         <div className="space-y-1">
           <Label htmlFor="name">Name</Label>
           <Input name="name" id="name" />
-          {errors?.name && (
+          {error?.fieldErrors?.name && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
-              {errors.name[0]}
+              {error?.fieldErrors?.name[0]}
             </p>
           )}
         </div>
         <div className="space-y-1">
           <Label htmlFor="email">E-mail</Label>
           <Input name="email" type="email" id="email" />
-          {errors?.email && (
+          {error?.fieldErrors?.email && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
-              {errors.email[0]}
+              {error?.fieldErrors?.email[0]}
             </p>
           )}
         </div>
         <div className="space-y-1">
           <Label htmlFor="password">Password</Label>
           <Input name="password" type="password" id="password" />
-          {errors?.password && (
+          {error?.fieldErrors?.password && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
-              {errors.password[0]}
+              {error?.fieldErrors.password[0]}
             </p>
           )}
         </div>
@@ -69,9 +74,9 @@ export function SignUpForm() {
             type="password"
             id="password_confirmation"
           />
-          {errors?.password_confirmation && (
+          {error?.fieldErrors?.password_confirmation && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
-              {errors.password_confirmation[0]}
+              {error?.fieldErrors.password_confirmation[0]}
             </p>
           )}
         </div>
@@ -88,7 +93,7 @@ export function SignUpForm() {
         </Button>
       </form>
 
-      <form action={signInWithGithub}>
+      <form action={signInWithGithubAction}>
         <Separator />
         <Button className="w-full" variant="outline" type="submit">
           <Image src={githubIcon} className="mr-2 size-4 dark:invert" alt="" />

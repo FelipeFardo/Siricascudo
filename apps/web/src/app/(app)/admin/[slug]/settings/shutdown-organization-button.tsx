@@ -2,6 +2,7 @@ import { XCircle } from 'lucide-react'
 import { redirect } from 'next/navigation'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { Button } from '@/components//ui/button'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 import { shutdownOrganization } from '@/http/orgs/shutdown-organization'
 
 export function ShutdownOrganizatonButton() {

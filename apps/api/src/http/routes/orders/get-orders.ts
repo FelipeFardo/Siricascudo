@@ -48,7 +48,7 @@ export async function getOrders(app: FastifyInstance) {
                     'delivering',
                     'delivered',
                   ]),
-                  customerName: z.string(),
+                  customerName: z.string().nullable(),
                   total: z.number(),
                 }),
               ),

@@ -2,8 +2,8 @@
 
 import { AlertTriangle, Loader2, UserPlus } from 'lucide-react'
 
+import { Button } from '@/components//ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
-import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import {
   Select,

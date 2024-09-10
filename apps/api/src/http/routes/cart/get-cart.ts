@@ -2,17 +2,15 @@ import type { FastifyInstance } from 'fastify'
 import type { ZodTypeProvider } from 'fastify-type-provider-zod'
 import { z } from 'zod'
 
-import { carts, db } from '@/db/connection'
-
-import { auth } from '../../middlewares/auth'
+import { visitorSession } from '@/http/middlewares/session'
+import { CartRepository } from '@/repositories/cart-repository'
 
 export async function getCart(app: FastifyInstance) {
   app
     .withTypeProvider<ZodTypeProvider>()
-    .register(auth)
+    .register(visitorSession)
     .get(
       '/cart',
-
       {
         schema: {
           tags: ['carts'],
@@ -29,58 +27,26 @@ export async function getCart(app: FastifyInstance) {
         },
       },
       async (request, reply) => {
+        let userId: string | null = null
+        try {
+          const { sub } = await request.jwtVerify<{ sub: string }>()
+          userId = sub
+        } catch {}
+
         const sessionId = request.getCurrentSession()
 
-        let cart = await db.query.carts.findFirst({
-          where(fields, { eq }) {
-            return eq(fields.sessionId, sessionId)
-          },
-        })
+        const cartRepository = new CartRepository()
 
-        if (!cart) {
-          const [cartCreated] = await db
-            .insert(carts)
-            .values({
-              sessionId,
-              quantityItems: 0,
-            })
-            .returning()
-
-          cart = cartCreated
-        }
+        const cart = userId
+          ? await cartRepository.getCartByCustomerId(userId)
+          : await cartRepository.getCartBySessionId(sessionId)
 
         return reply.status(200).send({
           cart: {
-            quantityItems: 0,
-            totalInCents: 0,
+            quantityItems: cart?.quantityItems || 0,
+            totalInCents: cart?.totalInCents || 0,
           },
         })
       },
     )
 }
-
-//   const userId = await request.getCurrentUserId()
-//   const cart = await db.query.carts.findMany({
-//     columns: {
-//       id: true,
-//       quantityItems: true,
-//     },
-//     where(fields, { eq, and }) {
-//       return and(eq(fields.customerId, userId))
-//     },
-//   })
-//   const items = cart.map((item) => ({
-//     subTotalInCents: item.quantity * item.product.priceInCents,
-//   }))
-//   const totalInCents = items.reduce(
-//     (total, product) => total + product.subTotalInCents,
-//     0,
-//   )
-//   const cartFomart = {
-//     quantityItems: items.length,
-//     totalInCents,
-//   }
-//   return {
-//     cart: cartFomart,
-//   }
-// },

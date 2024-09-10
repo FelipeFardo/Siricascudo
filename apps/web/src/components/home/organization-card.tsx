@@ -25,7 +25,7 @@ export async function CardOrganization({
         <Image
           height={100}
           width={100}
-          src={organization.avatarUrl ?? 'https://github.com/felipefardo.png'}
+          src={organization.avatarUrl || 'https://github.com/felipefardo.png'}
           alt={organization.name}
           className="rounded-lg"
         />

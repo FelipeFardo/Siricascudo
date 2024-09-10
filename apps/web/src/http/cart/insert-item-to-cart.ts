@@ -2,7 +2,7 @@ import { api } from '../api-client'
 
 export interface InsertProductToCartRequest {
   productId: string
-  quantity: string | null
+  quantity: number
 }
 
 export async function insertItemToCart({
@@ -10,7 +10,7 @@ export async function insertItemToCart({
   quantity,
 }: InsertProductToCartRequest) {
   const result = await api
-    .post(`cart`, {
+    .post(`cart/item`, {
       json: {
         productId,
         quantity,

@@ -21,6 +21,7 @@ export async function getOrganization(org: string) {
     .get(`organizations/${org}`, {
       next: {
         tags: ['organization'],
+        revalidate: 100000,
       },
     })
     .json<GetOrganizationResponse>()

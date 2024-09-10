@@ -1,5 +1,6 @@
 'use client'
 import { AlertTriangle, Loader2 } from 'lucide-react'
+import { useServerAction } from 'zsa-react'
 
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
@@ -13,7 +14,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useFormState } from '@/hooks/use-form-state'
 import { categoryOrganization } from '@/http/orgs/get-organizations'
 
 import {
@@ -35,35 +35,35 @@ export function OrganizationForm({
     ? updateOrganizationAction
     : createOrganizationAction
 
-  const [{ errors, message, success }, handleSubmit, isPending] =
-    useFormState(formAction)
+  const { executeFormAction, isPending, error, data } =
+    useServerAction(formAction)
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      {success === false && message && (
+    <form action={executeFormAction} className="space-y-4">
+      {data?.success === false && data?.message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
           <AlertTitle>Save organization failed!</AlertTitle>
           <AlertDescription>
-            <p>{message}</p>
+            <p>{data?.message}</p>
           </AlertDescription>
         </Alert>
       )}
-      {success === true && message && (
+      {data?.success === true && data?.message && (
         <Alert variant="success">
           <AlertTriangle className="size-4" />
           <AlertTitle>Success!</AlertTitle>
           <AlertDescription>
-            <p>{message}</p>
+            <p>{data?.message}</p>
           </AlertDescription>
         </Alert>
       )}
       <div className="space-y-1">
         <Label htmlFor="name">Organization name</Label>
         <Input name="name" id="name" defaultValue={initialData?.name} />
-        {errors?.name && (
+        {error?.fieldErrors?.name && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.name[0]}
+            {error?.fieldErrors?.name[0]}
           </p>
         )}
       </div>
@@ -81,6 +81,11 @@ export function OrganizationForm({
             ))}
           </SelectContent>
         </Select>
+        {error?.fieldErrors?.category && (
+          <p className="text-xs font-medium text-red-500 dark:text-red-400">
+            {error?.fieldErrors?.category[0]}
+          </p>
+        )}
       </div>
       <div className="space-y-1">
         <Label htmlFor="domain">E-mail domain</Label>
@@ -92,9 +97,9 @@ export function OrganizationForm({
           placeholder="example.com"
           defaultValue={initialData?.domain ?? undefined}
         />
-        {errors?.domain && (
+        {error?.fieldErrors?.domain && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.domain[0]}
+            {error?.fieldErrors?.domain[0]}
           </p>
         )}
       </div>
@@ -118,9 +123,9 @@ export function OrganizationForm({
             </p>
           </label>
         </div>
-        {errors?.shouldAttachmentUsersByDomain && (
+        {error?.fieldErrors?.shouldAttachUsersByDomain && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
-            {errors.shouldAttachmentUsersByDomain[0]}
+            {error?.fieldErrors?.shouldAttachUsersByDomain[0]}
           </p>
         )}
       </div>

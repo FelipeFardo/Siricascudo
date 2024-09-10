@@ -5,6 +5,7 @@ import { ArrowRight, Search, X } from 'lucide-react'
 import { useParams } from 'next/navigation'
 import { useState } from 'react'
 
+import { Button } from '@/components//ui/button'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,7 +16,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
 import { Dialog, DialogTrigger } from '@/components/ui/dialog'
 import { TableCell, TableRow } from '@/components/ui/table'
 import { ApproveOrder } from '@/http/orders/approve-order'

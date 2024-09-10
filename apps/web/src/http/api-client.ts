@@ -21,21 +21,45 @@ export const api = ky.create({
           request.headers.set('Authorization', `Bearer ${token}`)
         }
       },
-    ],
-    afterResponse: [
-      async (_, __, response) => {
-        const cookies = response.headers.get('set-cookie')
-        console.log(getCookies('session', cookies!))
+      async (request) => {
+        let cookieStore: CookiesFn | undefined
+
+        if (typeof window === 'undefined') {
+          const { cookies: serverCookies } = await import('next/headers')
+
+          cookieStore = serverCookies
+        }
+        const visitorSession = getCookie('visitor', { cookies: cookieStore })
+
+        if (visitorSession) {
+          const cookie = `visitor=${visitorSession}`
+          request.headers.set('Cookie', cookie)
+        }
       },
     ],
+    // afterResponse: [
+    //   // async (_, __, response) => {
+    //   //   const cookies = response.headers.get('set-cookie')
+    //   //   const sessionCookie = getCookies('session', cookies!)!
+    //   //   if (typeof window === 'undefined') {
+    //   //     const { cookies: serverCookies } = await import('next/headers')
+    //   //     serverCookies().set('token', sessionCookie, {
+    //   //       path: '/',
+    //   //       httpOnly: true,
+    //   //       secure: false,
+    //   //       maxAge: 3600 * 24 * 7,
+    //   //     })
+    //   //   }
+    //   // },
+    // ],
   },
 })
 
-function getCookies(name: string, cookies: string) {
-  const match = cookies.match(new RegExp('(^| )' + name + '=([^;]+)'))
-  if (match) {
-    return match[2]
-  } else {
-    return null
-  }
-}
+// function getCookies(name: string, cookies: string) {
+//   const match = cookies.match(new RegExp('(^| )' + name + '=([^;]+)'))
+//   if (match) {
+//     return match[2]
+//   } else {
+//     return null
+//   }
+// }

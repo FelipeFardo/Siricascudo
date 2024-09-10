@@ -1,6 +1,9 @@
 import { type NextRequest, NextResponse } from 'next/server'
 
-export function middleware(request: NextRequest) {
+import { createVisitorSession } from './http/auth/create-visitor-session'
+
+export async function middleware(request: NextRequest) {
+  // orgSlug
   const { pathname } = request.nextUrl
 
   const response = NextResponse.next()
@@ -11,6 +14,16 @@ export function middleware(request: NextRequest) {
   } else {
     response.cookies.delete('org')
   }
+
+  // session visitor
+  if (!request.cookies.get('visitor')) {
+    const { sessionId } = await createVisitorSession()
+    response.cookies.set('visitor', sessionId, {
+      httpOnly: true,
+      path: '/',
+    })
+  }
+
   return response
 }
 export const config = {

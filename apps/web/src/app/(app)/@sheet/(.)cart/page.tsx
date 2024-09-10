@@ -1,4 +1,4 @@
-import { Cart } from '@/components/home/cart'
+import { Cart } from '@/components/home/cart/cart'
 import { InterceptedSheetContent } from '@/components/intercepted-sheet-content'
 import { Sheet, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 

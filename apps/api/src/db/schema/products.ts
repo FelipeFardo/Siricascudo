@@ -6,6 +6,7 @@ import { ordersItems, organizations } from '.'
 export const products = pgTable('products', {
   id: uuid('id').primaryKey().defaultRandom(),
   name: text('name').notNull(),
+  imageUrl: text('image_url').notNull(),
   description: text('description').notNull(),
   priceInCents: integer('price_in_cents').notNull(),
   organizationId: uuid('organization_id')

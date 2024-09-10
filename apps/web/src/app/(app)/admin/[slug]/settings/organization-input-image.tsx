@@ -2,8 +2,8 @@
 
 import { useState } from 'react'
 
+import { Button } from '@/components//ui/button'
 import { InputFile } from '@/components/input-file'
-import { Button } from '@/components/ui/button'
 
 interface OrganizationInputImageProps {
   canSave: boolean

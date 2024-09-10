@@ -13,10 +13,11 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
-import { session } from './middlewares/session'
+// import { session } from './middlewares/session'
 import { authenticateWithGithub } from './routes/auth/authenticate-with-github'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
+import { createSessionVisitor } from './routes/auth/create-session-visitor'
 import { getProfile } from './routes/auth/get-profile'
 import { requestPasswordRecover } from './routes/auth/request-passoword-recover'
 import { resetPassword } from './routes/auth/reset-password'
@@ -49,6 +50,8 @@ import { shutdownOrganization } from './routes/orgs/shutdown-organization'
 import { transferOrganization } from './routes/orgs/transfer-organization'
 import { updateImageOrganization } from './routes/orgs/update-image-organization'
 import { updateOrganization } from './routes/orgs/update-organization'
+import { getProduct } from './routes/products/get-product'
+import { getProducts } from './routes/products/get-products'
 import { createUpload } from './routes/uploads/create-upload'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -97,14 +100,14 @@ app.register(fastifyCookie, {
 
 app.register(fastifyCors)
 
-app.register(session)
-
 app.register(createAccount)
 app.register(authenticateWithPassword)
 app.register(getProfile)
 app.register(requestPasswordRecover)
 app.register(resetPassword)
 app.register(authenticateWithGithub)
+app.register(createSessionVisitor)
+
 app.register(createOrganization)
 app.register(getMemberOrganizations)
 app.register(getMembership)
@@ -133,6 +136,9 @@ app.register(CancelOrder)
 app.register(deliverOrder)
 app.register(dispatchOrder)
 app.register(getOrderDetails)
+
+app.register(getProduct)
+app.register(getProducts)
 
 app.register(getCart)
 app.register(getCartDetails)
