@@ -20,8 +20,8 @@ export function SignUpForm() {
   const { executeFormAction, isPending, error, data } = useServerAction(
     signUpAction,
     {
-      onSuccess: () => {
-        router.push('/auth/sign-in')
+      onSuccess: ({ data }) => {
+        if (data.success) router.push('/auth/sign-in')
       },
     },
   )

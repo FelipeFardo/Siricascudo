@@ -7,7 +7,7 @@ export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
   const response = NextResponse.next()
-  if (pathname.startsWith('/admin')) {
+  if (pathname.startsWith('/admin') || pathname.startsWith('/organization')) {
     const [, , slug] = pathname.split('/')
 
     response.cookies.set('org', slug)

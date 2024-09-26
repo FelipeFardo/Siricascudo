@@ -109,6 +109,7 @@ export const updateOrganizationAction = createServerAction()
       })
 
       revalidateTag('member-organizations')
+      revalidateTag(`organization:${currentOrg}`)
     } catch (err) {
       if (err instanceof HTTPError) {
         const { message } = await err.response.json()

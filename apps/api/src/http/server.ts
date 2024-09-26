@@ -13,7 +13,6 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
-// import { session } from './middlewares/session'
 import { authenticateWithGithub } from './routes/auth/authenticate-with-github'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
@@ -35,6 +34,12 @@ import { revokeInvite } from './routes/invites/revoke-invite'
 import { getMembers } from './routes/members/get-members'
 import { removeMember } from './routes/members/remove-member'
 import { updateMember } from './routes/members/update-member'
+import { getDailyReceiptInPeriod } from './routes/metrics/get-daily-receipt-in-period'
+import { getDayOrdersAmount } from './routes/metrics/get-day-orders-amount'
+import { getMonthCanceledOrdersAmount } from './routes/metrics/get-month-canceled-orders-amount'
+import { getMonthOrdersAmount } from './routes/metrics/get-month-orders-amount'
+import { getMonthReceipt } from './routes/metrics/get-month-receipt'
+import { getPopularProducts } from './routes/metrics/get-popular-metrics'
 import { approveOrder } from './routes/orders/approve-order'
 import { CancelOrder } from './routes/orders/cancel-order'
 import { deliverOrder } from './routes/orders/deliver-order'
@@ -146,6 +151,13 @@ app.register(InsertItemToCart)
 app.register(RemoveItemToCart)
 
 app.register(createUpload)
+
+app.register(getMonthReceipt)
+app.register(getMonthOrdersAmount)
+app.register(getDayOrdersAmount)
+app.register(getMonthCanceledOrdersAmount)
+app.register(getDailyReceiptInPeriod)
+app.register(getPopularProducts)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running!')

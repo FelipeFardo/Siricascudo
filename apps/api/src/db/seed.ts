@@ -50,7 +50,7 @@ async function seed() {
       {
         name: 'John Doe',
         email: 'john@acme.com',
-        avatarUrl: 'https://github.com/felipefardo.png',
+        avatarUrl: 'https://github.com/shadcn.png',
         passwordHash:
           '$2a$12$uMTAFMnwNkZFrMPTgp2TjuE2ErfdLkkYyiRhol8OVR41p1YONsDn2',
       },

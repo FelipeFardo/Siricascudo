@@ -20,8 +20,8 @@ export async function getOrganization(org: string) {
   const result = await api
     .get(`organizations/${org}`, {
       next: {
-        tags: ['organization'],
-        revalidate: 100000,
+        tags: [`organization:${org}`],
+        revalidate: 2 * 60 * 60 * 1000,
       },
     })
     .json<GetOrganizationResponse>()

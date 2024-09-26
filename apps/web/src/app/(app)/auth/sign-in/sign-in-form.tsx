@@ -23,8 +23,8 @@ export function SignInForm() {
   const { executeFormAction, isPending, error, data } = useServerAction(
     signInWithEmailAndPassword,
     {
-      onSuccess: () => {
-        router.push('/')
+      onSuccess: ({ data }) => {
+        if (data.success) router.push('/')
       },
     },
   )

@@ -74,7 +74,7 @@ export async function updateOrganization(app: FastifyInstance) {
             )
           }
         }
-
+        console.log(category)
         await db
           .update(organizations)
           .set({

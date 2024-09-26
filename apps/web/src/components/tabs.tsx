@@ -1,7 +1,8 @@
 import { ability, getCurrentOrg } from '@/auth/auth'
+import { cn } from '@/lib/utils'
 
 import { Button } from './/ui/button'
-import { NavLink } from './nav-link'
+import { NavLinkAdmin } from './nav-link-admin'
 
 export async function Tabs() {
   const currentOrg = getCurrentOrg()
@@ -20,9 +21,13 @@ export async function Tabs() {
             asChild
             variant="ghost"
             size="sm"
-            className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
+            className={cn(
+              'border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground',
+            )}
           >
-            <NavLink href={`/admin/${currentOrg}/orders`}>Pedidos</NavLink>
+            <NavLinkAdmin href={`/admin/${currentOrg}/orders`}>
+              Pedidos
+            </NavLinkAdmin>
           </Button>
         )}
         {canGetMembers && (
@@ -30,9 +35,13 @@ export async function Tabs() {
             asChild
             variant="ghost"
             size="sm"
-            className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
+            className={cn(
+              'border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground',
+            )}
           >
-            <NavLink href={`/admin/${currentOrg}/members`}>Membros</NavLink>
+            <NavLinkAdmin href={`/admin/${currentOrg}/members`}>
+              Membros
+            </NavLinkAdmin>
           </Button>
         )}
         {(canUpdateOrganization || canGetBilling) && (
@@ -40,20 +49,26 @@ export async function Tabs() {
             asChild
             variant="ghost"
             size="sm"
-            className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
+            className={cn(
+              'border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground',
+            )}
           >
-            <NavLink href={`/admin/${currentOrg}/settings`}>
+            <NavLinkAdmin href={`/admin/${currentOrg}/settings`}>
               Configurações
-            </NavLink>
+            </NavLinkAdmin>
           </Button>
         )}
         <Button
           asChild
           variant="ghost"
           size="sm"
-          className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
+          className={cn(
+            ' border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground',
+          )}
         >
-          <NavLink href={`/admin/${currentOrg}/dashboard`}>Dashboard</NavLink>
+          <NavLinkAdmin href={`/admin/${currentOrg}/dashboard`}>
+            Dashboard
+          </NavLinkAdmin>
         </Button>
         <Button
           asChild
@@ -61,7 +76,9 @@ export async function Tabs() {
           size="sm"
           className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/admin/${currentOrg}/reservations`}>Reservas</NavLink>
+          <NavLinkAdmin href={`/admin/${currentOrg}/reservations`}>
+            Reservas
+          </NavLinkAdmin>
         </Button>
         <Button
           asChild
@@ -69,7 +86,9 @@ export async function Tabs() {
           size="sm"
           className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLink href={`/admin/${currentOrg}/reservations`}>Cardápio</NavLink>
+          <NavLinkAdmin href={`/admin/${currentOrg}/reservations`}>
+            Cardápio
+          </NavLinkAdmin>
         </Button>
       </nav>
     </div>

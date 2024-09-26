@@ -6,6 +6,7 @@ import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 
+import { Currency } from '../currency'
 import { Input } from '../ui/input'
 import { insertItemToCartAction } from './action'
 interface AddToCartControlProps {
@@ -42,7 +43,7 @@ export function AddToCartControl({
     <>
       <div className="flex items-center justify-between">
         <span className="text-lg font-semibold">
-          R$ {(priceInCents / 100).toFixed(2)}
+          <Currency value={priceInCents} />
         </span>
         <div className="flex items-center space-x-2 rounded-full border">
           <Button
@@ -75,7 +76,7 @@ export function AddToCartControl({
         onClick={() => addItemToCartAndRedirect()}
         className="w-full bg-red-500 py-6 text-white hover:bg-red-600"
       >
-        Adicionar • R$ {((priceInCents / 100) * quantity).toFixed(2)}
+        Adicionar • <Currency value={priceInCents * quantity} />
       </Button>
     </>
   )

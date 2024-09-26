@@ -9,7 +9,7 @@ import { ProfileButton } from './profile-button'
 
 const links = [
   { href: '/home', label: 'Home' },
-  { href: '', label: 'Restaurantes' },
+  { href: '/organization', label: 'Restaurantes' },
   { href: '', label: 'Foods' },
 ]
 

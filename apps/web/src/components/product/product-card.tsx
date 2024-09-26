@@ -4,6 +4,7 @@ import { Suspense } from 'react'
 
 import { getOrganization } from '@/http/orgs/get-organization'
 
+import { Currency } from '../currency'
 import { Button } from '../ui/button'
 import { Card, CardContent } from '../ui/card'
 import {
@@ -66,7 +67,9 @@ export async function ProductCard({ product }: ProductCardProps) {
             <div className="flex flex-col items-start justify-center truncate">
               <h1 className="text-md truncate font-semibold">{product.name}</h1>
               <span className="text-gray-600">{organization.name}</span>
-              <span>R$ {product.priceInCents / 100}</span>
+              <span>
+                <Currency value={product.priceInCents} />
+              </span>
             </div>
           </CardContent>
         </Card>
@@ -76,14 +79,14 @@ export async function ProductCard({ product }: ProductCardProps) {
         <div className="flex w-full space-x-8">
           <DialogHeader className="flex items-center">
             <Suspense
-              fallback={<Skeleton className="max-h-[700px] max-w-[700px]" />}
+              fallback={<Skeleton className="max-h-[600px] max-w-[600px]" />}
             >
               <Image
                 width={700}
                 height={700}
                 src={product.imageUrl || '/placeholder-image-2.webp'}
                 alt={product.name}
-                className="rounded-lg"
+                className=" max-w-[250px] rounded-lg"
               />
             </Suspense>
             <DialogClose>

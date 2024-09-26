@@ -23,6 +23,7 @@
     "@siricascudo/env": "workspace:*",
     "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",
+    "dayjs": "^1.11.12",
     "drizzle-orm": "^0.32.2",
     "fastify": "^4.27.0",
     "fastify-plugin": "^4.5.1",

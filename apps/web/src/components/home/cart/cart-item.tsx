@@ -1,4 +1,5 @@
 import { removeItem } from '@/app/(app)/(home)/cart/actions'
+import { Currency } from '@/components/currency'
 import { getProductById } from '@/http/products/get-product-by-id'
 
 interface CartItemProps {
@@ -24,10 +25,7 @@ export async function CartItem({
           <h3 className="font-medium">{product.name}</h3>
         </div>
         <span className="text-gray-600">
-          {subTotalInCents.toLocaleString('pt-BR', {
-            style: 'currency',
-            currency: 'BRL',
-          })}
+          <Currency value={subTotalInCents} />
         </span>
       </div>
       <div className="flex gap-10 font-medium">
