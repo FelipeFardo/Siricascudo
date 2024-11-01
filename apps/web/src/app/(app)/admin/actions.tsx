@@ -132,33 +132,26 @@ export const updateOrganizationAction = createServerAction()
     }
   })
 
-export const updateImageOrganizationAction = createServerAction()
-  .input(z.string(), { type: 'formData' })
-  .onInputParseError(async (error) => {
-    const errors = error.flatten().fieldErrors
+export async function updateImageOrganizationAction(url: string) {
+  const currentOrg = getCurrentOrg()
+  try {
+    await updateImageOrganization({
+      org: currentOrg!,
+      url,
+    })
 
-    return { success: false, message: null, errors }
-  })
-  .handler(async ({ input: url }) => {
-    const currentOrg = getCurrentOrg()
-    try {
-      await updateImageOrganization({
-        org: currentOrg!,
-        url,
-      })
-
-      revalidateTag('organization')
-    } catch (err) {
-      return {
-        success: false,
-        message: 'Unexpected error, try again in a few minutes.',
-        errors: null,
-      }
-    }
-
+    revalidateTag('organization')
+  } catch (err) {
     return {
-      success: true,
-      message: 'A imagem foi salva com sucesso!',
+      success: false,
+      message: 'Unexpected error, try again in a few minutes.',
       errors: null,
     }
-  })
+  }
+
+  return {
+    success: true,
+    message: 'A imagem foi salva com sucesso!',
+    errors: null,
+  }
+}

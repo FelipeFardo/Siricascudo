@@ -8,7 +8,6 @@ import { getMembership } from '@/http/orgs/get-membership'
 export function isAuthenticated() {
   return !!cookies().get('token')?.value
 }
-
 export function getCurrentOrg() {
   return cookies().get('org')?.value ?? null
 }

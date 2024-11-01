@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Search, X } from 'lucide-react'
-import { useParams, useRouter, useSearchParams } from 'next/navigation'
+import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs'
 import { Controller, useForm } from 'react-hook-form'
 import { z } from 'zod'
 
@@ -17,23 +17,22 @@ import {
 } from '@/components/ui/select'
 
 const orderFiltersSchema = z.object({
-  orderId: z.string().optional(),
-  customerName: z.string().optional(),
-  status: z.string().optional(),
+  orderId: z.string(),
+  customerName: z.string(),
+  status: z.string(),
 })
+
 type OrderFiltersSchema = z.infer<typeof orderFiltersSchema>
 
 export function OrderTableFilters() {
-  const searchParams = useSearchParams()
-  const router = useRouter()
-  const { slug: orgSlug } = useParams<{
-    slug: string
-    project: string
-  }>()
+  const [filters, setFilters] = useQueryStates({
+    orderId: parseAsString.withDefault(''),
+    customerName: parseAsString.withDefault(''),
+    status: parseAsString.withDefault('all'),
+    page: parseAsInteger.withDefault(1),
+  })
 
-  const orderId = searchParams.get('orderId')
-  const customerName = searchParams.get('customerName')
-  const status = searchParams.get('status')
+  const { customerName, orderId, status } = filters
 
   const { register, handleSubmit, control, reset } =
     useForm<OrderFiltersSchema>({
@@ -46,23 +45,20 @@ export function OrderTableFilters() {
     })
 
   function handleFilter({ orderId, customerName, status }: OrderFiltersSchema) {
-    const params = new URLSearchParams()
-    if (orderId && orderId.length > 0) {
-      params.set('orderId', orderId)
-    }
-    if (customerName && customerName.length > 0) {
-      params.set('customerName', customerName)
-    }
-
-    if (status && status.length > 0) {
-      params.set('status', status)
-    }
-
-    router.push(`/admin/${orgSlug}/orders?${params}`)
+    setFilters({
+      customerName: customerName || null,
+      orderId: orderId || null,
+      status: status || null,
+    })
   }
 
   function handleClearFilters() {
-    router.push(`/admin/${orgSlug}/orders`)
+    setFilters({
+      customerName: null,
+      orderId: null,
+      page: null,
+      status: null,
+    })
 
     reset({
       orderId: '',

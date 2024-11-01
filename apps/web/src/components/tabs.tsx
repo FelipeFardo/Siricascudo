@@ -76,8 +76,8 @@ export async function Tabs() {
           size="sm"
           className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
-          <NavLinkAdmin href={`/admin/${currentOrg}/reservations`}>
-            Reservas
+          <NavLinkAdmin href={`/admin/${currentOrg}/products`}>
+            Cardápio
           </NavLinkAdmin>
         </Button>
         <Button
@@ -87,7 +87,7 @@ export async function Tabs() {
           className=" border border-transparent text-muted-foreground data-[current=true]:border-border data-[current=true]:text-foreground"
         >
           <NavLinkAdmin href={`/admin/${currentOrg}/reservations`}>
-            Cardápio
+            Reservas
           </NavLinkAdmin>
         </Button>
       </nav>

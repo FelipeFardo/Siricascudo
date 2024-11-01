@@ -16,7 +16,7 @@ export async function getOrders(app: FastifyInstance) {
       {
         schema: {
           tags: ['orders'],
-          summary: 'Get orders',
+          summary: 'Get orders by org',
           security: [{ bearerAuth: [] }],
           params: z.object({
             slug: z.string(),

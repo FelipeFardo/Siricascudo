@@ -6,7 +6,7 @@ import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
 import colors from 'tailwindcss/colors'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { GetPopularProducts } from '@/http/metrics/get-popular-products'
+import { getPopularProducts } from '@/http/metrics/get-popular-products'
 
 const COLORS = [
   colors.sky[500],
@@ -22,7 +22,7 @@ export function PopularProductsChart() {
   }>()
   const { data: popularProducts } = useQuery({
     queryKey: ['metrics', 'popular-products'],
-    queryFn: () => GetPopularProducts(orgSlug),
+    queryFn: () => getPopularProducts(orgSlug),
   })
 
   return (

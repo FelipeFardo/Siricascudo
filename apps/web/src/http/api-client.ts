@@ -37,29 +37,5 @@ export const api = ky.create({
         }
       },
     ],
-    // afterResponse: [
-    //   // async (_, __, response) => {
-    //   //   const cookies = response.headers.get('set-cookie')
-    //   //   const sessionCookie = getCookies('session', cookies!)!
-    //   //   if (typeof window === 'undefined') {
-    //   //     const { cookies: serverCookies } = await import('next/headers')
-    //   //     serverCookies().set('token', sessionCookie, {
-    //   //       path: '/',
-    //   //       httpOnly: true,
-    //   //       secure: false,
-    //   //       maxAge: 3600 * 24 * 7,
-    //   //     })
-    //   //   }
-    //   // },
-    // ],
   },
 })
-
-// function getCookies(name: string, cookies: string) {
-//   const match = cookies.match(new RegExp('(^| )' + name + '=([^;]+)'))
-//   if (match) {
-//     return match[2]
-//   } else {
-//     return null
-//   }
-// }

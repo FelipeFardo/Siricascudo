@@ -68,6 +68,7 @@ export function RevenueChart() {
             Receita no período
           </CardTitle>
           <CardDescription>Receita diária no período</CardDescription>
+          <CardDescription></CardDescription>
         </div>
         <div className="flex items-center gap-3">
           <Label>Período</Label>
@@ -77,7 +78,6 @@ export function RevenueChart() {
       <CardContent>
         {chartData ? (
           <ChartContainer config={chartConfig}>
-            {/* <pre>{JSON.stringify(chartData, null, 2)}</pre> */}
             <AreaChart
               accessibilityLayer
               data={chartData}

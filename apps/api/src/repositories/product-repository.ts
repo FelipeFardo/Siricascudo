@@ -20,4 +20,13 @@ export class ProductRepository {
     })
     return products
   }
+
+  async getProductsByOrganizationId(organizationId: string) {
+    const products = await db.query.products.findMany({
+      where(fields, { eq }) {
+        return eq(fields.organizationId, organizationId)
+      },
+    })
+    return products
+  }
 }

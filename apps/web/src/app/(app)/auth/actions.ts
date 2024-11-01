@@ -4,7 +4,7 @@ import { env } from '@siricascudo/env'
 import { redirect } from 'next/navigation'
 import { createServerAction } from 'zsa'
 
-export const signInWithGithub = createServerAction().handler(() => {
+export const signInWithGithub = createServerAction().handler(async () => {
   const githubSignURL = new URL('login/oauth/authorize', 'https://github.com')
 
   githubSignURL.searchParams.set('client_id', env.GITHUB_OAUTH_CLIENT_ID)

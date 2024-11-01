@@ -17,7 +17,7 @@ const signInSchema = z.object({
 
 export const signInWithEmailAndPassword = createServerAction()
   .input(signInSchema, { type: 'formData' })
-  .onInputParseError((error) => {
+  .onInputParseError(async (error) => {
     const errors = error.flatten().fieldErrors
     return { success: false, message: null, errors }
   })

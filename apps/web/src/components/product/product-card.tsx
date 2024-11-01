@@ -48,7 +48,7 @@ export async function ProductCard({ product }: ProductCardProps) {
     <Dialog>
       <DialogTrigger>
         <Card
-          key={organization.id}
+          key={product.id}
           className="transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
         >
           <CardContent className="flex gap-5 p-4">

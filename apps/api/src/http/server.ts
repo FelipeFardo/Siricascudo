@@ -57,6 +57,7 @@ import { updateImageOrganization } from './routes/orgs/update-image-organization
 import { updateOrganization } from './routes/orgs/update-organization'
 import { getProduct } from './routes/products/get-product'
 import { getProducts } from './routes/products/get-products'
+import { getProductsByOrg } from './routes/products/get-products-by-org'
 import { createUpload } from './routes/uploads/create-upload'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -144,6 +145,7 @@ app.register(getOrderDetails)
 
 app.register(getProduct)
 app.register(getProducts)
+app.register(getProductsByOrg)
 
 app.register(getCart)
 app.register(getCartDetails)
