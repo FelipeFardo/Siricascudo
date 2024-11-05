@@ -10,7 +10,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
 export async function ProfileButton() {
-  const isAuth = isAuthenticated()
+  const isAuth = await isAuthenticated()
 
   return (
     <>

@@ -2,10 +2,22 @@
 import { useQuery } from '@tanstack/react-query'
 import { BarChart, Loader2 } from 'lucide-react'
 import { useParams } from 'next/navigation'
-import { Cell, Pie, PieChart, ResponsiveContainer } from 'recharts'
+import { Pie, PieChart } from 'recharts'
 import colors from 'tailwindcss/colors'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
+import {
+  type ChartConfig,
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+} from '@/components/ui/chart'
 import { getPopularProducts } from '@/http/metrics/get-popular-products'
 
 const COLORS = [
@@ -16,6 +28,15 @@ const COLORS = [
   colors.rose[500],
 ]
 
+interface Item {
+  product: string
+  amount: number
+}
+
+interface ItemWithFill extends Item {
+  fill: string
+}
+
 export function PopularProductsChart() {
   const { slug: orgSlug } = useParams<{
     slug: string
@@ -24,6 +45,33 @@ export function PopularProductsChart() {
     queryKey: ['metrics', 'popular-products'],
     queryFn: () => getPopularProducts(orgSlug),
   })
+
+  let itemsWithFill: ItemWithFill[] = []
+  let chartConfig: ChartConfig = {}
+  if (popularProducts) {
+    itemsWithFill = popularProducts.map((item, index) => ({
+      ...item,
+      product: item.product,
+      fill: COLORS[index % COLORS.length],
+    }))
+
+    // Criando o chartConfig dinamicamente
+    chartConfig = popularProducts.reduce<ChartConfig>((config, item) => {
+      config[item.product] = {
+        label: item.product,
+        color: COLORS[2],
+      }
+      return config
+    }, {} as ChartConfig)
+  }
+
+  const mostSoldProduct = popularProducts?.reduce((max, product) =>
+    product.amount > max.amount ? product : max,
+  )
+  const totalAmount = popularProducts?.reduce(
+    (sum, product) => sum + product.amount,
+    0,
+  )
 
   return (
     <Card className="col-span-3">
@@ -37,68 +85,48 @@ export function PopularProductsChart() {
       </CardHeader>
       <CardContent>
         {popularProducts ? (
-          <ResponsiveContainer width="100%" height={240}>
-            <PieChart style={{ fontsize: 12 }}>
-              <Pie
-                data={popularProducts}
-                dataKey="amount"
-                name="product"
-                cx="50%"
-                cy="50%"
-                outerRadius={86}
-                innerRadius={64}
-                strokeWidth={8}
-                labelLine={false}
-                label={({
-                  cx,
-                  cy,
-                  midAngle,
-                  innerRadius,
-                  outerRadius,
-                  value,
-                  index,
-                }) => {
-                  const RADIAN = Math.PI / 180
-                  const radius = 12 + innerRadius + (outerRadius - innerRadius)
-                  const x = cx + radius * Math.cos(-midAngle * RADIAN)
-                  const y = cy + radius * Math.sin(-midAngle * RADIAN)
-
-                  return (
-                    <text
-                      x={x}
-                      y={y}
-                      className="fill-muted-foreground text-xs"
-                      textAnchor={x > cx ? 'start' : 'end'}
-                      dominantBaseline="central"
-                    >
-                      {popularProducts[index].product.length > 12
-                        ? popularProducts[index].product
-                            .substring(0, 12)
-                            .concat('...')
-                        : popularProducts[index].product}{' '}
-                      ({value})
-                    </text>
-                  )
-                }}
-              >
-                {popularProducts.map((_, index) => {
-                  return (
-                    <Cell
-                      key={`cell-${index}`}
-                      fill={COLORS[index]}
-                      className="stroke-background hover:opacity-80"
-                    />
-                  )
-                })}
-              </Pie>
+          <ChartContainer
+            config={chartConfig}
+            className="mx-auto aspect-square max-h-[250px]"
+          >
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={
+                  <ChartTooltipContent
+                    hideLabel
+                    formatter={(value, name, { payload }) => [
+                      <span
+                        className="h-4 w-4 rounded"
+                        style={{ backgroundColor: payload.fill }}
+                      ></span>,
+                      <span className="text-sm">{name}</span>,
+                      <div key="separator" className="h-1" />,
+                      <span className="text-sm font-bold">{value}</span>,
+                    ]}
+                  />
+                }
+              />
+              <Pie data={itemsWithFill} dataKey="amount" nameKey="product" />
             </PieChart>
-          </ResponsiveContainer>
+          </ChartContainer>
         ) : (
           <div className="flex h-[240px] w-full items-center justify-center">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
           </div>
         )}
       </CardContent>
+      {mostSoldProduct && (
+        <CardFooter className="flex-col gap-2 text-sm">
+          <div className="flex items-center gap-2 text-center font-medium leading-none">
+            O produto mais vendido foi {mostSoldProduct.product} com{' '}
+            {mostSoldProduct.amount} vendas
+          </div>
+          <div className="leading-none text-muted-foreground">
+            Os produtos mais vendidos somam {totalAmount} vendas
+          </div>
+        </CardFooter>
+      )}
     </Card>
   )
 }

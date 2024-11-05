@@ -1,7 +1,13 @@
 import { DollarSign, Utensils } from 'lucide-react'
 import { Suspense } from 'react'
 
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import {
+  Card,
+  CardContent,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card'
 
 import { DayOrdersAmountCard } from './day-orders-amount-card'
 import { MetricCardSkeleton } from './metric-card-skeleton'

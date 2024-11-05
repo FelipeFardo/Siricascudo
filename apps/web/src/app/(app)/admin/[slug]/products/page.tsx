@@ -15,7 +15,7 @@ import { DeleteProductButton } from './delete-product-button'
 import { ProductForm } from './product-form'
 
 export default async function AdminPage() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   const { products } = await getProductByOrg(currentOrg!)
   return (

@@ -3,7 +3,7 @@ import { Currency } from '@/components/currency'
 import { getMonthRevenue } from '@/http/metrics/get-month-revenue'
 
 export async function MonthRevenueCard() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   const monthRevenue = await getMonthRevenue(currentOrg!)
 

@@ -17,7 +17,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { getOrganization } from '@/http/orgs/get-organization'
 
 export default async function organizationPage() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
   const { organization } = await getOrganization(currentOrg!)
 
   return (

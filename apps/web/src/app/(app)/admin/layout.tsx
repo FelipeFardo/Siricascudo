@@ -7,7 +7,7 @@ export default async function AdminLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  if (!isAuthenticated()) {
+  if (!(await isAuthenticated())) {
     redirect('/auth/sign-in')
   }
 

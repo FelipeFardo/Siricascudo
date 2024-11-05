@@ -15,7 +15,7 @@ import { OrganizationImageForm } from './organization-image-form'
 import { ShutdownOrganizatonButton } from './shutdown-organization-button'
 
 export default async function Projects() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   const permissions = await ability()
 

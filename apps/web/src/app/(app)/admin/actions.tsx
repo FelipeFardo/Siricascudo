@@ -96,7 +96,7 @@ export const updateOrganizationAction = createServerAction()
     return { success: false, message: null, errors }
   })
   .handler(async ({ input }) => {
-    const currentOrg = getCurrentOrg()
+    const currentOrg = await getCurrentOrg()
     const { name, domain, shouldAttachUsersByDomain, category } = input
 
     try {
@@ -133,7 +133,7 @@ export const updateOrganizationAction = createServerAction()
   })
 
 export async function updateImageOrganizationAction(url: string) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
   try {
     await updateImageOrganization({
       org: currentOrg!,

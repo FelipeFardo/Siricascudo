@@ -49,7 +49,7 @@ export const createProductAction = createServerAction()
     return { success: false, message: null, errors }
   })
   .handler(async ({ input }) => {
-    const currentOrg = getCurrentOrg()!
+    const currentOrg = await getCurrentOrg()!
     const { description, imageUrl, name, priceInCents } = input
 
     try {
@@ -84,7 +84,7 @@ export const updateProductAction = createServerAction()
     return { success: false, message: null, errors }
   })
   .handler(async ({ input }) => {
-    const currentOrg = getCurrentOrg()
+    const currentOrg = await getCurrentOrg()
 
     const { name, description, imageUrl, priceInCents, id } = input
 
@@ -121,7 +121,7 @@ export const updateProductAction = createServerAction()
   })
 
 export async function deleteProductAction(productId: string) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   await deleteProduct({ org: currentOrg!, productId })
   revalidateTag(`${currentOrg}/products`)

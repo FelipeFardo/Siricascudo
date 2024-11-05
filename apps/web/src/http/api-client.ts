@@ -1,6 +1,5 @@
 import { env } from '@siricascudo/env'
 import { getCookie } from 'cookies-next'
-import type { CookiesFn } from 'cookies-next/lib/types'
 import ky from 'ky'
 
 export const api = ky.create({
@@ -8,31 +7,31 @@ export const api = ky.create({
   hooks: {
     beforeRequest: [
       async (request) => {
-        let cookieStore: CookiesFn | undefined
-
+        let token: string | undefined
         if (typeof window === 'undefined') {
-          const { cookies: serverCookies } = await import('next/headers')
-
-          cookieStore = serverCookies
+          const { cookies } = await import('next/headers')
+          const cookieStore = await cookies()
+          token = cookieStore.get('token')?.value
+        } else {
+          token = getCookie('token')
         }
-        const token = getCookie('token', { cookies: cookieStore })
-
         if (token) {
           request.headers.set('Authorization', `Bearer ${token}`)
         }
       },
       async (request) => {
-        let cookieStore: CookiesFn | undefined
-
+        let visitor: string | undefined
+        // const visitor = 'f389b338-4320-44a6-b41b-2f8280c77cdf'
         if (typeof window === 'undefined') {
-          const { cookies: serverCookies } = await import('next/headers')
+          const { cookies } = await import('next/headers')
 
-          cookieStore = serverCookies
+          const cookieStore = await cookies()
+          visitor = cookieStore.get('visitor')?.value
+        } else {
+          visitor = getCookie('visitor')
         }
-        const visitorSession = getCookie('visitor', { cookies: cookieStore })
-
-        if (visitorSession) {
-          const cookie = `visitor=${visitorSession}`
+        if (visitor) {
+          const cookie = `visitor=${visitor}`
           request.headers.set('Cookie', cookie)
         }
       },

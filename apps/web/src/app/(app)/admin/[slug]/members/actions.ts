@@ -13,7 +13,7 @@ import { updateMember } from '@/http/members/update-member'
 import { transferOwnership } from '@/http/orgs/transfer-ownership'
 
 export async function removeMemberAction(memberId: string) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   await removeMember({
     org: currentOrg!,
@@ -23,7 +23,7 @@ export async function removeMemberAction(memberId: string) {
 }
 
 export async function updateMemberAction(memberId: string, role: Role) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   await updateMember({
     org: currentOrg!,
@@ -34,7 +34,7 @@ export async function updateMemberAction(memberId: string, role: Role) {
 }
 
 export async function transferOwnershipAction(memberId: string) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   await transferOwnership({
     org: currentOrg!,
@@ -44,7 +44,7 @@ export async function transferOwnershipAction(memberId: string) {
 }
 
 export async function revokeInviteAction(inviteId: string) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   await revokeInvite({
     org: currentOrg!,
@@ -59,7 +59,7 @@ const inviteSchema = z.object({
 })
 
 export async function createInviteAction(data: FormData) {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   const result = inviteSchema.safeParse(Object.fromEntries(data))
 

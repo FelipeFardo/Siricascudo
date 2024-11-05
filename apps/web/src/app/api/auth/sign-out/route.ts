@@ -5,7 +5,9 @@ export async function GET(request: NextRequest) {
   const redirectUrl = request.nextUrl.clone()
 
   redirectUrl.pathname = '/'
-  cookies().delete('token')
+
+  const cookieStore = await cookies()
+  cookieStore.delete('token')
 
   return NextResponse.redirect(redirectUrl)
 }

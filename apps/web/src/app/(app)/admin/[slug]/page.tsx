@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { getCurrentOrg } from '@/auth/auth'
 
 export default async function Projects() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
   redirect(`/admin/${currentOrg}/orders`)
   return null
 }

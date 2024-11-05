@@ -32,13 +32,14 @@ export async function NavBar() {
       </nav>
       <nav className="flex gap-5">
         <ProfileButton />
+
         <Button
           asChild
           variant="ghost"
           size="sm"
           className="flex gap-3 border border-transparent py-5 text-muted-foreground"
         >
-          <Link href="/cart">
+          <Link href="/cart" className="flex">
             <ShoppingCart className="text-primary" />
             <div className="flex flex-col text-left">
               <span>

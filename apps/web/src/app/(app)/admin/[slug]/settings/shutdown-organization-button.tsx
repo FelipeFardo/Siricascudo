@@ -20,7 +20,7 @@ export function ShutdownOrganizatonButton() {
   async function ShutdownOrganizatonAction() {
     'use server'
 
-    const currentOrg = getCurrentOrg()
+    const currentOrg = await getCurrentOrg()
 
     await shutdownOrganization({ org: currentOrg! })
 

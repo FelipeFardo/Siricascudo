@@ -5,15 +5,17 @@ import { redirect } from 'next/navigation'
 import { getProfile } from '@/http/auth/get-profile'
 import { getMembership } from '@/http/orgs/get-membership'
 
-export function isAuthenticated() {
-  return !!cookies().get('token')?.value
+export async function isAuthenticated() {
+  const cookieStore = await cookies()
+  return !!cookieStore.get('token')?.value
 }
-export function getCurrentOrg() {
-  return cookies().get('org')?.value ?? null
+export async function getCurrentOrg() {
+  const cookieStore = await cookies()
+  return cookieStore.get('org')?.value ?? null
 }
 
 export async function getCurrentMembership() {
-  const org = getCurrentOrg()
+  const org = await getCurrentOrg()
 
   if (!org) {
     return null
@@ -40,7 +42,8 @@ export async function ability() {
 }
 
 export async function auth() {
-  const token = cookies().get('token')
+  const cookieStore = await cookies()
+  const token = cookieStore.get('token')
 
   if (!token) {
     redirect('/auth/sign-in')

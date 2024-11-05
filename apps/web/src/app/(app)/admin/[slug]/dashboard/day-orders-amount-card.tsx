@@ -2,7 +2,7 @@ import { getCurrentOrg } from '@/auth/auth'
 import { getDayOrdersAmount } from '@/http/metrics/get-day-orders-amount'
 
 export async function DayOrdersAmountCard() {
-  const currentOrg = getCurrentOrg()
+  const currentOrg = await getCurrentOrg()
 
   const dayOrdersAmount = await getDayOrdersAmount(currentOrg!)
 
