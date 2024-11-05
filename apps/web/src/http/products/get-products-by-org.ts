@@ -17,7 +17,7 @@ export async function getProductByOrg(org: string) {
   const result = await api
     .get(`organizations/${org}/products`, {
       next: {
-        tags: [`products-${org}`],
+        tags: [`${org}/products`],
         revalidate: 100000,
       },
     })

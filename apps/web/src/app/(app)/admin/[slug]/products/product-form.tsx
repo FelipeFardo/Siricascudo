@@ -33,14 +33,13 @@ export function ProductForm({
 
   return (
     <form action={executeFormAction} className="space-y-4">
-      {isUpdating && (
-        <input type="hidden" name="id" value={initialData?.id || ''} />
-      )}
+      <input type="hidden" name="id" value={initialData?.id || ''} />
       {data?.success === false && data?.message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
           <AlertTitle>Save organization failed!</AlertTitle>
           <AlertDescription>
+            <pre>{JSON.stringify(data, null, 2)}</pre>
             <p>{data?.message}</p>
           </AlertDescription>
         </Alert>

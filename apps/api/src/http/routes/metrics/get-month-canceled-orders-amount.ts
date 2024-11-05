@@ -72,7 +72,7 @@ export async function getMonthCanceledOrdersAmount(app: FastifyInstance) {
             : null
 
         return {
-          amount: currentMonthOrdersAmount?.amonth,
+          amount: currentMonthOrdersAmount?.amonth || 0,
           diffFromLastMonth: diffFromLastMonth
             ? Number((diffFromLastMonth - 100).toFixed(2))
             : 0,

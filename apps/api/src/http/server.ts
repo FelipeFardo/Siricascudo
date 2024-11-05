@@ -55,9 +55,12 @@ import { shutdownOrganization } from './routes/orgs/shutdown-organization'
 import { transferOrganization } from './routes/orgs/transfer-organization'
 import { updateImageOrganization } from './routes/orgs/update-image-organization'
 import { updateOrganization } from './routes/orgs/update-organization'
+import { createProduct } from './routes/products/create-product'
+import { deleteProduct } from './routes/products/delete-product'
 import { getProduct } from './routes/products/get-product'
 import { getProducts } from './routes/products/get-products'
 import { getProductsByOrg } from './routes/products/get-products-by-org'
+import { updateProduct } from './routes/products/update-product'
 import { createUpload } from './routes/uploads/create-upload'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
@@ -146,6 +149,9 @@ app.register(getOrderDetails)
 app.register(getProduct)
 app.register(getProducts)
 app.register(getProductsByOrg)
+app.register(createProduct)
+app.register(updateProduct)
+app.register(deleteProduct)
 
 app.register(getCart)
 app.register(getCartDetails)

@@ -11,6 +11,7 @@ import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getProductByOrg } from '@/http/products/get-products-by-org'
 
+import { DeleteProductButton } from './delete-product-button'
 import { ProductForm } from './product-form'
 
 export default async function AdminPage() {
@@ -34,7 +35,7 @@ export default async function AdminPage() {
           return (
             <Sheet key={product.id}>
               <SheetTrigger asChild>
-                <Card className="transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md">
+                <Card className="transform cursor-pointer rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md">
                   <CardContent className="flex gap-5 p-4">
                     <Suspense
                       fallback={
@@ -63,10 +64,10 @@ export default async function AdminPage() {
                 </Card>
               </SheetTrigger>
               <SheetContent>
-                <div className="space-y-4">
-                  <h1 className="text-2xl font-bold">Edit Product</h1>
-
+                <h1 className="text-xl font-bold">Edit Product</h1>
+                <div className="space-y-2">
                   <ProductForm initialData={product} isUpdating={true} />
+                  <DeleteProductButton productId={product.id} />
                 </div>
               </SheetContent>
             </Sheet>

@@ -9,16 +9,7 @@ interface CreateProductRequest {
 }
 
 interface CreateProductResponse {
-  product: {
-    description: string
-    id: string
-    name: string
-    createdAt: Date
-    updatedAt: Date
-    imageUrl: string
-    organizationId: string
-    priceInCents: number
-  }
+  productId: string
 }
 
 export async function createProduct({
@@ -29,16 +20,12 @@ export async function createProduct({
   imageUrl,
 }: CreateProductRequest) {
   const result = await api
-    .post(`organizations/${org}/products/create-product`, {
+    .post(`organizations/${org}/products`, {
       json: {
         name,
         description,
         priceInCents,
         imageUrl,
-      },
-      next: {
-        tags: ['products', org],
-        revalidate: 100000,
       },
     })
     .json<CreateProductResponse>()

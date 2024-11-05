@@ -7,10 +7,13 @@ import { createServerAction } from 'zsa'
 
 import { getCurrentOrg } from '@/auth/auth'
 import { createProduct } from '@/http/products/create-product'
+import { deleteProduct } from '@/http/products/delete-product'
 import { updateProduct } from '@/http/products/update-product'
 
 const productSchema = z.object({
-  id: z.string().transform((value) => (value === '' ? null : value)),
+  id: z.union([z.string(), z.null()]).transform((value) => {
+    return value === '' || value === null ? null : value
+  }),
   name: z
     .string()
     .min(4, { message: 'Please include at least 4 characteres.' }),
@@ -40,6 +43,7 @@ export type ProductSchema = z.infer<typeof productSchema>
 export const createProductAction = createServerAction()
   .input(productSchema, { type: 'formData' })
   .onInputParseError(async (error) => {
+    console.log(error.flatten().fieldErrors)
     const errors = error.flatten().fieldErrors
 
     return { success: false, message: null, errors }
@@ -47,6 +51,7 @@ export const createProductAction = createServerAction()
   .handler(async ({ input }) => {
     const currentOrg = getCurrentOrg()!
     const { description, imageUrl, name, priceInCents } = input
+
     try {
       await createProduct({
         name,
@@ -55,7 +60,7 @@ export const createProductAction = createServerAction()
         org: currentOrg,
         priceInCents,
       })
-      revalidateTag(`products-${currentOrg}`)
+      revalidateTag(`${currentOrg}/products`)
       revalidateTag('products')
     } catch (err) {
       if (err instanceof HTTPError) {
@@ -80,6 +85,7 @@ export const updateProductAction = createServerAction()
   })
   .handler(async ({ input }) => {
     const currentOrg = getCurrentOrg()
+
     const { name, description, imageUrl, priceInCents, id } = input
 
     try {
@@ -91,7 +97,7 @@ export const updateProductAction = createServerAction()
         priceInCents,
         productId: id!,
       })
-      revalidateTag(`products-${currentOrg}`)
+      revalidateTag(`${currentOrg}/products`)
       revalidateTag('products')
     } catch (err) {
       if (err instanceof HTTPError) {
@@ -113,3 +119,11 @@ export const updateProductAction = createServerAction()
       errors: null,
     }
   })
+
+export async function deleteProductAction(productId: string) {
+  const currentOrg = getCurrentOrg()
+
+  await deleteProduct({ org: currentOrg!, productId })
+  revalidateTag(`${currentOrg}/products`)
+  revalidateTag('products')
+}
