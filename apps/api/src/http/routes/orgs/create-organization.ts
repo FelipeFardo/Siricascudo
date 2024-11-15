@@ -20,6 +20,8 @@ export async function createOrganization(app: FastifyInstance) {
           tags: ['organizations'],
           summary: 'Create a new organization',
           security: [{ bearerAuth: [] }],
+          xRoles: ['user', 'admin'], // Documentando as roles autorizadas
+
           body: z.object({
             name: z.string(),
             domain: z.string().nullish(),

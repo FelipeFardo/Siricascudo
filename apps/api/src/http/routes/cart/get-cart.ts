@@ -28,6 +28,7 @@ export async function getCart(app: FastifyInstance) {
       },
       async (request, reply) => {
         let userId: string | null = null
+
         try {
           const { sub } = await request.jwtVerify<{ sub: string }>()
           userId = sub

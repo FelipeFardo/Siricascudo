@@ -10,7 +10,9 @@ export const api = ky.create({
         let token: string | undefined
         if (typeof window === 'undefined') {
           const { cookies } = await import('next/headers')
+
           const cookieStore = await cookies()
+
           token = cookieStore.get('token')?.value
         } else {
           token = getCookie('token')
@@ -37,4 +39,5 @@ export const api = ky.create({
       },
     ],
   },
+  credentials: 'include',
 })

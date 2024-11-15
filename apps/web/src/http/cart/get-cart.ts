@@ -8,13 +8,7 @@ export interface GetCartResponse {
 }
 
 export async function getCart() {
-  const result = await api
-    .get(`cart`, {
-      next: {
-        tags: [`cart`],
-      },
-    })
-    .json<GetCartResponse>()
+  const result = await api.get(`cart`).json<GetCartResponse>()
 
   return result
 }

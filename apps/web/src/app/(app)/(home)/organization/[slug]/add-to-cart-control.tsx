@@ -2,15 +2,13 @@
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { Minus, Plus } from 'lucide-react'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
+import { Currency } from '@/components/currency'
 import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
 import type { GetCartResponse } from '@/http/cart/get-cart'
 import { insertItemToCart } from '@/http/cart/insert-item-to-cart'
-
-import { Currency } from '../currency'
-import { Input } from '../ui/input'
 
 interface AddToCartControlProps {
   productId: string
@@ -19,15 +17,13 @@ interface AddToCartControlProps {
 }
 
 export function AddToCartControl({
-  organizationSlug,
   priceInCents,
   productId,
 }: AddToCartControlProps) {
   const [quantity, setQuantity] = useState(1)
   const queryClient = useQueryClient()
-  const router = useRouter()
 
-  const { mutate, isPending, isSuccess } = useMutation({
+  const { mutate, isPending } = useMutation({
     mutationFn: insertItemToCart,
     onSuccess: (_, { quantity }) => {
       queryClient.setQueryData<GetCartResponse>(['cart'], (oldData) => {
@@ -40,7 +36,6 @@ export function AddToCartControl({
           }
         }
       })
-      router.push(`organization/${organizationSlug}`)
     },
   })
 
@@ -90,12 +85,12 @@ export function AddToCartControl({
       </div>
 
       <Button
-        disabled={isPending || isSuccess}
+        disabled={isPending}
         onClick={() => addItemToCartAndRedirect()}
         className="w-full bg-red-500 py-6 text-white hover:bg-red-600"
       >
         {isPending ? (
-          'Redirecionando'
+          'Adicionando...'
         ) : (
           <>
             Adicionar • <Currency value={priceInCents * quantity} />

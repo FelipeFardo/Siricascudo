@@ -1,82 +1,88 @@
+import { Clock } from 'lucide-react'
 import Image from 'next/image'
 
 import { getCurrentOrg } from '@/auth/auth'
+import { AlertDialogHeader } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
-import { Calendar } from '@/components/ui/calendar'
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { getOrganization } from '@/http/orgs/get-organization'
+import { getProductByOrg } from '@/http/products/get-products-by-org'
+
+import { ProductCard } from './product-card'
+import { Reservation } from './reservation'
 
 export default async function organizationPage() {
   const currentOrg = await getCurrentOrg()
   const { organization } = await getOrganization(currentOrg!)
+  const { products } = await getProductByOrg(currentOrg!)
 
   return (
     <div className="mx-auto my-8 flex max-w-[1200px] flex-col">
-      <div className="flex gap-x-12">
-        <Image
-          height={100}
-          width={100}
-          src={organization.avatarUrl || '/placeholder-image-2.webp'}
-          alt={organization.name}
-          className="rounded-lg"
-        />
-        <div className="flex flex-col justify-center truncate">
-          <h1 className="text-md truncate font-semibold">
-            {organization.name}
-          </h1>
-          <p className="text-gray-600">{organization.category}</p>
-        </div>
-      </div>
-      <Tabs defaultValue="products" className="my-8">
-        <TabsList>
-          <TabsTrigger value="products">Products</TabsTrigger>
-          <TabsTrigger value="reserva">Reservas</TabsTrigger>
-        </TabsList>
-        <TabsContent value="reserva">
-          <Card>
-            <CardHeader>
-              <CardTitle>Reserva</CardTitle>
-              <CardDescription>
-                Escolha um dia que gostaria de vir em nosso restaurante.
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex space-x-8">
-                <Calendar
-                  mode="single"
-                  // selected={date}
-                  // onSelect={setDate}
+      <header className="bg-white shadow-md">
+        <div className="flex flex-col md:flex-row md:items-center">
+          <div className="relative mx-auto mb-4 h-64 w-64 md:mb-0 md:mr-6">
+            <Image
+              src={organization.avatarUrl || '/placeholder-image-2.webp'}
+              alt={organization.name}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-lg"
+            />
+          </div>
 
-                  className="rounded-md border"
-                />
-                <div>
-                  <div className="space-y-1">
-                    <Label htmlFor="name">Name</Label>
-                    <Input id="name" defaultValue="Pedro Duarte" />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="username">Username</Label>
-                    <Input id="username" defaultValue="@peduarte" />
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-            <CardFooter>
-              <Button>Save changes</Button>
-            </CardFooter>
-          </Card>
-        </TabsContent>
-      </Tabs>
+          <div className="container mx-auto px-4 py-4">
+            <h1 className="text-3xl font-bold">{organization.name}</h1>
+            <div className="mt-2 flex items-center space-x-4">
+              <span className="flex items-center">
+                <p className="text-gray-600">{organization.category}</p>
+              </span>
+              <span className="flex items-center">
+                <Clock className="mr-1 h-5 w-5 text-gray-400" />
+                30 min
+              </span>
+            </div>
+            <p className="mt-2 text-gray-600">
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam
+              obcaecati asperiores unde eum molestiae officia sunt, quibusdam
+              voluptatum non cum neque saepe sequi nemo laborum modi explicabo
+              dolore enim praesentium?
+            </p>
+          </div>
+        </div>
+      </header>
+
+      <main className="mx-auto w-full py-8">
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button className="h-12 w-full">Reservar mesa</Button>
+          </DialogTrigger>
+          <DialogContent>
+            <AlertDialogHeader>
+              <DialogTitle>Reserva mesa</DialogTitle>
+            </AlertDialogHeader>
+            <Reservation />
+          </DialogContent>
+        </Dialog>
+
+        <h2 className="my-6 flex   w-full justify-center text-2xl font-semibold">
+          Cardápio
+        </h2>
+
+        <div className="grid grid-cols-1 gap-3 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard
+              key={product.id}
+              organizationSlug={organization.slug}
+              product={product}
+            />
+          ))}
+        </div>
+      </main>
     </div>
   )
 }

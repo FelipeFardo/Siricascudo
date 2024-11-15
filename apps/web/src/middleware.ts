@@ -19,7 +19,7 @@ export async function middleware(request: NextRequest) {
   if (!request.cookies.get('visitor')) {
     const { sessionId } = await createVisitorSession()
     response.cookies.set('visitor', sessionId, {
-      httpOnly: true,
+      maxAge: 60 * 60 * 24 * 7, // 7 days
       path: '/',
     })
   }

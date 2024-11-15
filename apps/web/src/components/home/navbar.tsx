@@ -5,6 +5,7 @@ import { Button } from '@/components//ui/button'
 import { NavLink } from '@/components/nav-link'
 import { getCart } from '@/http/cart/get-cart'
 
+import { CartSummary } from './cart/cart-summary'
 import { ProfileButton } from './profile-button'
 
 const links = [
@@ -14,7 +15,6 @@ const links = [
 ]
 
 export async function NavBar() {
-  const { cart } = await getCart()
   return (
     <div className="m-5 flex h-10 items-center justify-between">
       <nav className="flex gap-3 ">
@@ -41,15 +41,7 @@ export async function NavBar() {
         >
           <Link href="/cart" className="flex">
             <ShoppingCart className="text-primary" />
-            <div className="flex flex-col text-left">
-              <span>
-                {(cart.totalInCents / 100).toLocaleString('pt-BR', {
-                  style: 'currency',
-                  currency: 'BRL',
-                })}
-              </span>
-              <span className="text-xs">({cart.quantityItems}) item(s)</span>
-            </div>
+            <CartSummary />
           </Link>
         </Button>
       </nav>

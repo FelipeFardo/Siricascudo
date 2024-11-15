@@ -1,3 +1,4 @@
+import { useQuery } from '@tanstack/react-query'
 import { Suspense } from 'react'
 
 import { getCartDetails } from '@/http/cart/get-cart-details'
@@ -6,9 +7,17 @@ import { CartItem } from './cart-item'
 import { CartItemSkeleton } from './cart-item-skeleton'
 import { CartOrganization } from './cart-organization'
 
-export async function Cart() {
-  const { cart } = await getCartDetails()
+export function Cart() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['cart', 'cart-details'],
+    queryFn: getCartDetails,
+  })
 
+  if (isLoading) return <p>Carregando...</p>
+
+  const cart = data?.cart
+
+  if (!cart) return <p>Carregando...</p>
   return (
     <div className="space-y-4">
       {cart.items.length === 0 && <h1>Não possui items</h1>}

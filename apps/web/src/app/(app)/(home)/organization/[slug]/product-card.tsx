@@ -2,18 +2,15 @@ import { Info, ShoppingCart, X } from 'lucide-react'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
-import { getOrganization } from '@/http/orgs/get-organization'
-
-import { Currency } from '../currency'
-import { Button } from '../ui/button'
+import { Currency } from '@/components/currency'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '../ui/card'
+} from '@/components/ui/card'
 import {
   Dialog,
   DialogClose,
@@ -22,14 +19,15 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '../ui/dialog'
-import { Skeleton } from '../ui/skeleton'
+} from '@/components/ui/dialog'
+import { Skeleton } from '@/components/ui/skeleton'
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from '../ui/tooltip'
+} from '@/components/ui/tooltip'
+
 import { AddToCartControl } from './add-to-cart-control'
 
 interface ProductCardProps {
@@ -40,51 +38,20 @@ interface ProductCardProps {
     imageUrl: string
     createdAt: Date
     updatedAt: Date
-    organizationId: string
     priceInCents: number
-    organization: {
-      slug: string
-    }
   }
+  organizationSlug: string
 }
 
-export async function ProductCard({ product }: ProductCardProps) {
-  const { organization } = await getOrganization(product.organization.slug)
-
+export function ProductCard({ product, organizationSlug }: ProductCardProps) {
   return (
     <Dialog>
       <DialogTrigger>
-        {/* <Card
+        <Card
           key={product.id}
           className="transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
         >
-          <CardContent className="flex gap-5 p-4">
-            <Suspense
-              fallback={<Skeleton className="max-h-[100px] max-w-[100px]" />}
-            >
-              <Image
-                height={100}
-                width={100}
-                src={product.imageUrl || '/placeholder-image-2.webp'}
-                alt={product.name}
-                className="rounded-lg"
-              />
-            </Suspense>
-
-            <div className="flex flex-col items-start justify-center truncate">
-              <h1 className="text-md truncate font-semibold">{product.name}</h1>
-              <span className="text-gray-600">{organization.name}</span>
-              <span>
-                <Currency value={product.priceInCents} />
-              </span>
-            </div>
-          </CardContent>
-        </Card> */}
-        <Card
-          key={product.id}
-          className="max-w-[350px] transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
-        >
-          <CardHeader className="flex gap-5 ">
+          <CardHeader className="p-0">
             <div className="relative h-[150px] w-full">
               <Image
                 src={product.imageUrl}
@@ -95,11 +62,8 @@ export async function ProductCard({ product }: ProductCardProps) {
               />
             </div>
           </CardHeader>
-          <CardContent className="">
+          <CardContent className="p-4">
             <CardTitle>{product.name}</CardTitle>
-            <CardDescription className="mt-2">
-              {organization.name}
-            </CardDescription>
           </CardContent>
           <CardFooter className="flex items-center justify-between p-4">
             <Currency value={product.priceInCents} />
@@ -150,15 +114,9 @@ export async function ProductCard({ product }: ProductCardProps) {
               </div>
               <DialogDescription>{product.description}</DialogDescription>
             </div>
-            <div className="rounded-md bg-gray-100 p-3">
-              <p className=" text-sm text-gray-600">
-                Restaurante: {organization.name}
-              </p>
-              <p className="text-sm text-gray-600">Tempo de entrega: 1h30min</p>
-            </div>
             <AddToCartControl
               priceInCents={product.priceInCents}
-              organizationSlug={organization.slug}
+              organizationSlug={organizationSlug}
               productId={product.id}
             />
           </div>

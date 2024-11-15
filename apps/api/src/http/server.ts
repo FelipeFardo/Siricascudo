@@ -18,7 +18,7 @@ import { authenticateWithPassword } from './routes/auth/authenticate-with-passwo
 import { createAccount } from './routes/auth/create-account'
 import { createSessionVisitor } from './routes/auth/create-session-visitor'
 import { getProfile } from './routes/auth/get-profile'
-import { requestPasswordRecover } from './routes/auth/request-passoword-recover'
+import { requestPasswordRecover } from './routes/auth/request-password-recover'
 import { resetPassword } from './routes/auth/reset-password'
 import { getCart } from './routes/cart/get-cart'
 import { getCartDetails } from './routes/cart/get-cart-details'
@@ -82,8 +82,8 @@ app.register(scalarDocs, {
 app.register(fastifySwagger, {
   openapi: {
     info: {
-      title: 'Next.js SaaS',
-      description: 'Full-stack SaaS app with multi-tenant & RBAC.',
+      title: 'Siricascudo SaaS',
+      description: 'Full-stack SaaS app with multi-tenant & RBAC. ',
       version: '1.0.0',
     },
     components: {
@@ -107,7 +107,10 @@ app.register(fastifyCookie, {
   secret: 'cookie-fastify-secret',
 })
 
-app.register(fastifyCors)
+app.register(fastifyCors, {
+  origin: 'http://localhost:3000',
+  credentials: true,
+})
 
 app.register(createAccount)
 app.register(authenticateWithPassword)

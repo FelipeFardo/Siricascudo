@@ -16,7 +16,6 @@ export async function getProductsByOrg(app: FastifyInstance) {
           tags: ['product'],
           summary: 'Get products by Org Slug',
           security: [{ bearerAuth: [] }],
-
           params: z.object({
             slug: z.string(),
           }),
@@ -40,12 +39,11 @@ export async function getProductsByOrg(app: FastifyInstance) {
       },
       async (request) => {
         const { slug } = request.params
-        const { organization } = await request.getUserMembership(slug)
 
         const productRepository = new ProductRepository()
-        const products = await productRepository.getProductsByOrganizationId(
-          organization.id,
-        )
+
+        const products =
+          await productRepository.getProductsByOrganizationSlug(slug)
 
         return {
           products,

@@ -4,7 +4,6 @@
   "scripts": {
     "dev": "pnpm run env:load tsx watch src/http/server.ts",
     "db:generate": "pnpm run env:load drizzle-kit generate",
-    "db:migrate2": "pnpm run env:load drizzle-kit migrate",
     "db:migrate": "pnpm run env:load tsx src/db/migrate.ts",
     "db:studio": "pnpm run env:load drizzle-kit studio",
     "db:seed": "pnpm run env:load tsx src/db/seed.ts",
@@ -21,7 +20,6 @@
     "@scalar/fastify-api-reference": "^1.24.67",
     "@siricascudo/auth": "workspace:*",
     "@siricascudo/env": "workspace:*",
-    "@types/bcryptjs": "^2.4.6",
     "bcryptjs": "^2.4.3",
     "dayjs": "^1.11.12",
     "drizzle-orm": "^0.32.2",
@@ -36,6 +34,7 @@
     "@siricascudo/prettier": "workspace:*",
     "@siricascudo/tsconfig": "workspace:*",
     "@types/pg": "^8.11.6",
+    "@types/bcryptjs": "^2.4.6",
     "dotenv-cli": "^7.4.2",
     "drizzle-kit": "^0.23.2",
     "pg": "^8.12.0",

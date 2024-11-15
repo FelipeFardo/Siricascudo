@@ -1,6 +1,14 @@
+import Link from 'next/link'
+
 import { Cart } from '@/components/home/cart/cart'
 import { InterceptedSheetContent } from '@/components/intercepted-sheet-content'
-import { Sheet, SheetHeader, SheetTitle } from '@/components/ui/sheet'
+import { Button } from '@/components/ui/button'
+import {
+  Sheet,
+  SheetClose,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
 
 export default function CartPage() {
   return (
@@ -11,6 +19,12 @@ export default function CartPage() {
         </SheetHeader>
         <div className="py-4">
           <Cart />
+
+          <SheetClose asChild>
+            <Button className="w-full" asChild>
+              <Link href="/checkout">Finalizar Pedido</Link>
+            </Button>
+          </SheetClose>
         </div>
       </InterceptedSheetContent>
     </Sheet>

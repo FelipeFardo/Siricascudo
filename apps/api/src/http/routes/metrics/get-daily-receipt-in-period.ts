@@ -90,6 +90,7 @@ export async function getDailyReceiptInPeriod(app: FastifyInstance) {
             return dateA.getTime() - dateB.getTime()
           }
         })
+
         return orderedReceiptPerDay
       },
     )

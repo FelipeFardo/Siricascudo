@@ -1,4 +1,5 @@
 import { db } from '@/db/connection'
+import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
 
 export class ProductRepository {
   async getProductById(productId: string) {
@@ -27,6 +28,27 @@ export class ProductRepository {
         return eq(fields.organizationId, organizationId)
       },
     })
+    return products
+  }
+
+  async getProductsByOrganizationSlug(organizationSlug: string) {
+    // Primeiro, obtenha a organização usando o slug
+    const organization = await db.query.organizations.findFirst({
+      where(fields, { eq }) {
+        return eq(fields.slug, organizationSlug)
+      },
+    })
+
+    if (!organization) {
+      throw new BadRequestError('Organização não encontrada')
+    }
+
+    const products = await db.query.products.findMany({
+      where(fields, { eq }) {
+        return eq(fields.organizationId, organization.id)
+      },
+    })
+
     return products
   }
 }
