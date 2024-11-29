@@ -28,9 +28,8 @@ export const signUpAction = createServerAction()
   .input(signUpSchema, {
     type: 'formData',
   })
-  .onInputParseError((error) => {
+  .onInputParseError(async (error) => {
     const errors = error.flatten().fieldErrors
-
     return { success: false, message: null, errors }
   })
   .handler(async ({ input }) => {

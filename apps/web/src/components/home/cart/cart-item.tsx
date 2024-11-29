@@ -1,3 +1,5 @@
+import { FilePenLine, Trash } from 'lucide-react'
+
 import { removeItem } from '@/app/(app)/(home)/cart/actions'
 import { Currency } from '@/components/currency'
 import { getProductById } from '@/http/products/get-product-by-id'
@@ -29,9 +31,17 @@ export async function CartItem({
         </span>
       </div>
       <div className="flex gap-10 font-medium">
-        <button className="text-primary  focus:outline-none">Editar</button>
         <form action={removeItem.bind(null, itemId)}>
-          <button className="text-gray-500 focus:outline-none">Excluir</button>
+          <button className="flex  gap-2 text-primary focus:outline-none">
+            <FilePenLine />
+            Editar
+          </button>
+        </form>
+        <form action={removeItem.bind(null, itemId)}>
+          <button className="flex gap-2 text-gray-500 focus:outline-none">
+            <Trash />
+            Excluir
+          </button>
         </form>
       </div>
     </div>

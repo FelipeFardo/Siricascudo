@@ -1,26 +1,21 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
 
 import { FormCheckout } from './form-checkout'
 import { OrderSummary } from './order-summary'
 
 export default function Checkout() {
   return (
-    <div className="min-h-screen bg-gray-100 py-8">
-      <div className="container mx-auto px-4">
+    <div className="mx-auto min-h-screen max-w-[1400px] py-8">
+      <div className="mx-auto flex flex-col gap-4 px-4">
         <h1 className="mb-8 text-center text-2xl font-bold">
           Finalizar Pedido
         </h1>
         <div className="grid gap-8 md:grid-cols-2">
           <OrderSummary />
-          <Card>
-            <CardHeader>
-              <CardTitle>Pagamento</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <FormCheckout />
-            </CardContent>
-          </Card>
+
+          <FormCheckout />
         </div>
+        <Button className="mx-auto flex ">Finalizar pedido</Button>
       </div>
     </div>
   )

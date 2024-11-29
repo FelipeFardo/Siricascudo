@@ -27,7 +27,11 @@ export default async function Footer() {
           </div>
           <div>
             <h3 className="mb-4 text-lg font-bold">Para Restaurantes</h3>
+
             <ul className="space-y-2">
+              <li>
+                <Link href="/admin">Painel administrativo</Link>
+              </li>
               <li>
                 <Link href="#" className="hover:underline">
                   Cadastre seu restaurante

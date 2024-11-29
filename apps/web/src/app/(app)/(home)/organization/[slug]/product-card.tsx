@@ -46,7 +46,6 @@ interface ProductCardProps {
 export function ProductCard({ product, organizationSlug }: ProductCardProps) {
   return (
     <Dialog>
-      <DialogTrigger>
         <Card
           key={product.id}
           className="transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
@@ -67,13 +66,14 @@ export function ProductCard({ product, organizationSlug }: ProductCardProps) {
           </CardContent>
           <CardFooter className="flex items-center justify-between p-4">
             <Currency value={product.priceInCents} />
+            <DialogTrigger asChild>
             <Button>
               <ShoppingCart className="mr-2 h-4 w-4" />
-              Adicionar
-            </Button>
+                Adicionar
+              </Button>
+              </DialogTrigger>
           </CardFooter>
         </Card>
-      </DialogTrigger>
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-xl font-bold">{product.name}</DialogTitle>
         <div className="flex w-full space-x-8">
@@ -89,11 +89,6 @@ export function ProductCard({ product, organizationSlug }: ProductCardProps) {
                 className=" max-w-[250px] rounded-lg"
               />
             </Suspense>
-            <DialogClose>
-              <button className="absolute right-2 top-2 rounded-full bg-white p-1 shadow-md dark:bg-black dark:text-white">
-                <X size={24} />
-              </button>
-            </DialogClose>
           </DialogHeader>
           <div className="space-y-4">
             <div className="text-sm text-gray-600">

@@ -2,14 +2,14 @@ import { Suspense } from 'react'
 
 import { CardOrganization } from '@/components/home/organization-card'
 import { ProductCard } from '@/components/product/product-card'
+import { Skeleton } from '@/components/ui/skeleton'
 import { getOrganizations } from '@/http/orgs/get-organizations'
 import { getProducts } from '@/http/products/get-products'
+import { AllProducts } from './all-products'
+import { ProductsSkeleton } from '../organization/[slug]/products-org'
 
 export default async function Home() {
-  const [{ organizations }, { products }] = await Promise.all([
-    getOrganizations(),
-    getProducts(),
-  ])
+  const { organizations } = await getOrganizations()
 
   return (
     <div className="space-y-4 p-4">
@@ -25,11 +25,9 @@ export default async function Home() {
         </div>
         <h1 className="ml-4 text-xl">Foods</h1>
         <div className="grid grid-cols-1 gap-3  md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
-          {products.map((product) => (
-            <Suspense key={product.id} fallback={<h1>Loading...</h1>}>
-              <ProductCard product={product} />
-            </Suspense>
-          ))}
+          <Suspense fallback={<ProductsSkeleton />}>
+            <AllProducts />
+          </Suspense>
         </div>
       </main>
     </div>

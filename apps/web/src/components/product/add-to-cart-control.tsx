@@ -65,7 +65,7 @@ export function AddToCartControl({
         <div className="flex items-center space-x-2 rounded-full border">
           <Button
             variant="ghost"
-            onClick={handleDecrement}
+            onClick={() => handleDecrement()}
             className="rounded-l-full"
           >
             <Minus size={16} />
@@ -81,7 +81,7 @@ export function AddToCartControl({
 
           <Button
             variant="ghost"
-            onClick={handleIncrement}
+            onClick={() => handleIncrement()}
             className="rounded-r-full"
           >
             <Plus size={16} />

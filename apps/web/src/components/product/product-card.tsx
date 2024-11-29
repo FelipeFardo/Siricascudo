@@ -1,4 +1,4 @@
-import { Info, ShoppingCart, X } from 'lucide-react'
+import { Info, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
@@ -16,7 +16,6 @@ import {
 } from '../ui/card'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,
@@ -53,63 +52,39 @@ export async function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        {/* <Card
-          key={product.id}
-          className="transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
-        >
-          <CardContent className="flex gap-5 p-4">
-            <Suspense
-              fallback={<Skeleton className="max-h-[100px] max-w-[100px]" />}
-            >
-              <Image
-                height={100}
-                width={100}
-                src={product.imageUrl || '/placeholder-image-2.webp'}
-                alt={product.name}
-                className="rounded-lg"
-              />
-            </Suspense>
+      <Card
+        key={product.id}
+        className="max-w-[350px] transform  rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
+      >
+        <CardHeader className="mx-auto gap-5">
+          <div className="relative mx-auto h-[150px] w-full">
+            <Image
+              src={product.imageUrl}
+              alt={product.name}
+              layout="fill"
+              objectFit="cover"
+              className="rounded-t-lg"
+            />
+          </div>
+        </CardHeader>
+        <CardContent className="flex flex-col items-center ">
+          <CardTitle>{product.name}</CardTitle>
+          <CardDescription className="mt-2">
+            {organization.name}
+          </CardDescription>
+        </CardContent>
+        <CardFooter className="flex items-center justify-between p-4">
+          <Currency value={product.priceInCents} />
 
-            <div className="flex flex-col items-start justify-center truncate">
-              <h1 className="text-md truncate font-semibold">{product.name}</h1>
-              <span className="text-gray-600">{organization.name}</span>
-              <span>
-                <Currency value={product.priceInCents} />
-              </span>
-            </div>
-          </CardContent>
-        </Card> */}
-        <Card
-          key={product.id}
-          className="max-w-[350px] transform rounded-lg border-transparent  shadow-none transition duration-300 ease-in-out hover:scale-105 hover:border-gray-200 hover:shadow-md"
-        >
-          <CardHeader className="flex gap-5 ">
-            <div className="relative h-[150px] w-full">
-              <Image
-                src={product.imageUrl}
-                alt={product.name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-t-lg"
-              />
-            </div>
-          </CardHeader>
-          <CardContent className="">
-            <CardTitle>{product.name}</CardTitle>
-            <CardDescription className="mt-2">
-              {organization.name}
-            </CardDescription>
-          </CardContent>
-          <CardFooter className="flex items-center justify-between p-4">
-            <Currency value={product.priceInCents} />
+          <DialogTrigger asChild>
             <Button>
               <ShoppingCart className="mr-2 h-4 w-4" />
               Adicionar
             </Button>
-          </CardFooter>
-        </Card>
-      </DialogTrigger>
+          </DialogTrigger>
+        </CardFooter>
+      </Card>
+
       <DialogContent className="sm:max-w-[600px]">
         <DialogTitle className="text-xl font-bold">{product.name}</DialogTitle>
         <div className="flex w-full space-x-8">
@@ -125,11 +100,6 @@ export async function ProductCard({ product }: ProductCardProps) {
                 className=" max-w-[250px] rounded-lg"
               />
             </Suspense>
-            <DialogClose>
-              <button className="absolute right-2 top-2 rounded-full bg-white p-1 shadow-md dark:bg-black dark:text-white">
-                <X size={24} />
-              </button>
-            </DialogClose>
           </DialogHeader>
           <div className="space-y-4">
             <div className="text-sm text-gray-600">

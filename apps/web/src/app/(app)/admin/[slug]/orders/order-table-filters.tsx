@@ -116,7 +116,7 @@ export function OrderTableFilters() {
         Filtrar resultado
       </Button>
       <Button
-        onClick={handleClearFilters}
+        onClick={() => handleClearFilters()}
         type="button"
         variant="outline"
         size="xs"

@@ -30,7 +30,7 @@ export async function deleteProduct(app: FastifyInstance) {
       },
       async (request, reply) => {
         const { slug, productId } = request.params
-        console.log('Chegou no Back')
+
         const { organization } = await request.getUserMembership(slug)
 
         const product = await db.query.products.findFirst({

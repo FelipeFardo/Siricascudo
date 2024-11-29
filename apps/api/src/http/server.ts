@@ -13,6 +13,8 @@ import {
 } from 'fastify-type-provider-zod'
 
 import { errorHandler } from './error-handler'
+import { createAddress } from './routes/address/create-address'
+import { getAddress } from './routes/address/get-address'
 import { authenticateWithGithub } from './routes/auth/authenticate-with-github'
 import { authenticateWithPassword } from './routes/auth/authenticate-with-password'
 import { createAccount } from './routes/auth/create-account'
@@ -169,6 +171,9 @@ app.register(getDayOrdersAmount)
 app.register(getMonthCanceledOrdersAmount)
 app.register(getDailyReceiptInPeriod)
 app.register(getPopularProducts)
+
+app.register(createAddress)
+app.register(getAddress)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running!')

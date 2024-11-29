@@ -3,7 +3,6 @@ import Link from 'next/link'
 
 import { Button } from '@/components//ui/button'
 import { NavLink } from '@/components/nav-link'
-import { getCart } from '@/http/cart/get-cart'
 
 import { CartSummary } from './cart/cart-summary'
 import { ProfileButton } from './profile-button'
@@ -11,7 +10,6 @@ import { ProfileButton } from './profile-button'
 const links = [
   { href: '/home', label: 'Home' },
   { href: '/organization', label: 'Restaurantes' },
-  { href: '', label: 'Foods' },
 ]
 
 export async function NavBar() {
