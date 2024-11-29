@@ -80,6 +80,7 @@ export default function AddressSelector() {
 
       setValueCheckout('addressId', data.address.id)
       setIsDialogOpen(false)
+      form.reset()
     },
   })
 
