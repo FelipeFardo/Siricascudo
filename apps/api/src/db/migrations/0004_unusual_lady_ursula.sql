@@ -1,1 +1,0 @@
-ALTER TABLE "carts" ADD COLUMN "total_in_cents" integer DEFAULT 0 NOT NULL;

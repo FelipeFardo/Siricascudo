@@ -49,7 +49,7 @@ export const createProductAction = createServerAction()
     return { success: false, message: null, errors }
   })
   .handler(async ({ input }) => {
-    const currentOrg = await getCurrentOrg()!
+    const currentOrg = await getCurrentOrg()
     const { description, imageUrl, name, priceInCents } = input
 
     try {
@@ -57,7 +57,7 @@ export const createProductAction = createServerAction()
         name,
         description,
         imageUrl,
-        org: currentOrg,
+        org: currentOrg!,
         priceInCents,
       })
       revalidateTag(`${currentOrg}/products`)

@@ -37,7 +37,7 @@ export async function deleteProduct(app: FastifyInstance) {
           where(fields) {
             return and(
               eq(fields.organizationId, organization.id),
-              eq(fields.id, productId),
+              eq(fields.id, productId)
             )
           },
         })
@@ -46,9 +46,12 @@ export async function deleteProduct(app: FastifyInstance) {
           throw new BadRequestError('Product Not Found')
         }
 
-        await db.delete(products).where(eq(products.id, productId))
+        await db
+          .update(products)
+          .set({ deletedAt: new Date() })
+          .where(eq(products.id, productId))
 
         return reply.status(204).send()
-      },
+      }
     )
 }

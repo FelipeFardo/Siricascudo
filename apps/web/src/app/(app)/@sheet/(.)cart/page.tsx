@@ -9,6 +9,9 @@ import {
   SheetHeader,
   SheetTitle,
 } from '@/components/ui/sheet'
+import { Suspense } from 'react'
+import { CartItemSkeleton } from '@/components/home/cart/cart-item'
+import { CartOrganizationSkeleton } from '@/components/home/cart/cart-organization'
 
 export default function CartPage() {
   return (
@@ -18,7 +21,17 @@ export default function CartPage() {
           <SheetTitle>Sacola</SheetTitle>
         </SheetHeader>
         <div className="py-4">
-          <Cart />
+          <Suspense
+            fallback={
+              <>
+                <CartOrganizationSkeleton />
+                <CartItemSkeleton />
+                <CartItemSkeleton />
+              </>
+            }
+          >
+            <Cart />
+          </Suspense>
 
           <SheetClose asChild>
             <Button className="w-full" asChild>

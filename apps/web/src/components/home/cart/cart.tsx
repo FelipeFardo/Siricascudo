@@ -3,8 +3,8 @@ import { Suspense } from 'react'
 import { getCartDetails } from '@/http/cart/get-cart-details'
 
 import { CartItem } from './cart-item'
-import { CartItemSkeleton } from './cart-item-skeleton'
-import { CartOrganization } from './cart-organization'
+import { CartItemSkeleton } from './cart-item'
+import { CartOrganization, CartOrganizationSkeleton } from './cart-organization'
 
 export async function Cart() {
   const { cart } = await getCartDetails()
@@ -15,9 +15,17 @@ export async function Cart() {
       {cart.organizationSlug && (
         <>
           <CartOrganization slug={cart.organizationSlug} />
+
           <div className="grid grid-cols-1 gap-4">
-            {cart.items.map((item) => (
-              <Suspense key={item.id} fallback={<CartItemSkeleton />}>
+            <Suspense
+              fallback={
+                <>
+                  <CartItemSkeleton />
+                  <CartItemSkeleton />
+                </>
+              }
+            >
+              {cart.items.map((item) => (
                 <CartItem
                   key={item.id}
                   itemId={item.id}
@@ -25,8 +33,8 @@ export async function Cart() {
                   quantity={item.quantity}
                   subTotalInCents={item.subTotalInCents}
                 />
-              </Suspense>
-            ))}
+              ))}
+            </Suspense>
           </div>
           <div className="flex justify-between border-b pb-4">
             <span>Total: </span>

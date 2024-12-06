@@ -1,12 +1,3 @@
-import { AlertDialogHeader } from '@/components/ui/alert-dialog'
-import { Button } from '@/components/ui/button'
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-
 import { Reservation } from './reservation'
 import { Suspense } from 'react'
 import OrgHeader, { OrgHeaderSkeleton } from './org-header'
@@ -23,17 +14,7 @@ export default async function organizationPage() {
       </header>
 
       <main className="mx-auto w-full py-8">
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button className="h-12 w-full">Reservar mesa</Button>
-          </DialogTrigger>
-          <DialogContent>
-            <AlertDialogHeader>
-              <DialogTitle>Reserva mesa</DialogTitle>
-            </AlertDialogHeader>
-            <Reservation />
-          </DialogContent>
-        </Dialog>
+        <Reservation />
 
         <h2 className="my-6 flex w-full justify-center text-2xl font-semibold">
           Cardápio

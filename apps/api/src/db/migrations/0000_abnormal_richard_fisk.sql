@@ -30,7 +30,7 @@ END $$;
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"name" text,
+	"name" text NOT NULL,
 	"email" text NOT NULL,
 	"phone" text,
 	"emailVerified" timestamp,
@@ -64,9 +64,11 @@ CREATE TABLE IF NOT EXISTS "organizations" (
 CREATE TABLE IF NOT EXISTS "products" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"name" text NOT NULL,
+	"image_url" text NOT NULL,
 	"description" text NOT NULL,
 	"price_in_cents" integer NOT NULL,
 	"organization_id" uuid NOT NULL,
+	"deleted_at" timestamp,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -107,20 +109,30 @@ CREATE TABLE IF NOT EXISTS "invites" (
 	CONSTRAINT "invites_email_unique" UNIQUE("email")
 );
 --> statement-breakpoint
-CREATE TABLE IF NOT EXISTS "tokens" (
-	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
-	"type" "TokenType" DEFAULT 'PASSWORD_RECOVER' NOT NULL,
-	"created_at" timestamp DEFAULT now() NOT NULL,
-	"user_id" uuid NOT NULL
-);
---> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "carts" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"customer_id" uuid,
 	"session_id" uuid,
 	"organization_id" uuid,
+	"total_in_cents" integer DEFAULT 0 NOT NULL,
 	"quantity_items" integer DEFAULT 0 NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "cart_items" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"cart_id" uuid NOT NULL,
+	"product_id" uuid NOT NULL,
+	"quantity" integer DEFAULT 1 NOT NULL,
+	"sub_total_in_cents" integer DEFAULT 0 NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "tokens" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"type" "TokenType" DEFAULT 'PASSWORD_RECOVER' NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"user_id" uuid NOT NULL
 );
 --> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "files" (
@@ -136,6 +148,32 @@ CREATE TABLE IF NOT EXISTS "files" (
 CREATE TABLE IF NOT EXISTS "sessions" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid,
+	"created_at" timestamp DEFAULT now() NOT NULL,
+	"updated_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "reservations" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"customer_name" text NOT NULL,
+	"customer_email" text NOT NULL,
+	"number_of_people" integer NOT NULL,
+	"reservation_date" date NOT NULL,
+	"reservation_time" text NOT NULL,
+	"description" text,
+	"organization_id" uuid NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE IF NOT EXISTS "addresses" (
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"customer_id" uuid,
+	"street" text NOT NULL,
+	"city" text NOT NULL,
+	"state" text NOT NULL,
+	"contry" text NOT NULL,
+	"number" text NOT NULL,
+	"zip_code" text,
+	"complement" text,
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
@@ -207,19 +245,13 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
-EXCEPTION
- WHEN duplicate_object THEN null;
-END $$;
---> statement-breakpoint
-DO $$ BEGIN
  ALTER TABLE "carts" ADD CONSTRAINT "carts_customer_id_users_id_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
- ALTER TABLE "carts" ADD CONSTRAINT "carts_session_id_users_id_fk" FOREIGN KEY ("session_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+ ALTER TABLE "carts" ADD CONSTRAINT "carts_session_id_sessions_id_fk" FOREIGN KEY ("session_id") REFERENCES "public"."sessions"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -231,7 +263,37 @@ EXCEPTION
 END $$;
 --> statement-breakpoint
 DO $$ BEGIN
+ ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_cart_id_carts_id_fk" FOREIGN KEY ("cart_id") REFERENCES "public"."carts"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "cart_items" ADD CONSTRAINT "cart_items_product_id_products_id_fk" FOREIGN KEY ("product_id") REFERENCES "public"."products"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "tokens" ADD CONSTRAINT "tokens_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
  ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE set null ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "reservations" ADD CONSTRAINT "reservations_organization_id_organizations_id_fk" FOREIGN KEY ("organization_id") REFERENCES "public"."organizations"("id") ON DELETE cascade ON UPDATE no action;
+EXCEPTION
+ WHEN duplicate_object THEN null;
+END $$;
+--> statement-breakpoint
+DO $$ BEGIN
+ ALTER TABLE "addresses" ADD CONSTRAINT "addresses_customer_id_users_id_fk" FOREIGN KEY ("customer_id") REFERENCES "public"."users"("id") ON DELETE cascade ON UPDATE no action;
 EXCEPTION
  WHEN duplicate_object THEN null;
 END $$;
@@ -244,4 +306,5 @@ CREATE UNIQUE INDEX IF NOT EXISTS "organizations_slug_key" ON "organizations" US
 CREATE UNIQUE INDEX IF NOT EXISTS "members_organization_id_user_id_key" ON "members" USING btree ("organization_id","user_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "email_organization_id_key" ON "invites" USING btree ("email","organization_id");--> statement-breakpoint
 CREATE UNIQUE INDEX IF NOT EXISTS "customer_id_key" ON "carts" USING btree ("customer_id");--> statement-breakpoint
-CREATE UNIQUE INDEX IF NOT EXISTS "session_id_key" ON "carts" USING btree ("session_id");
+CREATE UNIQUE INDEX IF NOT EXISTS "session_id_key" ON "carts" USING btree ("session_id");--> statement-breakpoint
+CREATE UNIQUE INDEX IF NOT EXISTS "cart_items_cart_id_product_id_key" ON "cart_items" USING btree ("cart_id","product_id");

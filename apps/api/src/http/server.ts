@@ -64,6 +64,8 @@ import { getProducts } from './routes/products/get-products'
 import { getProductsByOrg } from './routes/products/get-products-by-org'
 import { updateProduct } from './routes/products/update-product'
 import { createUpload } from './routes/uploads/create-upload'
+import { createReservation } from './routes/reservation/create-reservations'
+import { getReservations } from './routes/reservation/get-reservations'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -174,6 +176,9 @@ app.register(getPopularProducts)
 
 app.register(createAddress)
 app.register(getAddress)
+
+app.register(createReservation)
+app.register(getReservations)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {
   console.log('HTTP server running!')

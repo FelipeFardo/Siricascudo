@@ -29,13 +29,14 @@ import {
   getAddresses,
   type GetAddressesResponse,
 } from '@/http/address/get-address'
-import { getCep } from '@/http/viacep/get-cep'
+import { getAddressByCep } from '@/http/viacep/get-address-by-cep'
 import { formatZipCode } from '@/utils/formatZipCode'
 
 import AddressList from './address-list'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 import type { CheckoutSchema } from './form-checkout'
+import { Skeleton } from '@/components/ui/skeleton'
 
 export const addressSchema = z.object({
   street: z.string({ message: 'A Rua é obrigatória' }),
@@ -51,7 +52,7 @@ export type AddressSchema = z.infer<typeof addressSchema>
 
 export default function AddressSelector() {
   const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['address'],
     queryFn: getAddresses,
   })
@@ -61,8 +62,15 @@ export default function AddressSelector() {
 
   const form = useForm<AddressSchema>({
     resolver: zodResolver(addressSchema),
-    defaultValues: { zipCode: '' },
+    defaultValues: {
+      zipCode: '',
+      city: '',
+      country: '',
+      state: '',
+      street: '',
+    },
   })
+
   const queryClient = useQueryClient()
 
   const { mutateAsync, isPending } = useMutation({
@@ -87,7 +95,6 @@ export default function AddressSelector() {
   const { setValue, setError, clearErrors, watch } = form
 
   const zipCode = watch('zipCode')
-  const addressId = watchCheckoutValue('addressId')
 
   useEffect(() => {
     const formattedCep = formatZipCode(zipCode)
@@ -99,20 +106,30 @@ export default function AddressSelector() {
   async function autoCompleteAddressByZipCode(zipCode: string) {
     if (zipCode.length === 8) {
       try {
-        const result = await getCep(zipCode)
+        const result = await getAddressByCep(zipCode)
 
         if (result.erro) throw new Error()
 
-        if (result.logradouro) setValue('street', result.logradouro)
-        if (result.uf) setValue('state', result.uf)
-        if (result.localidade) setValue('city', result.localidade)
-        setValue('country', 'Brasil')
+        const updatedAddress = {
+          street: result.logradouro || '',
+          state: result.uf || '',
+          city: result.localidade || '',
+          country: 'Brasil',
+        }
+
+        Object.entries(updatedAddress).forEach(([field, value]) => {
+          setValue(field as 'country' | 'city' | 'state' | 'street', value)
+        })
+
         clearErrors(['zipCode', 'country', 'city', 'state', 'street'])
       } catch (err) {
-        setValue('street', '')
-        setValue('state', '')
-        setValue('city', '')
-        setValue('country', '')
+        form.reset({
+          ...watch(),
+          street: '',
+          state: '',
+          city: '',
+          country: '',
+        })
         setError('zipCode', { message: 'CEP inválido' })
       }
     }
@@ -129,6 +146,19 @@ export default function AddressSelector() {
       </CardHeader>
       <CardContent>
         {data?.addresses && <AddressList addresses={data?.addresses} />}
+        {isLoading && (
+          <div className="flex flex-col space-y-4">
+            {Array.from({ length: 3 }).map((_, index) => (
+              <div key={index} className="flex items-center space-x-2">
+                <Skeleton className="h-5 w-5 rounded-full" />
+                <div className="flex w-96 space-x-2">
+                  <Skeleton className="h-5 w-3/4" />
+                  <Skeleton className="h-5 w-1/2" />
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
         <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
           <DialogTrigger asChild>
             <Button className="mt-4">Adicionar novo endereço</Button>

@@ -3,6 +3,7 @@ import { FilePenLine, Trash } from 'lucide-react'
 import { removeItem } from '@/app/(app)/(home)/cart/actions'
 import { Currency } from '@/components/currency'
 import { getProductById } from '@/http/products/get-product-by-id'
+import { Skeleton } from '@/components/ui/skeleton'
 
 interface CartItemProps {
   itemId: string
@@ -43,6 +44,24 @@ export async function CartItem({
             Excluir
           </button>
         </form>
+      </div>
+    </div>
+  )
+}
+
+export function CartItemSkeleton() {
+  return (
+    <div className="mb-4 space-y-4 border-b pb-4">
+      <div className="flex justify-between">
+        <div className="flex gap-3">
+          <Skeleton className="h-6 w-8" />
+          <Skeleton className="h-6 w-32" />
+        </div>
+        <Skeleton className="h-6 w-20" />
+      </div>
+      <div className="flex gap-10 font-medium">
+        <Skeleton className="h-6 w-16" />
+        <Skeleton className="h-6 w-16" />
       </div>
     </div>
   )

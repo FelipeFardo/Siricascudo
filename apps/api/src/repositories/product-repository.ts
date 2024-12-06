@@ -1,5 +1,6 @@
 import { db } from '@/db/connection'
 import { BadRequestError } from '@/http/routes/_errors/bad-request-error'
+import { isNull } from 'drizzle-orm'
 
 export class ProductRepository {
   async getProductById(productId: string) {
@@ -34,7 +35,7 @@ export class ProductRepository {
   async getProductsByOrganizationSlug(organizationSlug: string) {
     // Primeiro, obtenha a organização usando o slug
     const organization = await db.query.organizations.findFirst({
-      where(fields, { eq }) {
+      where(fields, { eq, and }) {
         return eq(fields.slug, organizationSlug)
       },
     })
@@ -44,8 +45,11 @@ export class ProductRepository {
     }
 
     const products = await db.query.products.findMany({
-      where(fields, { eq }) {
-        return eq(fields.organizationId, organization.id)
+      where(fields, { eq, and }) {
+        return and(
+          eq(fields.organizationId, organization.id),
+          isNull(fields.deletedAt)
+        )
       },
     })
 

@@ -4,7 +4,7 @@ import { Suspense } from 'react'
 import { getCartDetails } from '@/http/cart/get-cart-details'
 
 import { CartItem } from './cart-item'
-import { CartItemSkeleton } from './cart-item-skeleton'
+import { CartItemSkeleton } from './cart-item'
 import { CartOrganization } from './cart-organization'
 
 export function Cart() {

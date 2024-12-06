@@ -34,7 +34,7 @@ export function ProductsSkeleton() {
   return (
     <>
       {skeletons.map((_, index) => (
-        <ProductSkeleton />
+        <ProductSkeleton key={index} />
       ))}
     </>
   )

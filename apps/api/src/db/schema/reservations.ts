@@ -14,11 +14,11 @@ import { organizations } from '.'
 export const reservations = pgTable('reservations', {
   id: uuid('id').primaryKey().defaultRandom(),
   customerName: text('customer_name').notNull(),
-  email: text('customer_email').notNull(),
+  customerEmail: text('customer_email').notNull(),
   numberOfPeople: integer('number_of_people').notNull(),
   reservationDate: date('reservation_date').notNull(),
-  reservationTime: time('reservation_time').notNull(),
-  description: text('description').notNull(),
+  reservationTime: text('reservation_time').notNull(),
+  description: text('description'),
   organizationId: uuid('organization_id')
     .notNull()
     .references(() => organizations.id, {
