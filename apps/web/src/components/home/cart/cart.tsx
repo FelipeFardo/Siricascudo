@@ -10,7 +10,7 @@ export async function Cart() {
   const { cart } = await getCartDetails()
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 py-4">
       {cart.items.length === 0 && <h1>Não possui items</h1>}
       {cart.organizationSlug && (
         <>

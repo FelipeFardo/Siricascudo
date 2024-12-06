@@ -12,6 +12,7 @@ import {
 import { Suspense } from 'react'
 import { CartItemSkeleton } from '@/components/home/cart/cart-item'
 import { CartOrganizationSkeleton } from '@/components/home/cart/cart-organization'
+import { CheckoutButton } from '@/components/home/cart/button-checkout'
 
 export default function CartPage() {
   return (
@@ -31,13 +32,10 @@ export default function CartPage() {
             }
           >
             <Cart />
+            <SheetClose asChild>
+              <CheckoutButton />
+            </SheetClose>
           </Suspense>
-
-          <SheetClose asChild>
-            <Button className="w-full" asChild>
-              <Link href="/checkout">Finalizar Pedido</Link>
-            </Button>
-          </SheetClose>
         </div>
       </InterceptedSheetContent>
     </Sheet>

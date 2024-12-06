@@ -2,10 +2,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { getCartDetails } from '@/http/cart/get-cart-details'
 
 import { CartItem } from './order-item'
+import { redirect } from 'next/navigation'
 
 export async function OrderSummary() {
   const { cart } = await getCartDetails()
 
+  if (cart.quantityItems === 0) redirect('/home')
   return (
     <Card>
       <CardHeader>
