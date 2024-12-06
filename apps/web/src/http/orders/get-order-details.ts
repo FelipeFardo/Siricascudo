@@ -11,6 +11,19 @@ export interface GetOrderDetailsResponse {
     id: string
     createdAt: Date
     totalInCents: number
+    address: {
+      number: string
+      id: string
+      createdAt: Date
+      updatedAt: Date
+      customerId: string | null
+      street: string
+      city: string
+      state: string
+      country: string
+      zipCode: string | null
+      complement: string | null
+    } | null
     customer: {
       name: string
       email: string

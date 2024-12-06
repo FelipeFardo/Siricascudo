@@ -4,6 +4,7 @@ export type OrderStatus =
   | 'processing'
   | 'delivering'
   | 'delivered'
+  | 'not_paid'
 
 interface OrderStatusProps {
   status: OrderStatus
@@ -15,6 +16,7 @@ const orderStatusMap: Record<OrderStatus, string> = {
   delivered: 'Entregue',
   delivering: 'Em entrega',
   processing: 'Em preparo',
+  not_paid: 'Não pago',
 }
 export function OrderStatus({ status }: OrderStatusProps) {
   return (
@@ -26,6 +28,12 @@ export function OrderStatus({ status }: OrderStatusProps) {
         />
       )}
       {status === 'canceled' && (
+        <span
+          data-testid="badge"
+          className="h-2 w-2 rounded-full bg-rose-500"
+        />
+      )}
+      {status === 'not_paid' && (
         <span
           data-testid="badge"
           className="h-2 w-2 rounded-full bg-rose-500"

@@ -9,7 +9,8 @@ export async function getProducts(app: FastifyInstance) {
     '/product',
     {
       schema: {
-        tags: ['product'],
+        tags: ['products'],
+
         summary: 'Get all products',
 
         response: {
@@ -27,7 +28,7 @@ export async function getProducts(app: FastifyInstance) {
                 organization: z.object({
                   slug: z.string(),
                 }),
-              }),
+              })
             ),
           }),
         },
@@ -40,6 +41,6 @@ export async function getProducts(app: FastifyInstance) {
       return {
         products,
       }
-    },
+    }
   )
 }

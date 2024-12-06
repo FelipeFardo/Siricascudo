@@ -47,10 +47,11 @@ export async function getOrders(app: FastifyInstance) {
                     'processing',
                     'delivering',
                     'delivered',
+                    'not_paid',
                   ]),
                   customerName: z.string().nullable(),
                   total: z.number(),
-                }),
+                })
               ),
               meta: z.object({
                 pageIndex: z.number(),
@@ -83,8 +84,8 @@ export async function getOrders(app: FastifyInstance) {
               eq(orders.organizationId, organization.id),
               orderId ? sql`orders.id::text LIKE ${`%${orderId}%`}` : undefined,
               status ? eq(orders.status, status) : undefined,
-              customerName ? ilike(users.name, `%${customerName}%`) : undefined,
-            ),
+              customerName ? ilike(users.name, `%${customerName}%`) : undefined
+            )
           )
 
         const [amountOfOrdersQuery, allOrders] = await Promise.all([
@@ -101,6 +102,7 @@ export async function getOrders(app: FastifyInstance) {
             WHEN 'processing' THEN 2
             WHEN 'delivering' THEN 3
             WHEN 'delivered' THEN 4
+            WHEN 'not_paid' THEN 5
             WHEN 'canceled' THEN 99
             END`,
                 desc(fields.createdAt),
@@ -118,6 +120,6 @@ export async function getOrders(app: FastifyInstance) {
             totalCount: amountOfOrders,
           },
         }
-      },
+      }
     )
 }

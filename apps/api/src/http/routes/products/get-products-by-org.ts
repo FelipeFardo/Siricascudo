@@ -13,7 +13,7 @@ export async function getProductsByOrg(app: FastifyInstance) {
       '/organizations/:slug/products',
       {
         schema: {
-          tags: ['product'],
+          tags: ['products'],
           summary: 'Get products by Org Slug',
           security: [{ bearerAuth: [] }],
           params: z.object({
@@ -31,7 +31,7 @@ export async function getProductsByOrg(app: FastifyInstance) {
                   imageUrl: z.string(),
                   organizationId: z.string(),
                   priceInCents: z.number(),
-                }),
+                })
               ),
             }),
           },
@@ -48,6 +48,6 @@ export async function getProductsByOrg(app: FastifyInstance) {
         return {
           products,
         }
-      },
+      }
     )
 }

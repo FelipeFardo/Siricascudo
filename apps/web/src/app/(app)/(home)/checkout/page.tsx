@@ -2,6 +2,9 @@ import { Button } from '@/components/ui/button'
 
 import { FormCheckout } from './form-checkout'
 import { OrderSummary } from './order-summary'
+import { FinishyCheckout } from './finishy-checkout'
+import AddressSelector from './address-selector'
+import { PaymentForm } from './payment-form'
 
 export default function Checkout() {
   return (
@@ -10,12 +13,17 @@ export default function Checkout() {
         <h1 className="mb-8 text-center text-2xl font-bold">
           Finalizar Pedido
         </h1>
-        <div className="grid gap-8 md:grid-cols-2">
-          <OrderSummary />
 
-          <FormCheckout />
-        </div>
-        <Button className="mx-auto flex ">Finalizar pedido</Button>
+        <FormCheckout>
+          <div className="grid gap-8 md:grid-cols-2">
+            <OrderSummary />
+
+            <AddressSelector />
+            <PaymentForm />
+          </div>
+
+          <FinishyCheckout />
+        </FormCheckout>
       </div>
     </div>
   )

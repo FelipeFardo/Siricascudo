@@ -43,6 +43,6 @@ export async function getMembership(app: FastifyInstance) {
             userId: membership.userId,
           },
         }
-      },
+      }
     )
 }

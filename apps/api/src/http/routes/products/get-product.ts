@@ -11,7 +11,7 @@ export async function getProduct(app: FastifyInstance) {
     '/product/:productId',
     {
       schema: {
-        tags: ['product'],
+        tags: ['products'],
         summary: 'Get details from product',
         params: z.object({
           productId: z.string(),
@@ -44,6 +44,6 @@ export async function getProduct(app: FastifyInstance) {
       return {
         product,
       }
-    },
+    }
   )
 }

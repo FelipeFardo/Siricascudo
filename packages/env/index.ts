@@ -12,6 +12,7 @@ export const env = createEnv({
     CLOUDFLARE_ENDPOINT: z.string().url(),
     CLOUDFLARE_ACCESS_KEY_ID: z.string(),
     CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
+    STRIPE_SECRET_KEY: z.string(),
   },
   client: {},
   shared: {
@@ -20,8 +21,11 @@ export const env = createEnv({
       .default('production'),
     NEXT_PUBLIC_VIACEP_API_URL: z.string().url(),
     NEXT_PUBLIC_API_URL: z.string().url(),
+    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: z.string(),
   },
   runtimeEnv: {
+    NEXT_PUBLIC_STRIPE_PUBLIC_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
+    STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     NEXT_PUBLIC_NODE_ENV: process.env.NEXT_PUBLIC_NODE_ENV,
     SERVER_PORT: process.env.SERVER_PORT,
     DATABASE_URL: process.env.DATABASE_URL,

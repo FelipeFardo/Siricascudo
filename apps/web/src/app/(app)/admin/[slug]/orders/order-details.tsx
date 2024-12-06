@@ -100,6 +100,15 @@ export function OrderDetails({ orderId, open }: OrderDetailsProps) {
               )}
               <TableRow>
                 <TableCell className="text-muted-foreground">
+                  Endereço
+                </TableCell>
+                <TableCell className="flex justify-end">
+                  {order.address?.street} {order.address?.number}{' '}
+                  {order.address?.complement}
+                </TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="text-muted-foreground">
                   Realizado há
                 </TableCell>
                 <TableCell className="flex justify-end">

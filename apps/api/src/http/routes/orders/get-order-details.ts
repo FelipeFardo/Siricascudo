@@ -34,7 +34,23 @@ export async function getOrderDetails(app: FastifyInstance) {
                   'processing',
                   'delivering',
                   'delivered',
+                  'not_paid',
                 ]),
+                address: z
+                  .object({
+                    number: z.string(),
+                    id: z.string(),
+                    createdAt: z.date(),
+                    updatedAt: z.date(),
+                    customerId: z.string().nullable(),
+                    street: z.string(),
+                    city: z.string(),
+                    state: z.string(),
+                    country: z.string(),
+                    zipCode: z.string().nullable(),
+                    complement: z.string().nullable(),
+                  })
+                  .nullable(),
                 customer: z
                   .object({
                     name: z.string(),
@@ -52,7 +68,7 @@ export async function getOrderDetails(app: FastifyInstance) {
                         name: z.string(),
                       })
                       .nullable(),
-                  }),
+                  })
                 ),
               }),
             }),
@@ -71,6 +87,7 @@ export async function getOrderDetails(app: FastifyInstance) {
             createdAt: true,
           },
           with: {
+            address: true,
             customer: {
               columns: {
                 name: true,
@@ -96,7 +113,7 @@ export async function getOrderDetails(app: FastifyInstance) {
           where(fields, { eq, and }) {
             return and(
               eq(fields.id, orderId),
-              eq(fields.organizationId, organization.id),
+              eq(fields.organizationId, organization.id)
             )
           },
         })
@@ -105,9 +122,10 @@ export async function getOrderDetails(app: FastifyInstance) {
           throw new BadRequestError('Order not found')
         }
 
+        const asas = order.address
         return {
           order,
         }
-      },
+      }
     )
 }

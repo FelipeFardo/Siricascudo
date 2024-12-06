@@ -10,7 +10,7 @@ export async function createReservation(app: FastifyInstance) {
     '/organizations/:slug/reservations',
     {
       schema: {
-        tags: ['reservation'],
+        tags: ['reservations'],
         summary: 'Create a new reservation',
         params: z.object({
           slug: z.string(),

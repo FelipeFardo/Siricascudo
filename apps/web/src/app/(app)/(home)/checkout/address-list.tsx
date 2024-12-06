@@ -4,6 +4,8 @@ import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 import type { CheckoutSchema } from './form-checkout'
+import { Alert, AlertDescription } from '@/components/ui/alert'
+import { AlertCircle } from 'lucide-react'
 
 interface Addresses {
   addresses: {
@@ -19,7 +21,10 @@ interface Addresses {
 }
 
 export default function AddressList({ addresses }: Addresses) {
-  const { control } = useFormContext<CheckoutSchema>()
+  const {
+    control,
+    formState: { errors },
+  } = useFormContext<CheckoutSchema>()
 
   return (
     <Controller
@@ -36,6 +41,14 @@ export default function AddressList({ addresses }: Addresses) {
               </Label>
             </div>
           ))}
+          {errors['addressId'] && (
+            <Alert variant="destructive">
+              <AlertCircle className="h-4 w-4" />
+              <AlertDescription>
+                {errors['addressId']?.message}
+              </AlertDescription>
+            </Alert>
+          )}
         </RadioGroup>
       )}
     />
