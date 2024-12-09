@@ -32,7 +32,13 @@ export interface OrderTableRowProps {
   order: {
     orderId: string
     createdAt: string
-    status: 'pending' | 'canceled' | 'processing' | 'delivering' | 'delivered'
+    status:
+      | 'pending'
+      | 'canceled'
+      | 'processing'
+      | 'delivering'
+      | 'delivered'
+      | 'not_paid'
     customerName: string
     total: number
   }

@@ -23,7 +23,7 @@ export function SignUpForm() {
       onSuccess: ({ data }) => {
         if (data.success) router.push('/auth/sign-in')
       },
-    },
+    }
   )
 
   const { executeFormAction: signInWithGithubAction } =
@@ -34,14 +34,14 @@ export function SignUpForm() {
         {data?.success === false && data.message && (
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Sign in failed!</AlertTitle>
+            <AlertTitle>Falhar ao cadastrar</AlertTitle>
             <AlertDescription>
               <p>{data.message}</p>
             </AlertDescription>
           </Alert>
         )}
         <div className="space-y-1">
-          <Label htmlFor="name">Name</Label>
+          <Label htmlFor="name">Nome</Label>
           <Input name="name" id="name" />
           {error?.fieldErrors?.name && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -59,7 +59,7 @@ export function SignUpForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input name="password" type="password" id="password" />
           {error?.fieldErrors?.password && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -68,7 +68,7 @@ export function SignUpForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor="password_confirmation">Confirm your password</Label>
+          <Label htmlFor="password_confirmation">Confirme sua senha</Label>
           <Input
             name="password_confirmation"
             type="password"
@@ -85,11 +85,11 @@ export function SignUpForm() {
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
-            'Create account'
+            'Criar nova conta'
           )}
         </Button>
         <Button className="w-full" variant="link" size="sm" asChild>
-          <Link href="/auth/sign-in"> Already registered? Sign in</Link>
+          <Link href="/auth/sign-in"> Já tem uma conta? Entre</Link>
         </Button>
       </form>
 
@@ -97,7 +97,7 @@ export function SignUpForm() {
         <Separator />
         <Button className="w-full" variant="outline" type="submit">
           <Image src={githubIcon} className="mr-2 size-4 dark:invert" alt="" />
-          Sign up with github
+          Cadastrar com github
         </Button>
       </form>
     </div>

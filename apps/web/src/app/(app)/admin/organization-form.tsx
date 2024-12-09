@@ -21,6 +21,7 @@ import {
   type OrganizationSchema,
   updateOrganizationAction,
 } from './actions'
+import { Textarea } from '@/components/ui/textarea'
 
 interface OrganizationFormProps {
   isUpdating?: boolean
@@ -43,7 +44,7 @@ export function OrganizationForm({
       {data?.success === false && data?.message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
-          <AlertTitle>Save organization failed!</AlertTitle>
+          <AlertTitle>Falha ao salvar a organização!</AlertTitle>
           <AlertDescription>
             <p>{data?.message}</p>
           </AlertDescription>
@@ -52,14 +53,14 @@ export function OrganizationForm({
       {data?.success === true && data?.message && (
         <Alert variant="success">
           <AlertTriangle className="size-4" />
-          <AlertTitle>Success!</AlertTitle>
+          <AlertTitle>Sucesso!</AlertTitle>
           <AlertDescription>
             <p>{data?.message}</p>
           </AlertDescription>
         </Alert>
       )}
       <div className="space-y-1">
-        <Label htmlFor="name">Organization name</Label>
+        <Label htmlFor="name">Nome da organização</Label>
         <Input name="name" id="name" defaultValue={initialData?.name} />
         {error?.fieldErrors?.name && (
           <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -68,7 +69,7 @@ export function OrganizationForm({
         )}
       </div>
       <div className="space-y-1">
-        <Label htmlFor="category">Category</Label>
+        <Label htmlFor="category">Categoria</Label>
         <Select name="category" defaultValue={initialData?.category}>
           <SelectTrigger id="category" aria-label="Select category">
             <SelectValue placeholder="Select category" />
@@ -88,7 +89,22 @@ export function OrganizationForm({
         )}
       </div>
       <div className="space-y-1">
-        <Label htmlFor="domain">E-mail domain</Label>
+        <Label htmlFor="description">Descrição</Label>
+        <Textarea
+          name="description"
+          id="description"
+          placeholder="Lorem ipsum dolor sit amet consectetur adipisicing elit."
+          defaultValue={initialData?.description ?? undefined}
+        />
+
+        {error?.fieldErrors?.description && (
+          <p className="text-xs font-medium text-red-500 dark:text-red-400">
+            {error?.fieldErrors?.description[0]}
+          </p>
+        )}
+      </div>
+      <div className="space-y-1">
+        <Label htmlFor="domain">domínio do E-mail</Label>
         <Input
           name="domain"
           type="text"
@@ -103,6 +119,7 @@ export function OrganizationForm({
           </p>
         )}
       </div>
+
       <div className="space-y-1">
         <div className="flex items-start space-x-2">
           <div className="translate-y-0.5">
@@ -115,11 +132,11 @@ export function OrganizationForm({
           </div>
           <label htmlFor="shouldAttachUsersByDomain" className="space-y-1">
             <span className="text-sm font-medium leading-none">
-              Auto join new members
+              Entrada automática de novos membros.
             </span>
             <p>
-              This will automatically invite all members with same e-mail domain
-              to this organization
+              Isso convidará automaticamente todos os membros com o mesmo
+              domínio de e-mail para esta organização.
             </p>
           </label>
         </div>
@@ -134,7 +151,7 @@ export function OrganizationForm({
         {isPending ? (
           <Loader2 className="size-4 animate-spin" />
         ) : (
-          'Save organization'
+          'Salvar organização'
         )}
       </Button>
     </form>

@@ -50,7 +50,7 @@ export function OrganizationImageForm() {
             avatarUrl: newAvatarUrl,
           },
         }
-      },
+      }
     )
   }
 
@@ -88,7 +88,7 @@ export function OrganizationImageForm() {
         {success === false && message && (
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Save organization failed!</AlertTitle>
+            <AlertTitle>Falha ao salvar a organização!</AlertTitle>
             <AlertDescription>
               <p>{message}</p>
             </AlertDescription>
@@ -97,7 +97,7 @@ export function OrganizationImageForm() {
         {success === true && message && (
           <Alert variant="success">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Success!</AlertTitle>
+            <AlertTitle>Sucesso!</AlertTitle>
             <AlertDescription>
               <p>{message}</p>
             </AlertDescription>

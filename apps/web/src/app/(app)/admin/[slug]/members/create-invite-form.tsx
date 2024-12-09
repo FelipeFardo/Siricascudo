@@ -25,7 +25,7 @@ export function CreateInviteForm() {
       {success === false && message && (
         <Alert variant="destructive">
           <AlertTriangle className="size-4" />
-          <AlertTitle>Invite failed!</AlertTitle>
+          <AlertTitle>Convite falhado!</AlertTitle>
           <AlertDescription>
             <p>{message}</p>
           </AlertDescription>
@@ -57,7 +57,7 @@ export function CreateInviteForm() {
           ) : (
             <>
               <UserPlus className="mr-2 size-4" />
-              Invite user
+              Convidar usuário
             </>
           )}
         </Button>

@@ -13,6 +13,7 @@ export interface GetOrganizationResponse {
     createdAt: string
     updatedAt: string
     ownerId: string
+    description: string | null
   }
 }
 
@@ -28,8 +29,3 @@ export async function getOrganization(org: string) {
 
   return result
 }
-
-// function delay(milliseconds: number): Promise<void> {
-//   return new Promise((resolve) => setTimeout(resolve, milliseconds))
-// }
-// await delay(2000) // Delay for 2 seconds

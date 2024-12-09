@@ -19,6 +19,7 @@ const organizationSchema = z
     category: z.enum(categoryOrganization, {
       message: 'Selecione uma categoria',
     }),
+    description: z.string().nullable(),
     domain: z
       .string()
       .nullable()
@@ -32,7 +33,7 @@ const organizationSchema = z
 
           return true
         },
-        { message: 'Please, enter a valid domain.' },
+        { message: 'Please, enter a valid domain.' }
       )
       .transform((value) => (value === '' ? null : value)),
     shouldAttachUsersByDomain: z
@@ -51,7 +52,7 @@ const organizationSchema = z
     {
       message: 'Domain is required when auto-join is enabled',
       path: ['domain'],
-    },
+    }
   )
 
 export type OrganizationSchema = z.infer<typeof organizationSchema>
@@ -97,7 +98,8 @@ export const updateOrganizationAction = createServerAction()
   })
   .handler(async ({ input }) => {
     const currentOrg = await getCurrentOrg()
-    const { name, domain, shouldAttachUsersByDomain, category } = input
+    const { name, domain, shouldAttachUsersByDomain, category, description } =
+      input
 
     try {
       await updateOrganization({
@@ -106,6 +108,7 @@ export const updateOrganizationAction = createServerAction()
         domain,
         category,
         shouldAttachUsersByDomain,
+        description,
       })
 
       revalidateTag('member-organizations')

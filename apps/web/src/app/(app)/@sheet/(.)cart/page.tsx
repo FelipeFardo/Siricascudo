@@ -1,18 +1,10 @@
-import Link from 'next/link'
-
 import { Cart } from '@/components/home/cart/cart'
 import { InterceptedSheetContent } from '@/components/intercepted-sheet-content'
-import { Button } from '@/components/ui/button'
-import {
-  Sheet,
-  SheetClose,
-  SheetHeader,
-  SheetTitle,
-} from '@/components/ui/sheet'
+import { Sheet, SheetHeader, SheetTitle } from '@/components/ui/sheet'
 import { Suspense } from 'react'
 import { CartItemSkeleton } from '@/components/home/cart/cart-item'
 import { CartOrganizationSkeleton } from '@/components/home/cart/cart-organization'
-import { CheckoutButton } from '@/components/home/cart/button-checkout'
+import { CheckoutButtonSheet } from '@/components/home/cart/button-checkout-sheet'
 
 export default function CartPage() {
   return (
@@ -32,10 +24,9 @@ export default function CartPage() {
             }
           >
             <Cart />
-            <SheetClose asChild>
-              <CheckoutButton />
-            </SheetClose>
           </Suspense>
+
+          <CheckoutButtonSheet />
         </div>
       </InterceptedSheetContent>
     </Sheet>

@@ -11,7 +11,7 @@ import Link from 'next/link'
 
 export default function CancelChekout() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100 p-4">
+    <div className="flex  items-center justify-center bg-gray-100 p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <XCircle className="mx-auto mb-4 h-16 w-16 text-red-500" />
@@ -39,11 +39,6 @@ export default function CancelChekout() {
           <Button asChild className="w-full">
             <Link href="/home">
               <ShoppingBag className="mr-2 h-4 w-4" /> Continuar Comprando
-            </Link>
-          </Button>
-          <Button asChild variant="outline" className="w-full">
-            <Link href="/checkout">
-              <ArrowLeft className="mr-2 h-4 w-4" /> Voltar para o checkout
             </Link>
           </Button>
         </CardFooter>

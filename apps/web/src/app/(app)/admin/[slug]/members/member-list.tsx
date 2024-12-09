@@ -27,7 +27,7 @@ export async function MemberList() {
 
   return (
     <div className="space-y-2">
-      <h2 className="text-lg font-semibold">Members</h2>
+      <h2 className="text-lg font-semibold">Membros</h2>
       <div className="rounded border">
         <Table>
           <TableBody>
@@ -55,7 +55,7 @@ export async function MemberList() {
                         {member.userId === membership.userId && ' (me)'}
                         {organization.ownerId === member.userId && (
                           <span className="inline-flex items-center gap-1 text-xs text-muted-foreground">
-                            <Crown className="size-3" /> Owner
+                            <Crown className="size-3" /> Dono
                           </span>
                         )}
                       </span>
@@ -68,17 +68,17 @@ export async function MemberList() {
                     <div className="flex items-center justify-end gap-2">
                       {permissions?.can(
                         'transfer_ownership',
-                        authOrganization,
+                        authOrganization
                       ) && (
                         <form
                           action={transferOwnershipAction.bind(
                             null,
-                            member.userId,
+                            member.userId
                           )}
                         >
                           <Button size="sm" variant="ghost">
                             <ArrowLeftRight className="mr-2 size-4" />
-                            Transfer ownership
+                            Transferir propriedade
                           </Button>
                         </form>
                       )}
@@ -103,7 +103,7 @@ export async function MemberList() {
                             variant="destructive"
                           >
                             <UserMinus className="mr-2 size-4" />
-                            Remove
+                            Remover
                           </Button>
                         </form>
                       )}

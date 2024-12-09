@@ -1,12 +1,7 @@
 import { api } from '../api-client'
 
-interface GetOrderDetailsRequest {
-  org: string
-  orderId: string
-}
-
-export interface GetOrderDetailsResponse {
-  order: {
+export interface GetOrdersUsersDetailsResponse {
+  orders: {
     status:
       | 'pending'
       | 'canceled'
@@ -30,11 +25,9 @@ export interface GetOrderDetailsResponse {
       zipCode: string | null
       complement: string | null
     } | null
-    customer: {
+    organization: {
       name: string
-      email: string
-      phone: string | null
-    } | null
+    }
     ordersItems: {
       id: string
       priceInCents: number
@@ -43,16 +36,11 @@ export interface GetOrderDetailsResponse {
         name: string | null
       }
     }[]
-  }
+  }[]
 }
 
-export async function getOrderDetails({
-  org,
-  orderId,
-}: GetOrderDetailsRequest) {
-  const result = await api
-    .get(`organizations/${org}/orders/${orderId}`)
-    .json<GetOrderDetailsResponse>()
+export async function getOrdersUserDetails() {
+  const result = await api.get(`orders`).json<GetOrdersUsersDetailsResponse>()
 
   return result
 }

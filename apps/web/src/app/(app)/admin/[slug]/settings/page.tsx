@@ -43,6 +43,7 @@ export default async function Projects() {
                 <OrganizationForm
                   isUpdating
                   initialData={{
+                    description: organization.description,
                     name: organization.name,
                     domain: organization.domain,
                     category: organization.category,

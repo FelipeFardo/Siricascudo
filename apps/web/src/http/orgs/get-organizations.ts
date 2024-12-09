@@ -32,6 +32,7 @@ interface GetOrganizationsResponse {
     slug: string
     category: CategoryOrganization
     avatarUrl: string | null
+    description: string | null
   }[]
 }
 

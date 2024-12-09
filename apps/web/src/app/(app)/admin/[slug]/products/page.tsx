@@ -7,7 +7,13 @@ import { getCurrentOrg } from '@/auth/auth'
 import { Button } from '@/components//ui/button'
 import { Currency } from '@/components/currency'
 import { Card, CardContent } from '@/components/ui/card'
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getProductByOrg } from '@/http/products/get-products-by-org'
 
@@ -21,12 +27,12 @@ export default async function AdminPage() {
   return (
     <div className="m-2 space-y-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-2xl font-bold">Products</h1>
+        <h1 className="text-2xl font-bold">Produtos</h1>
 
         <Button size="sm" asChild>
           <Link href={`/admin/${currentOrg}/products/create-product`}>
             <Plus className="mr-2 size-4" />
-            Create Product
+            Criar novo Produto
           </Link>
         </Button>
       </div>
@@ -64,7 +70,11 @@ export default async function AdminPage() {
                 </Card>
               </SheetTrigger>
               <SheetContent>
-                <h1 className="text-xl font-bold">Edit Product</h1>
+                <SheetHeader>
+                  <SheetTitle className="text-xl font-bold">
+                    Editar Produto
+                  </SheetTitle>
+                </SheetHeader>
                 <div className="space-y-2">
                   <ProductForm initialData={product} isUpdating={true} />
                   <DeleteProductButton productId={product.id} />

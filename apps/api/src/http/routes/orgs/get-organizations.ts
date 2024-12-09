@@ -21,7 +21,7 @@ export async function getOrganizations(app: FastifyInstance) {
                 category: z.enum(categoryOrganization),
                 slug: z.string(),
                 avatarUrl: z.string().url().nullable(),
-              }),
+              })
             ),
           }),
         },
@@ -35,12 +35,13 @@ export async function getOrganizations(app: FastifyInstance) {
           slug: true,
           category: true,
           avatarUrl: true,
+          description: true,
         },
       })
 
       return {
         organizations: allOrganizations,
       }
-    },
+    }
   )
 }

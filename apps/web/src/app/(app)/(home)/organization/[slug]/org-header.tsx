@@ -29,15 +29,10 @@ export default async function OrgHeader() {
             </span>
             <span className="flex items-center">
               <Clock className="mr-1 h-5 w-5 text-gray-400" />
-              30 min
+              1h30min
             </span>
           </div>
-          <p className="mt-2 text-gray-600">
-            Lorem ipsum dolor, sit amet consectetur adipisicing elit. Magnam
-            obcaecati asperiores unde eum molestiae officia sunt, quibusdam
-            voluptatum non cum neque saepe sequi nemo laborum modi explicabo
-            dolore enim praesentium?
-          </p>
+          <p className="mt-2 text-gray-600">{organization.description}</p>
         </div>
       </div>
     </header>

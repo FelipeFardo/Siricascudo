@@ -28,6 +28,7 @@ export async function updateOrganization(app: FastifyInstance) {
             domain: z.string().nullish(),
             category: z.enum(categoryOrganization),
             shouldAttachUsersByDomain: z.boolean().optional(),
+            description: z.string().nullable(),
           }),
           params: z.object({
             slug: z.string(),
@@ -45,8 +46,13 @@ export async function updateOrganization(app: FastifyInstance) {
         const { membership, organization } =
           await request.getUserMembership(slug)
 
-        const { name, domain, shouldAttachUsersByDomain, category } =
-          request.body
+        const {
+          name,
+          domain,
+          shouldAttachUsersByDomain,
+          category,
+          description,
+        } = request.body
 
         const authOrganization = organizationSchema.parse(organization)
 
@@ -54,7 +60,7 @@ export async function updateOrganization(app: FastifyInstance) {
 
         if (cannot('update', authOrganization)) {
           throw new UnauthorizedError(
-            `You're not allowed to update this organization.`,
+            `You're not allowed to update this organization.`
           )
         }
 
@@ -63,18 +69,18 @@ export async function updateOrganization(app: FastifyInstance) {
             where(fields, { and, eq, ne }) {
               return and(
                 eq(fields.domain, domain),
-                ne(fields.id, organization.id),
+                ne(fields.id, organization.id)
               )
             },
           })
 
           if (organizationByDomain) {
             throw new BadRequestError(
-              'Another organization with same domain already exists.',
+              'Another organization with same domain already exists.'
             )
           }
         }
-        console.log(category)
+
         await db
           .update(organizations)
           .set({
@@ -82,10 +88,11 @@ export async function updateOrganization(app: FastifyInstance) {
             domain,
             shouldAttachUsersByDomain,
             category,
+            description,
           })
           .where(eq(organizations.id, organization.id))
 
         return reply.status(204).send()
-      },
+      }
     )
 }

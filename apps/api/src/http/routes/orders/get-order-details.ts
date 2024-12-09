@@ -122,7 +122,6 @@ export async function getOrderDetails(app: FastifyInstance) {
           throw new BadRequestError('Order not found')
         }
 
-        const asas = order.address
         return {
           order,
         }

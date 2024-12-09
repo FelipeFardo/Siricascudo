@@ -67,6 +67,7 @@ import { createUpload } from './routes/uploads/create-upload'
 import { createReservation } from './routes/reservation/create-reservations'
 import { getReservations } from './routes/reservation/get-reservations'
 import { createCheckout } from './routes/checkout/create-checkout'
+import { getOrderUser } from './routes/orders/get-my-orders'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -148,6 +149,7 @@ app.register(revokeInvite)
 app.register(getPendingInvites)
 
 app.register(getOrders)
+app.register(getOrderUser)
 app.register(approveOrder)
 app.register(CancelOrder)
 app.register(deliverOrder)

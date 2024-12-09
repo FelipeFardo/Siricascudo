@@ -14,6 +14,14 @@ export default async function Footer() {
                 </Link>
               </li>
               <li>
+                <Link
+                  href="http://localhost:3333/docs"
+                  className="hover:underline"
+                >
+                  Documentação API
+                </Link>
+              </li>
+              <li>
                 <a href="#" className="hover:underline">
                   Carreiras
                 </a>

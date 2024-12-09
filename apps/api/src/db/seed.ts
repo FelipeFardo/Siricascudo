@@ -3,12 +3,14 @@ import { faker } from '@faker-js/faker'
 import { db } from './connection'
 import {
   accounts,
+  address,
   invites,
   members,
   orders,
   ordersItems,
   organizations,
   products,
+  reservations,
   tokens,
   users,
 } from './schema'
@@ -28,6 +30,8 @@ export function createSlug(text: string): string {
 }
 
 async function seed() {
+  await db.delete(reservations)
+  await db.delete(address)
   await db.delete(invites)
   await db.delete(tokens)
   await db.delete(ordersItems)
@@ -72,6 +76,23 @@ async function seed() {
   console.log('✔️ Created users!')
 
   /**
+   * Create address
+   */
+
+  await db.insert(address).values({
+    city: 'Erechim',
+    country: ' Centro',
+    number: '49',
+    state: 'RS',
+    street: 'Av. Maurício Cardoso',
+    complement: 'Ap. 02',
+    customerId: user.id,
+    zipCode: '99700426',
+  })
+
+  console.log('✔️ Created address!')
+
+  /**
    * Create organization
    */
 
@@ -79,27 +100,33 @@ async function seed() {
     .insert(organizations)
     .values([
       {
-        name: 'Acme Inc (Admin)',
-        description: faker.lorem.paragraph(),
+        name: 'Hamburgueria do Zé',
+        description:
+          'É um restaurante acolhedor que oferece pratos da gastronomia local e internacional, com ingredientes frescos e apresentação impecável. Com um ambiente elegante e atendimento atencioso, é o lugar perfeito para momentos especiais e refeições memoráveis.',
         ownerId: user.id,
-        slug: 'acme-admin',
-        avatarUrl: faker.image.url(),
+        slug: 'restaurante-do-ze',
+        avatarUrl:
+          'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/la-grotta-entrance.webp',
         category: 'Hambúrgueres',
       },
       {
-        name: 'Acme Inc (Member)',
-        description: faker.lorem.paragraph(),
+        name: 'Comida em Loop',
+        description:
+          'É um restaurante acolhedor que oferece pratos da gastronomia local e internacional, com ingredientes frescos e apresentação impecável. Com um ambiente elegante e atendimento atencioso, é o lugar perfeito para momentos especiais e refeições memoráveis.',
         ownerId: user.id,
-        slug: 'acme-member',
-        avatarUrl: faker.image.url(),
+        slug: 'comida-em-loop',
+        avatarUrl:
+          'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/franc%C3%AAs-caf%C3%A8-e-restaurante-em-paris.webp',
         category: 'Sushi e Sashimi',
       },
       {
-        name: 'Acme Inc (Billing)',
-        description: faker.lorem.paragraph(),
+        name: 'Café com Debug',
+        description:
+          'É um restaurante acolhedor que oferece pratos da gastronomia local e internacional, com ingredientes frescos e apresentação impecável. Com um ambiente elegante e atendimento atencioso, é o lugar perfeito para momentos especiais e refeições memoráveis.',
         ownerId: user.id,
-        slug: 'acme-billing',
-        avatarUrl: faker.image.url(),
+        slug: 'cafe-com-debug',
+        avatarUrl:
+          'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/restaurante-e-bar-de-segunda-tadu-arquitetura_9.jpg',
         category: 'Carnes',
       },
     ])
@@ -107,6 +134,29 @@ async function seed() {
 
   console.log('✔️ Created organization!')
 
+  /**
+   * Create reservation
+   */
+  await db.insert(reservations).values([
+    {
+      customerEmail: 'john@acme.com',
+      customerName: 'John Doe',
+      numberOfPeople: 12,
+      organizationId: organizationAdmin.id,
+      reservationDate: new Date().toISOString().split('T')[0],
+      reservationTime: '12:00',
+    },
+    {
+      customerEmail: 'felipe.fardo@hotmail.com.br',
+      customerName: 'Felipe Fardo',
+      numberOfPeople: 2,
+      organizationId: organizationAdmin.id,
+      reservationDate: new Date().toISOString().split('T')[0],
+      reservationTime: '20:00',
+    },
+  ])
+
+  console.log('✔️ Created reservations!')
   /**
    * Create membership
    */
@@ -134,14 +184,50 @@ async function seed() {
 
   console.log('✔️ Created members!')
 
+  const foodNames = [
+    'Frango à Parmegiana',
+    'Picanha na Chapa',
+    'Moqueca de Camarão',
+    'Pizza Quatro Queijos',
+    'Espaguete Carbonara',
+    'Tacos Mexicanos',
+    'Hambúrguer Artesanal',
+    'Ceviche de Tilápia',
+    'Risoto de Cogumelos',
+    'Sushi de Salmão',
+    'Feijoada Completa',
+    'Costela ao Barbecue',
+    'Escondidinho de Carne Seca',
+    'Lasanha Bolonhesa',
+    'Arroz de Polvo',
+    'Quiche de Alho-Poró',
+    'Crepe de Chocolate com Morango',
+    'Pão de Alho Recheado',
+    'Batata Rústica com Ervas',
+    'Bolo de Cenoura com Calda de Chocolate',
+  ]
+
+  const foodImages = [
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/360_F_457738290_y8fywtzTyfT2pQzU5mL1OpKHHAERc6kS.jpg',
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/pratos-tipicos-dos-estados-unidos.jpg',
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/images%20(1).jpeg',
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/images.jpeg',
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/9-pratos-tipicos-europa.webp',
+    'https://pub-9448e6c9570e405b8072625bd2387965.r2.dev/comidas-da-regiao-do-nordeste-moqueca-maranhense.webp',
+  ]
+
+  let foodImage = 0
+
   function generateProduct() {
+    const foodNameRandom = Math.floor(Math.random() * 21)
+    foodNames.splice(foodNameRandom, 1)
     return {
-      name: faker.commerce.productName(),
+      name: foodNames[foodNameRandom],
       organizationId: organizationAdmin.id,
-      imageUrl: faker.image.url(),
+      imageUrl: foodImages[foodImage++],
       description: faker.commerce.productDescription(),
       priceInCents: Number(
-        faker.commerce.price({ min: 190, max: 490, dec: 0 }),
+        faker.commerce.price({ min: 190, max: 490, dec: 0 })
       ),
     }
   }
@@ -163,7 +249,7 @@ async function seed() {
 
   console.log('✔️ Created products!')
 
-  /**
+  /** faker.commerce.productName()
    * Create Orders
    */
 

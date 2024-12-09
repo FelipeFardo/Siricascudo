@@ -7,7 +7,7 @@ export default function CreateProduct() {
     <Sheet defaultOpen>
       <InterceptedSheetContent>
         <SheetHeader>
-          <SheetTitle>Create product</SheetTitle>
+          <SheetTitle>Criar producto</SheetTitle>
         </SheetHeader>
 
         <ProductForm />

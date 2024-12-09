@@ -27,6 +27,7 @@ export async function getOrganization(app: FastifyInstance) {
                 id: z.string().uuid(),
                 name: z.string(),
                 slug: z.string(),
+                description: z.string().nullable(),
                 domain: z.string().nullable(),
                 category: z.enum(categoryOrganization),
                 shouldAttachUsersByDomain: z.boolean(),
@@ -55,6 +56,6 @@ export async function getOrganization(app: FastifyInstance) {
         return {
           organization,
         }
-      },
+      }
     )
 }

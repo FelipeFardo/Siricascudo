@@ -2,7 +2,6 @@ import { Reservation } from './reservation'
 import { Suspense } from 'react'
 import OrgHeader, { OrgHeaderSkeleton } from './org-header'
 import { ProductsOrg, ProductsSkeleton } from './products-org'
-import { Calendar } from '@/components/ui/calendar'
 
 export default async function organizationPage() {
   return (

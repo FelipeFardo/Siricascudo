@@ -7,7 +7,7 @@ import { getCart } from '@/http/cart/get-cart'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 
-export function CheckoutButton() {
+export function CheckoutButtonSheet() {
   const { data, isLoading } = useQuery({
     queryKey: ['cart'],
     queryFn: getCart,
@@ -16,12 +16,14 @@ export function CheckoutButton() {
   const disabled = isLoading || !data?.cart || data.cart.quantityItems <= 0
 
   return (
-    <Button className="w-full" disabled={disabled} asChild>
-      {disabled ? (
-        'Finalizar Pedido'
-      ) : (
-        <Link href="/checkout">Finalizar Pedido</Link>
-      )}
-    </Button>
+    <SheetClose asChild>
+      <Button className="w-full" disabled={disabled} asChild>
+        {disabled ? (
+          'Finalizar Pedido'
+        ) : (
+          <Link href="/checkout">Finalizar Pedido</Link>
+        )}
+      </Button>
+    </SheetClose>
   )
 }

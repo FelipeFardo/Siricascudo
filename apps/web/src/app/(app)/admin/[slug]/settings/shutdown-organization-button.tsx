@@ -32,7 +32,7 @@ export function ShutdownOrganizatonButton() {
       <AlertDialogTrigger asChild>
         <Button type="submit" variant="destructive" className="w-56">
           <XCircle className="mr-2 size-4" />
-          Shutdown Organization
+          Excluir Organização
         </Button>
       </AlertDialogTrigger>
       <AlertDialogContent>

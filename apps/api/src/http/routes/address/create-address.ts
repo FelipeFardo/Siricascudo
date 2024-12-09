@@ -44,8 +44,6 @@ export async function createAddress(app: FastifyInstance) {
       async (request, reply) => {
         const userId = await request.getCurrentUserId()
 
-        console.log(userId)
-        console.log(request.body)
         const { city, complement, state, street, zipCode, country, number } =
           request.body
 

@@ -15,7 +15,7 @@ export async function Invites() {
       {permissions?.can('create', 'Invite') && (
         <Card>
           <CardHeader>
-            <CardTitle>Invite member</CardTitle>
+            <CardTitle>Convidar membro</CardTitle>
           </CardHeader>
           <CardContent>
             <CreateInviteForm />
@@ -23,7 +23,7 @@ export async function Invites() {
         </Card>
       )}
       <div className="space-y-2">
-        <h2 className="text-lg font-semibold">Invites</h2>
+        <h2 className="text-lg font-semibold">Convites</h2>
         <div className="rounded border">
           <Table>
             <TableBody>
@@ -50,7 +50,7 @@ export async function Invites() {
               {invites.length === 0 && (
                 <TableRow>
                   <TableCell className="text-center text-muted-foreground">
-                    No invites found
+                    Convites não encontrado
                   </TableCell>
                 </TableRow>
               )}

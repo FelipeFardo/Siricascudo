@@ -26,7 +26,7 @@ export function SignInForm() {
       onSuccess: ({ data }) => {
         if (data.success) router.push('/')
       },
-    },
+    }
   )
 
   const { executeFormAction: executeFormActionSignInWithGithub } =
@@ -38,7 +38,7 @@ export function SignInForm() {
         {data?.success === false && data.message && (
           <Alert variant="destructive">
             <AlertTriangle className="size-4" />
-            <AlertTitle>Sign in failed!</AlertTitle>
+            <AlertTitle>Falha ao entrar!</AlertTitle>
             <AlertDescription>
               <p>{data.message}</p>
             </AlertDescription>
@@ -60,7 +60,7 @@ export function SignInForm() {
           )}
         </div>
         <div className="space-y-1">
-          <Label htmlFor="password">Password</Label>
+          <Label htmlFor="password">Senha</Label>
           <Input name="password" type="password" id="password" />
           {error?.fieldErrors?.password && (
             <p className="text-xs font-medium text-red-500 dark:text-red-400">
@@ -71,7 +71,7 @@ export function SignInForm() {
             href="/auth/forgot-password"
             className="text-sm font-medium text-foreground hover:underline"
           >
-            Forgot your password?
+            Esqueceu sua senha?
           </Link>
         </div>
 
@@ -79,19 +79,19 @@ export function SignInForm() {
           {isPending ? (
             <Loader2 className="size-4 animate-spin" />
           ) : (
-            'Sign in with e-mail'
+            'Entrar com e-mail'
           )}
         </Button>
 
         <Button className="w-full" variant="link" size="sm" asChild>
-          <Link href="/auth/sign-up">Create new account</Link>
+          <Link href="/auth/sign-up">Criar nova conta</Link>
         </Button>
       </form>
       <Separator />
       <form action={executeFormActionSignInWithGithub}>
         <Button className="w-full" variant="outline" type="submit">
           <Image src={githubIcon} className="mr-2 size-4 dark:invert" alt="" />
-          Sign in with github
+          Entrar com github
         </Button>
       </form>
     </div>
