@@ -1,9 +1,12 @@
+'use client'
+
 import { FilePenLine, Trash } from 'lucide-react'
 
 import { removeItem } from '@/app/(app)/(home)/cart/actions'
 import { Currency } from '@/components/currency'
 import { getProductById } from '@/http/products/get-product-by-id'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useQuery } from '@tanstack/react-query'
 
 interface CartItemProps {
   itemId: string
@@ -12,13 +15,22 @@ interface CartItemProps {
   subTotalInCents: number
 }
 
-export async function CartItem({
+export function CartItem({
   itemId,
   productId,
   quantity,
   subTotalInCents,
 }: CartItemProps) {
-  const { product } = await getProductById(productId)
+  const { data, isLoading, error } = useQuery({
+    queryKey: [`cart-${itemId}`],
+    queryFn: () => getProductById(productId),
+  })
+
+  const product = data?.product
+
+  if (isLoading || !product) {
+    return <CartItemSkeleton />
+  }
 
   return (
     <div className="mb-4 space-y-4 border-b pb-4">
@@ -32,13 +44,13 @@ export async function CartItem({
         </span>
       </div>
       <div className="flex gap-10 font-medium">
-        <form action={removeItem.bind(null, itemId)}>
+        <form>
           <button className="flex  gap-2 text-primary focus:outline-none">
             <FilePenLine />
             Editar
           </button>
         </form>
-        <form action={removeItem.bind(null, itemId)}>
+        <form>
           <button className="flex gap-2 text-gray-500 focus:outline-none">
             <Trash />
             Excluir

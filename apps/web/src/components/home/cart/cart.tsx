@@ -1,31 +1,37 @@
-import { Suspense } from 'react'
+'use client'
 
 import { getCartDetails } from '@/http/cart/get-cart-details'
 
 import { CartItem } from './cart-item'
 import { CartItemSkeleton } from './cart-item'
-import { CartOrganization, CartOrganizationSkeleton } from './cart-organization'
+import { CartOrganization } from './cart-organization'
+import { useQuery } from '@tanstack/react-query'
 
-export async function Cart() {
-  const { cart } = await getCartDetails()
+export function Cart() {
+  const { data, isLoading } = useQuery({
+    queryKey: ['cart-details'],
+    queryFn: getCartDetails,
+  })
+
+  const cart = data?.cart
 
   return (
     <div className="space-y-4 py-4">
-      {cart.items.length === 0 && <h1>Não possui items</h1>}
-      {cart.organizationSlug && (
+      {cart?.items && cart.items.length === 0 && <h1>Não possui items</h1>}
+      {cart && cart.organizationSlug && (
         <>
           <CartOrganization slug={cart.organizationSlug} />
 
           <div className="grid grid-cols-1 gap-4">
-            <Suspense
-              fallback={
-                <>
-                  <CartItemSkeleton />
-                  <CartItemSkeleton />
-                </>
-              }
-            >
-              {cart.items.map((item) => (
+            {isLoading && (
+              <>
+                <CartItemSkeleton />
+                <CartItemSkeleton />
+              </>
+            )}
+
+            {cart &&
+              cart.items.map((item) => (
                 <CartItem
                   key={item.id}
                   itemId={item.id}
@@ -34,7 +40,6 @@ export async function Cart() {
                   subTotalInCents={item.subTotalInCents}
                 />
               ))}
-            </Suspense>
           </div>
           <div className="flex justify-between border-b pb-4">
             <span>Total: </span>

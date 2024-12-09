@@ -9,7 +9,7 @@ import { CartOrganization } from './cart-organization'
 
 export function Cart() {
   const { data, isLoading } = useQuery({
-    queryKey: ['cart', 'cart-details'],
+    queryKey: ['cart-details'],
     queryFn: getCartDetails,
   })
 

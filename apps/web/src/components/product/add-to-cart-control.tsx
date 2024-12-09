@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Minus, Plus } from 'lucide-react'
+import { Loader2, Minus, Plus } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 
@@ -95,7 +95,7 @@ export function AddToCartControl({
         className="w-full bg-red-500 py-6 text-white hover:bg-red-600"
       >
         {isPending ? (
-          'Redirecionando'
+          <Loader2 className="size-4 animate-spin" />
         ) : (
           <>
             Adicionar • <Currency value={priceInCents * quantity} />

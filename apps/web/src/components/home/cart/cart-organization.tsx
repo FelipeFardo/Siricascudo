@@ -1,14 +1,24 @@
+'use client'
+
 import Image from 'next/image'
 
 import { getOrganization } from '@/http/orgs/get-organization'
 import { Skeleton } from '@/components/ui/skeleton'
+import { useQuery } from '@tanstack/react-query'
 
 interface CartOrganizationProps {
   slug: string
 }
 
-export async function CartOrganization({ slug }: CartOrganizationProps) {
-  const { organization } = await getOrganization(slug)
+export function CartOrganization({ slug }: CartOrganizationProps) {
+  const { data, isLoading } = useQuery({
+    queryKey: ['organization', slug],
+    queryFn: () => getOrganization(slug),
+  })
+  const organization = data?.organization
+
+  if (isLoading || !organization) return <CartOrganizationSkeleton />
+
   return (
     <div className="mb-4  flex justify-between border-b pb-4">
       <div className="flex flex-row gap-3">

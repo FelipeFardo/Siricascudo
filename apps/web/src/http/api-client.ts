@@ -8,10 +8,10 @@ export const api = ky.create({
   prefixUrl: env.NEXT_PUBLIC_API_URL,
   hooks: {
     beforeRequest: [
-      // async () => {
-      //   if (env.NEXT_PUBLIC_NODE_ENV === 'development')
-      //     await delay(Math.round(Math.random() * 3000))
-      // },
+      async () => {
+        if (env.NEXT_PUBLIC_NODE_ENV === 'development')
+          await delay(Math.round(Math.random() * 3000))
+      },
 
       async (request) => {
         let token: string | undefined

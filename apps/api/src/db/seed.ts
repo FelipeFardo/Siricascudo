@@ -219,13 +219,14 @@ async function seed() {
   let foodImage = 0
 
   function generateProduct() {
-    const foodNameRandom = Math.floor(Math.random() * 21)
+    const foodNameRandom = Math.floor(Math.random() * foodNames.length)
+    const foodName = foodNames[foodNameRandom]
     foodNames.splice(foodNameRandom, 1)
     return {
-      name: foodNames[foodNameRandom],
+      name: foodName,
       organizationId: organizationAdmin.id,
       imageUrl: foodImages[foodImage++],
-      description: faker.commerce.productDescription(),
+      description: ` Combina sabores intensos e cremosidade, oferecendo uma experiência gastronômica sofisticada e aconchegante`,
       priceInCents: Number(
         faker.commerce.price({ min: 190, max: 490, dec: 0 })
       ),

@@ -8,6 +8,4 @@ export async function removeItem(itemId: string) {
   await removeItemToCart({
     itemId,
   })
-  revalidateTag(`cart`)
-  revalidateTag(`cart-details`)
 }

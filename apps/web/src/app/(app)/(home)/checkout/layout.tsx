@@ -8,7 +8,7 @@ export default async function LayoutCheckout({
   children: React.ReactNode
 }) {
   const authenticated = await isAuthenticated()
-  if (!authenticated) redirect('/sign-in')
+  if (!authenticated) redirect('/auth/sign-in')
 
   return children
 }

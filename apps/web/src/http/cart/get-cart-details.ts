@@ -15,13 +15,7 @@ export interface GetCartDetailsResponse {
 }
 
 export async function getCartDetails() {
-  const result = await api
-    .get(`cart/details`, {
-      next: {
-        tags: [`cart-details`],
-      },
-    })
-    .json<GetCartDetailsResponse>()
+  const result = await api.get(`cart/details`).json<GetCartDetailsResponse>()
 
   return result
 }
