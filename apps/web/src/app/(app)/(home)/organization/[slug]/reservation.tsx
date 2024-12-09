@@ -1,13 +1,12 @@
 'use client'
 
-import { pt, ptBR } from 'date-fns/locale'
+import { pt } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
 import { useState } from 'react'
 
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
 import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label'
 import {
   Popover,
   PopoverContent,
@@ -240,6 +239,7 @@ export function Reservation() {
                     </FormItem>
                   )}
                 />
+
                 <FormField
                   control={form.control}
                   name="name"
@@ -247,9 +247,8 @@ export function Reservation() {
                     <FormItem>
                       <FormLabel>Nome</FormLabel>
                       <FormControl>
-                        <Input placeholder="Digite seu nome" {...field} />
+                        <Input placeholder="seu nome.." {...field} />
                       </FormControl>
-
                       <FormMessage />
                     </FormItem>
                   )}

@@ -68,6 +68,7 @@ import { createReservation } from './routes/reservation/create-reservations'
 import { getReservations } from './routes/reservation/get-reservations'
 import { createCheckout } from './routes/checkout/create-checkout'
 import { getOrderUser } from './routes/orders/get-my-orders'
+import { UpdateItemToCart } from './routes/cart/update-item-to-cart'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -167,6 +168,7 @@ app.register(getCart)
 app.register(getCartDetails)
 app.register(InsertItemToCart)
 app.register(RemoveItemToCart)
+app.register(UpdateItemToCart)
 
 app.register(createUpload)
 

@@ -1,12 +1,24 @@
 'use client'
 
-import { FilePenLine, Trash } from 'lucide-react'
+import { FilePenLine, Loader2, Trash } from 'lucide-react'
 
 import { removeItem } from '@/app/(app)/(home)/cart/actions'
 import { Currency } from '@/components/currency'
 import { getProductById } from '@/http/products/get-product-by-id'
 import { Skeleton } from '@/components/ui/skeleton'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { removeItemToCart } from '@/http/cart/remove-item-to-cart'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { UpdateCartItemControl } from './edit-cart-item-control'
+import { useState } from 'react'
 
 interface CartItemProps {
   itemId: string
@@ -21,9 +33,20 @@ export function CartItem({
   quantity,
   subTotalInCents,
 }: CartItemProps) {
-  const { data, isLoading, error } = useQuery({
+  const [dialogEdit, setDialogEdit] = useState(false)
+  const { data, isLoading } = useQuery({
     queryKey: [`cart-${itemId}`],
     queryFn: () => getProductById(productId),
+  })
+
+  const queryClient = useQueryClient()
+
+  const { mutateAsync: removeItemToCartMutate, isPending } = useMutation({
+    mutationFn: removeItemToCart,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['cart-details'] })
+      queryClient.invalidateQueries({ queryKey: ['cart'] })
+    },
   })
 
   const product = data?.product
@@ -44,18 +67,35 @@ export function CartItem({
         </span>
       </div>
       <div className="flex gap-10 font-medium">
-        <form>
-          <button className="flex  gap-2 text-primary focus:outline-none">
-            <FilePenLine />
-            Editar
-          </button>
-        </form>
-        <form>
-          <button className="flex gap-2 text-gray-500 focus:outline-none">
-            <Trash />
-            Excluir
-          </button>
-        </form>
+        <Dialog open={dialogEdit} onOpenChange={setDialogEdit}>
+          <DialogTrigger asChild>
+            <button className="flex  gap-2 text-primary focus:outline-none">
+              <FilePenLine />
+              Editar
+            </button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Editar item</DialogTitle>
+            </DialogHeader>
+            <UpdateCartItemControl
+              onClose={() => {
+                setDialogEdit(false)
+              }}
+              initialQuantity={quantity}
+              itemId={itemId}
+              priceInCents={product.priceInCents}
+            />
+          </DialogContent>
+        </Dialog>
+
+        <button
+          onClick={() => removeItemToCartMutate({ itemId })}
+          className="flex gap-2 text-gray-500 focus:outline-none"
+        >
+          <Trash />
+          {isPending ? <Loader2 className="size-5 animate-spin" /> : 'Excluir'}
+        </button>
       </div>
     </div>
   )
