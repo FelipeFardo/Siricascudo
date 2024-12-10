@@ -16,7 +16,7 @@ export default async function Footer() {
               </li>
               <li>
                 <Link
-                  href={`http://${env.NEXT_PUBLIC_API_URL}/docs`}
+                  href={`${env.NEXT_PUBLIC_API_URL}/docs`}
                   className="hover:underline"
                 >
                   Documentação API
