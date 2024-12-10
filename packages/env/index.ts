@@ -13,6 +13,7 @@ export const env = createEnv({
     CLOUDFLARE_ACCESS_KEY_ID: z.string(),
     CLOUDFLARE_SECRET_ACCESS_KEY: z.string(),
     STRIPE_SECRET_KEY: z.string(),
+    RESEND_API_KEY: z.string(),
   },
   client: {},
   shared: {
@@ -24,6 +25,7 @@ export const env = createEnv({
     NEXT_PUBLIC_STRIPE_PUBLIC_KEY: z.string(),
   },
   runtimeEnv: {
+    RESEND_API_KEY: process.env.RESEND_API_KEY,
     NEXT_PUBLIC_STRIPE_PUBLIC_KEY: process.env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY,
     STRIPE_SECRET_KEY: process.env.STRIPE_SECRET_KEY,
     NEXT_PUBLIC_NODE_ENV: process.env.NEXT_PUBLIC_NODE_ENV,

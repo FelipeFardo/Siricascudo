@@ -4,6 +4,11 @@ import { z } from 'zod'
 
 import { db, reservations } from '@/db/connection'
 import { BadRequestError } from '../_errors/bad-request-error'
+import { Resend } from 'resend'
+import { env } from '@siricascudo/env'
+import { ReservationTemplate } from './template-reservation'
+
+const resend = new Resend(env.RESEND_API_KEY)
 
 export async function createReservation(app: FastifyInstance) {
   app.withTypeProvider<ZodTypeProvider>().post(
@@ -59,6 +64,19 @@ export async function createReservation(app: FastifyInstance) {
           description: specialRequests,
         })
         .returning()
+
+      const { data, error } = await resend.emails.send({
+        from: 'Siricascudo <onboarding@resend.dev>',
+        to: [email],
+        subject: 'Confirmação de Reserva',
+        react: ReservationTemplate({
+          orgName: organization.name,
+          date,
+          hour: time,
+          name,
+          numberOfPeople: guests,
+        }),
+      })
 
       return reply.status(201).send()
     }

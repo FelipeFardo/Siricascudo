@@ -5,7 +5,7 @@ import { ProductsOrg, ProductsSkeleton } from './products-org'
 
 export default async function organizationPage() {
   return (
-    <div className="mx-auto my-8 flex max-w-[1200px] flex-col">
+    <div className="mx-auto my-8 flex max-w-[1200px] flex-col px-4">
       <header className="bg-white shadow-md">
         <Suspense fallback={<OrgHeaderSkeleton />}>
           <OrgHeader />
