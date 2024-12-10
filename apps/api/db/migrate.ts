@@ -1,11 +1,11 @@
 import { migrate } from 'drizzle-orm/node-postgres/migrator'
 
-import { db } from './connection'
+import { db } from '../src/db/connection'
 
 async function migrateDevelopment() {
   try {
     await migrate(db, {
-      migrationsFolder: __dirname.concat('../db/migrations'),
+      migrationsFolder: __dirname.concat('/migrations'),
     })
     console.log('Migration completed')
   } catch (error) {

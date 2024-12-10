@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "pnpm run env:load tsx watch src/http/server.ts",
     "db:generate": "pnpm run env:load drizzle-kit generate",
-    "db:migrate": "pnpm run env:load tsx src/db/migrate.ts",
+    "db:migrate": "pnpm run env:load tsx db/migrate.ts",
     "db:studio": "pnpm run env:load drizzle-kit studio",
     "db:seed": "pnpm run env:load tsx src/db/seed.ts",
     "lint": "eslint .",
