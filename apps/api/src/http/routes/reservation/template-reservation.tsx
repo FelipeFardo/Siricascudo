@@ -1,4 +1,3 @@
-import React from 'react'
 import {
   Html,
   Head,
@@ -6,8 +5,6 @@ import {
   Container,
   Heading,
   Text,
-  Row,
-  Column,
   Section,
 } from '@react-email/components'
 
