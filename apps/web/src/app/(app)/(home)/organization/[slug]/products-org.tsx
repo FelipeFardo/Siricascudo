@@ -1,9 +1,11 @@
+import { Suspense } from 'react'
+
 import { getCurrentOrg } from '@/auth/auth'
+import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 import { Skeleton } from '@/components/ui/skeleton'
 import { getProductByOrg } from '@/http/products/get-products-by-org'
-import { Suspense } from 'react'
+
 import { ProductCard } from './product-card'
-import { Card, CardContent, CardFooter, CardHeader } from '@/components/ui/card'
 
 export async function ProductsOrg() {
   const currentOrg = await getCurrentOrg()

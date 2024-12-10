@@ -1,6 +1,7 @@
-import { isAuthenticated } from '@/auth/auth'
 import { redirect } from 'next/navigation'
 import React from 'react'
+
+import { isAuthenticated } from '@/auth/auth'
 
 export default async function LayoutCheckout({
   children,

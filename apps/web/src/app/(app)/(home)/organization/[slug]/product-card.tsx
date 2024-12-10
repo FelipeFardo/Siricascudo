@@ -1,4 +1,4 @@
-import { Info, ShoppingCart, X } from 'lucide-react'
+import { Info, ShoppingCart } from 'lucide-react'
 import Image from 'next/image'
 import { Suspense } from 'react'
 
@@ -13,7 +13,6 @@ import {
 } from '@/components/ui/card'
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
   DialogHeader,

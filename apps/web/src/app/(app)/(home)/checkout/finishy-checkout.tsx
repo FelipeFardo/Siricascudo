@@ -1,11 +1,13 @@
 'use client'
 
+import { env } from '@siricascudo/env'
+import { loadStripe } from '@stripe/stripe-js'
+import { useRouter } from 'next/navigation'
+import { useFormContext } from 'react-hook-form'
+
 import { Button } from '@/components/ui/button'
 import { createCheckout } from '@/http/checkout/create-checkout'
-import { useRouter } from 'next/navigation'
-import { loadStripe } from '@stripe/stripe-js'
-import { env } from '@siricascudo/env'
-import { useFormContext } from 'react-hook-form'
+
 import type { CheckoutSchema } from './form-checkout'
 
 const stripePromise = loadStripe(env.NEXT_PUBLIC_STRIPE_PUBLIC_KEY)
@@ -27,9 +29,9 @@ export function FinishyCheckout() {
         addressId,
         payMethod: paymentMethod,
       })
-      if (paymentMethod == 'card') {
+      if (paymentMethod === 'card') {
         await stripe?.redirectToCheckout({ sessionId })
-      } else if (paymentMethod == 'money') {
+      } else if (paymentMethod === 'money') {
         navigate.push('/orders')
       }
     } catch (error) {

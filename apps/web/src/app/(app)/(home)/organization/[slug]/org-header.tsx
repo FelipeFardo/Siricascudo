@@ -1,7 +1,8 @@
-import { getCurrentOrg } from '@/auth/auth'
-import { getOrganization } from '@/http/orgs/get-organization'
 import { Clock } from 'lucide-react'
 import Image from 'next/image'
+
+import { getCurrentOrg } from '@/auth/auth'
+import { getOrganization } from '@/http/orgs/get-organization'
 
 export default async function OrgHeader() {
   const currentOrg = await getCurrentOrg()

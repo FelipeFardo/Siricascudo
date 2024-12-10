@@ -2,6 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { Loader2 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useForm, useFormContext } from 'react-hook-form'
 import { z } from 'zod'
@@ -24,19 +25,18 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
+import { Skeleton } from '@/components/ui/skeleton'
 import { createAddress } from '@/http/address/create-address'
 import {
   getAddresses,
   type GetAddressesResponse,
 } from '@/http/address/get-address'
 import { getAddressByCep } from '@/http/viacep/get-address-by-cep'
+import { cn } from '@/lib/utils'
 import { formatZipCode } from '@/utils/formatZipCode'
 
 import AddressList from './address-list'
-import { Loader2 } from 'lucide-react'
-import { cn } from '@/lib/utils'
 import type { CheckoutSchema } from './form-checkout'
-import { Skeleton } from '@/components/ui/skeleton'
 
 export const addressSchema = z.object({
   street: z.string({ message: 'A Rua é obrigatória' }),
@@ -57,8 +57,7 @@ export default function AddressSelector() {
     queryFn: getAddresses,
   })
 
-  const { setValue: setValueCheckout, watch: watchCheckoutValue } =
-    useFormContext<CheckoutSchema>()
+  const { setValue: setValueCheckout } = useFormContext<CheckoutSchema>()
 
   const form = useForm<AddressSchema>({
     resolver: zodResolver(addressSchema),

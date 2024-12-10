@@ -94,7 +94,7 @@
   "prettier": "@siricascudo/prettier",
   "eslintConfig": {
     "extends": [
-      "@siricascudo/eslint-config/node"
+      "@siricascudo/eslint-config/next"
     ]
   }
 }

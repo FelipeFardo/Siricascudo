@@ -1,6 +1,11 @@
 'use client'
 
+import { useQuery } from '@tanstack/react-query'
+import { ChevronDown, ChevronUp } from 'lucide-react'
 import { useState } from 'react'
+
+import { Badge } from '@/components/ui/badge'
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
@@ -8,22 +13,14 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card'
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { ChevronDown, ChevronUp } from 'lucide-react'
-import { useQuery } from '@tanstack/react-query'
-import { getOrdersUserDetails } from '@/http/orders/get-order-user-details'
 import type { GetOrderDetailsResponse } from '@/http/orders/get-order-details'
+import { getOrdersUserDetails } from '@/http/orders/get-order-user-details'
 
 export default function UserOrders() {
   const [expandedOrder, setExpandedOrder] = useState<string | null>(null)
 
-  const {
-    data: result,
-    isLoading: isLoadingOrders,
-    error,
-  } = useQuery({
+  const { data: result } = useQuery({
     queryKey: ['my-orders'],
     queryFn: () => getOrdersUserDetails(),
   })
@@ -33,7 +30,7 @@ export default function UserOrders() {
   }
 
   const getStatusColor = (
-    status: GetOrderDetailsResponse['order']['status']
+    status: GetOrderDetailsResponse['order']['status'],
   ) => {
     switch (status) {
       case 'delivered':

@@ -68,12 +68,12 @@ export async function MemberList() {
                     <div className="flex items-center justify-end gap-2">
                       {permissions?.can(
                         'transfer_ownership',
-                        authOrganization
+                        authOrganization,
                       ) && (
                         <form
                           action={transferOwnershipAction.bind(
                             null,
-                            member.userId
+                            member.userId,
                           )}
                         >
                           <Button size="sm" variant="ghost">

@@ -10,7 +10,6 @@ import { MonthOrdersAmountCard } from './month-orders-amount-card'
 import { MonthRevenueCard } from './month-revenue-card'
 import { PopularProductsChart } from './popular-products-chart'
 import { RevenueChart } from './revenue-chart'
-import { ErrorBoundaryHandler } from 'next/dist/client/components/error-boundary'
 
 export default function DashboardPage() {
   return (

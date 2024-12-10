@@ -1,5 +1,3 @@
-import { Utensils } from 'lucide-react'
-import Logo from '@/assets/logo.svg'
 import Image from 'next/image'
 
 export default function PageLoading() {

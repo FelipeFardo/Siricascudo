@@ -1,17 +1,20 @@
 'use client'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { zodResolver } from '@hookform/resolvers/zod'
+import dayjs from 'dayjs'
 import { CalendarIcon, Search, X } from 'lucide-react'
 import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
+
+import { Button } from '@/components//ui/button'
+import { Calendar } from '@/components/ui/calendar'
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form'
 import {
@@ -19,10 +22,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
-import { Button } from '@/components//ui/button'
 import { cn } from '@/lib/utils'
-import dayjs from 'dayjs'
-import { Calendar } from '@/components/ui/calendar'
 
 const reservationFiltersSchema = z.object({
   date: z.date(),
@@ -31,7 +31,7 @@ const reservationFiltersSchema = z.object({
 type ReservationFiltersSchema = z.infer<typeof reservationFiltersSchema>
 
 export function ReservationTableFilters() {
-  const [filters, setFilters] = useQueryStates({
+  const [_filters, setFilters] = useQueryStates({
     date: parseAsString.withDefault(new Date().toISOString().split('T')[0]),
     page: parseAsInteger.withDefault(1),
   })
@@ -87,7 +87,7 @@ export function ReservationTableFilters() {
                       variant={'outline'}
                       className={cn(
                         'w-[240px] pl-3 text-left font-normal',
-                        !field.value && 'text-muted-foreground'
+                        !field.value && 'text-muted-foreground',
                       )}
                     >
                       {field.value ? (

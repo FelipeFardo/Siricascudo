@@ -1,13 +1,14 @@
 'use client'
 
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Check, Loader2 } from 'lucide-react'
+import { useParams } from 'next/navigation'
+
 import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
 import type { GetReservationsResponse } from '@/http/reservation/get-reservations'
 import { updateReservation } from '@/http/reservation/update-reservation'
 import { dayjs } from '@/lib/day-js'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import { Check, Loader2 } from 'lucide-react'
-import { useParams } from 'next/navigation'
 
 export interface ReservationTableRowProps {
   reservation: {
@@ -38,7 +39,7 @@ export function ReservationTableRow({ reservation }: ReservationTableRowProps) {
     const ordersListCache = queryClient.getQueriesData<GetReservationsResponse>(
       {
         queryKey: ['reservations'],
-      }
+      },
     )
 
     ordersListCache.forEach(([cacheKey, cacheData]) => {
@@ -64,7 +65,7 @@ export function ReservationTableRow({ reservation }: ReservationTableRowProps) {
     const reservationDate = dayjs(date).add(1, 'day') // Adiciona 1 dia
 
     const reservationDateFormat = reservationDate.format(
-      'DD [de] MMMM [de] YYYY'
+      'DD [de] MMMM [de] YYYY',
     )
 
     return reservationDateFormat

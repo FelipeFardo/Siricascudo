@@ -5,7 +5,7 @@ export async function MonthCanceledOrdersAmountCard() {
   const currentOrg = await getCurrentOrg()
 
   const monthCanceledOrdersAmount = await getMonthCanceledOrdersAmount(
-    currentOrg!
+    currentOrg!,
   )
 
   return (

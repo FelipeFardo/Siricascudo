@@ -8,6 +8,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import { Textarea } from '@/components/ui/textarea'
 
 import {
@@ -16,8 +17,6 @@ import {
   updateProductAction,
 } from './actions'
 import { ProductImageForm } from './product-image-form'
-import { ScrollArea } from '@/components/ui/scroll-area'
-import { useState } from 'react'
 
 interface OrganizationFormProps {
   isUpdating?: boolean

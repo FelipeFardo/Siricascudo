@@ -1,5 +1,5 @@
-import { Cart } from '@/components/home/cart/cart'
 import { CheckoutButton } from '@/components/home/cart/button-checkout'
+import { Cart } from '@/components/home/cart/cart'
 
 export default function CartPage() {
   return (

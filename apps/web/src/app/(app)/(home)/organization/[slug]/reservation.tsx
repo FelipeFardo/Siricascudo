@@ -1,17 +1,37 @@
 'use client'
 
+import { zodResolver } from '@hookform/resolvers/zod'
 import { pt } from 'date-fns/locale'
 import { CalendarIcon } from 'lucide-react'
+import { useParams } from 'next/navigation'
 import { useState } from 'react'
+import { useForm } from 'react-hook-form'
+import * as z from 'zod'
 
+import { AlertDialogHeader } from '@/components/ui/alert-dialog'
 import { Button } from '@/components/ui/button'
 import { Calendar } from '@/components/ui/calendar'
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover'
+import { ScrollArea } from '@/components/ui/scroll-area'
 import {
   Select,
   SelectContent,
@@ -22,29 +42,8 @@ import {
 import { Textarea } from '@/components/ui/textarea'
 import { ToastAction } from '@/components/ui/toast'
 import { useToast } from '@/hooks/use-toast'
-import {
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { AlertDialogHeader } from '@/components/ui/alert-dialog'
-
-import * as z from 'zod'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form'
-import { cn } from '@/lib/utils'
-import { useParams } from 'next/navigation'
 import { createReservation } from '@/http/reservation/create-reservations'
-import { ScrollArea } from '@/components/ui/scroll-area'
+import { cn } from '@/lib/utils'
 
 const reservationSchema = z.object({
   date: z.date({ required_error: 'Selecione uma data' }),
@@ -144,7 +143,7 @@ export function Reservation() {
                               variant={'outline'}
                               className={cn(
                                 'w-full pl-3 text-left font-normal',
-                                !field.value && 'text-muted-foreground'
+                                !field.value && 'text-muted-foreground',
                               )}
                             >
                               {field.value

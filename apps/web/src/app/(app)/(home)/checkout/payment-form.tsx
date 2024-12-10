@@ -3,19 +3,13 @@ import { Banknote, CreditCard } from 'lucide-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 import type { CheckoutSchema } from './form-checkout'
 
 export function PaymentForm() {
-  const {
-    register,
-    watch,
-    control,
-    formState: { errors },
-  } = useFormContext<CheckoutSchema>()
+  const { control } = useFormContext<CheckoutSchema>()
 
   return (
     <Card>

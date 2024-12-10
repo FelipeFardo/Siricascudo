@@ -1,6 +1,3 @@
-import { Search } from 'lucide-react'
-
-import { Button } from '@/components//ui/button'
 import { Skeleton } from '@/components/ui/skeleton'
 import { TableCell, TableRow } from '@/components/ui/table'
 

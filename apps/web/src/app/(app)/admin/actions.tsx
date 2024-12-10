@@ -33,7 +33,7 @@ const organizationSchema = z
 
           return true
         },
-        { message: 'Please, enter a valid domain.' }
+        { message: 'Please, enter a valid domain.' },
       )
       .transform((value) => (value === '' ? null : value)),
     shouldAttachUsersByDomain: z
@@ -52,7 +52,7 @@ const organizationSchema = z
     {
       message: 'Domain is required when auto-join is enabled',
       path: ['domain'],
-    }
+    },
   )
 
 export type OrganizationSchema = z.infer<typeof organizationSchema>

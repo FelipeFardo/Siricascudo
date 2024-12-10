@@ -1,11 +1,11 @@
+import { AlertCircle } from 'lucide-react'
 import { Controller, useFormContext } from 'react-hook-form'
 
+import { Alert, AlertDescription } from '@/components/ui/alert'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 
 import type { CheckoutSchema } from './form-checkout'
-import { Alert, AlertDescription } from '@/components/ui/alert'
-import { AlertCircle } from 'lucide-react'
 
 interface Addresses {
   addresses: {
@@ -41,12 +41,10 @@ export default function AddressList({ addresses }: Addresses) {
               </Label>
             </div>
           ))}
-          {errors['addressId'] && (
+          {errors.addressId && (
             <Alert variant="destructive">
               <AlertCircle className="h-4 w-4" />
-              <AlertDescription>
-                {errors['addressId']?.message}
-              </AlertDescription>
+              <AlertDescription>{errors.addressId?.message}</AlertDescription>
             </Alert>
           )}
         </RadioGroup>

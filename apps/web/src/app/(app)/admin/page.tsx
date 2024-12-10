@@ -1,5 +1,7 @@
-import { Header } from '@/components/header'
 import { Suspense } from 'react'
+
+import { Header } from '@/components/header'
+
 import PageLoading from './admin-loading'
 
 export default async function AdminPage() {

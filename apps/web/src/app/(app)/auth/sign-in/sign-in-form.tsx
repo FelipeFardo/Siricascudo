@@ -26,7 +26,7 @@ export function SignInForm() {
       onSuccess: ({ data }) => {
         if (data.success) router.push('/')
       },
-    }
+    },
   )
 
   const { executeFormAction: executeFormActionSignInWithGithub } =

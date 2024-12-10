@@ -1,10 +1,11 @@
 'use client'
 
-import { getReservations } from '@/http/reservation/get-reservations'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
 import { parseAsInteger, parseAsString, useQueryStates } from 'nuqs'
 import { z } from 'zod'
+
+import { Pagination } from '@/components/pagination'
 import {
   Table,
   TableBody,
@@ -12,11 +13,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { ReservationTableRow } from './reservation-table-row'
+import { getReservations } from '@/http/reservation/get-reservations'
+
 import { ReservationTableFilters } from './reservation-table-filters'
-import { Skeleton } from '@/components/ui/skeleton'
+import { ReservationTableRow } from './reservation-table-row'
 import { ReservationTableSkeleton } from './reservation-table-skeleton'
-import { Pagination } from '@/components/pagination'
 
 export default function ReservationPage() {
   const { slug: orgSlug } = useParams<{

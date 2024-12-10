@@ -1,12 +1,10 @@
 import { Suspense } from 'react'
 
 import { CardOrganization } from '@/components/home/organization-card'
-import { ProductCard } from '@/components/product/product-card'
-import { Skeleton } from '@/components/ui/skeleton'
 import { getOrganizations } from '@/http/orgs/get-organizations'
-import { getProducts } from '@/http/products/get-products'
-import { AllProducts } from './all-products'
+
 import { ProductsSkeleton } from '../organization/[slug]/products-org'
+import { AllProducts } from './all-products'
 
 export default async function Home() {
   const { organizations } = await getOrganizations()

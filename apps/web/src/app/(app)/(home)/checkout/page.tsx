@@ -1,9 +1,7 @@
-import { Button } from '@/components/ui/button'
-
+import AddressSelector from './address-selector'
+import { FinishyCheckout } from './finishy-checkout'
 import { FormCheckout } from './form-checkout'
 import { OrderSummary } from './order-summary'
-import { FinishyCheckout } from './finishy-checkout'
-import AddressSelector from './address-selector'
 import { PaymentForm } from './payment-form'
 
 export default function Checkout() {
