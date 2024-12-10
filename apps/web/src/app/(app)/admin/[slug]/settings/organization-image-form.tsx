@@ -50,7 +50,7 @@ export function OrganizationImageForm() {
             avatarUrl: newAvatarUrl,
           },
         }
-      },
+      }
     )
   }
 

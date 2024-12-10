@@ -6,6 +6,7 @@ import { Input } from './ui/input'
 export interface InputFileProps {
   onUpload: (fileUrl: string) => void
   onRemove?: () => void
+  id: string
 }
 
 export function InputFile({ onUpload, onRemove, ...props }: InputFileProps) {
