@@ -1,7 +1,13 @@
 'use client'
 
+import { Button } from '@/components/ui/button'
 import { TableCell, TableRow } from '@/components/ui/table'
+import type { GetReservationsResponse } from '@/http/reservation/get-reservations'
+import { updateReservation } from '@/http/reservation/update-reservation'
 import { dayjs } from '@/lib/day-js'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import { Check, Loader2 } from 'lucide-react'
+import { useParams } from 'next/navigation'
 
 export interface ReservationTableRowProps {
   reservation: {
@@ -14,15 +20,44 @@ export interface ReservationTableRowProps {
     numberOfPeople: number
     reservationDate: string
     reservationTime: string
+    hasArrived: boolean
   }
 }
 
 export function ReservationTableRow({ reservation }: ReservationTableRowProps) {
-  function formatDistanceToNow(date: Date) {
-    const createdAt = dayjs(date)
-    const now = dayjs()
-    const formattedDate = createdAt.from(now)
-    return formattedDate
+  const { slug } = useParams<{ slug: string }>()
+  const queryClient = useQueryClient()
+  const { isPending, mutateAsync } = useMutation({
+    mutationFn: updateReservation,
+    onSuccess: (_, { reservationId }) => {
+      updateReservationStatusOnCache(reservationId)
+    },
+  })
+
+  function updateReservationStatusOnCache(reservationId: string) {
+    const ordersListCache = queryClient.getQueriesData<GetReservationsResponse>(
+      {
+        queryKey: ['reservations'],
+      }
+    )
+
+    ordersListCache.forEach(([cacheKey, cacheData]) => {
+      if (!cacheData) {
+        return
+      }
+      queryClient.setQueryData<GetReservationsResponse>(cacheKey, {
+        ...cacheData,
+        reservations: cacheData.reservations.map((reservation) => {
+          if (reservation.id === reservationId) {
+            return {
+              ...reservation,
+              hasArrived: true,
+            }
+          }
+          return reservation
+        }),
+      })
+    })
   }
 
   function formatDate(date: Date) {
@@ -38,7 +73,33 @@ export function ReservationTableRow({ reservation }: ReservationTableRowProps) {
   return (
     <TableRow>
       <TableCell className="font-mono text-xs font-medium">
-        <div className="flex h-full w-[300px]">
+        <div className="flex justify-center">
+          <Button
+            onClick={() => mutateAsync({ slug, reservationId: reservation.id })}
+            disabled={reservation.hasArrived || isPending}
+            variant={reservation.hasArrived ? 'outline' : 'default'}
+            size="icon"
+            className="h-8 w-8"
+            aria-label={
+              reservation.hasArrived
+                ? 'Customer has arrived'
+                : 'Confirm customer arrival'
+            }
+          >
+            {isPending ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <Check
+                className={
+                  reservation.hasArrived ? 'h-4 w-4 text-green-500' : 'h-4 w-4'
+                }
+              />
+            )}
+          </Button>
+        </div>
+      </TableCell>
+      <TableCell className="font-mono text-xs font-medium">
+        <div className="flex h-full w-[200px]">
           <span className="truncate text-left">{reservation.customerName}</span>
         </div>
       </TableCell>
@@ -64,17 +125,10 @@ export function ReservationTableRow({ reservation }: ReservationTableRowProps) {
         </div>
       </TableCell>
       <TableCell className="font-mono text-xs font-medium">
-        <div className="flex h-full w-[300px]">
+        <div className="flex h-full w-[250px]">
           <span className="truncate text-left">{reservation.description}</span>
         </div>
       </TableCell>
-      {/* <TableCell className="font-mono text-xs font-medium">
-        <div className="flex h-full w-[130px]">
-          <span className="truncate text-left">
-            {formatDistanceToNow(reservation.createdAt)}
-          </span>
-        </div>
-      </TableCell> */}
     </TableRow>
   )
 }

@@ -41,6 +41,7 @@ export async function getReservations(app: FastifyInstance) {
                   numberOfPeople: z.number(),
                   reservationDate: z.string(),
                   reservationTime: z.string(),
+                  hasArrived: z.boolean(),
                 })
               ),
               meta: z.object({

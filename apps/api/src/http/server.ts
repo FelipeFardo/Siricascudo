@@ -69,6 +69,7 @@ import { getReservations } from './routes/reservation/get-reservations'
 import { createCheckout } from './routes/checkout/create-checkout'
 import { getOrderUser } from './routes/orders/get-my-orders'
 import { UpdateItemToCart } from './routes/cart/update-item-to-cart'
+import { arrivedReservation } from './routes/reservation/update-reservation'
 
 const app = fastify().withTypeProvider<ZodTypeProvider>()
 
@@ -184,7 +185,7 @@ app.register(getAddress)
 
 app.register(createReservation)
 app.register(getReservations)
-
+app.register(arrivedReservation)
 app.register(createCheckout)
 
 app.listen({ port: env.SERVER_PORT }).then(() => {

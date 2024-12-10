@@ -1,0 +1,1 @@
+ALTER TABLE "reservations" ALTER COLUMN "has_arrived" SET NOT NULL;

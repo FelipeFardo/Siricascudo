@@ -6,7 +6,7 @@ interface GetReservationsRequest {
   pageIndex: number
 }
 
-interface GetReservationsResponse {
+export interface GetReservationsResponse {
   reservations: {
     id: string
     description: string | null
@@ -17,6 +17,7 @@ interface GetReservationsResponse {
     numberOfPeople: number
     reservationDate: string
     reservationTime: string
+    hasArrived: boolean
   }[]
   meta: {
     pageIndex: number

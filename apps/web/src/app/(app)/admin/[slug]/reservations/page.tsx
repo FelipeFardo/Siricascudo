@@ -61,12 +61,12 @@ export default function ReservationPage() {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead className="w-[50px]">Chegou</TableHead>
                 <TableHead className="w-[200px]">Nome</TableHead>
                 <TableHead className="w-[200px]">Email</TableHead>
                 <TableHead className="w-[50px]">Pessoas</TableHead>
                 <TableHead className="w-[180px]">Data da reserva</TableHead>
-                <TableHead className="w-[300px]">Descrição</TableHead>
-                {/* <TableHead className="w-[130px]">Reservado há</TableHead> */}
+                <TableHead className="w-[250px]">Descrição</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

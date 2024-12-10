@@ -1,5 +1,6 @@
 import { relations } from 'drizzle-orm'
 import {
+  boolean,
   date,
   integer,
   pgTable,
@@ -24,6 +25,7 @@ export const reservations = pgTable('reservations', {
     .references(() => organizations.id, {
       onDelete: 'cascade',
     }),
+  hasArrived: boolean('has_arrived').default(false).notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
 })
 

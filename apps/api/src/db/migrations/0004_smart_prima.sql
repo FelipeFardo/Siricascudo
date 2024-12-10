@@ -1,0 +1,1 @@
+ALTER TABLE "reservations" ADD COLUMN "has_arrived" boolean DEFAULT false;
