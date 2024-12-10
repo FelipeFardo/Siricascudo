@@ -1,9 +1,9 @@
 import { createUpload } from '@/http/uploads/create-upload'
 import { upload } from '@/http/uploads/upload'
 
-import { Input, type InputProps } from './ui/input'
+import { Input } from './ui/input'
 
-export interface InputFileProps extends InputProps {
+export interface InputFileProps {
   onUpload: (fileUrl: string) => void
   onRemove?: () => void
 }

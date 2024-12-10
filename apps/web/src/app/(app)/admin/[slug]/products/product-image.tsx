@@ -29,12 +29,7 @@ export function ProductInputImage({
 
   return (
     <>
-      <InputFile
-        id="imageUrl"
-        onUpload={handleFileChange}
-        onRemove={removeImage}
-        accept="image/*"
-      />
+      <InputFile onUpload={handleFileChange} onRemove={removeImage} />
       <input type="hidden" name="imageUrl" value={fileUrl ?? ''} />
     </>
   )

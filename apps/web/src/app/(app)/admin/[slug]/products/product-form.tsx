@@ -32,8 +32,12 @@ export function ProductForm({
   const { executeFormAction, isPending, error, data } =
     useServerAction(formAction)
 
+  const adaptExecuteFormAction = (formData: FormData): Promise<void> => {
+    return executeFormAction(formData).then(() => {})
+  }
+
   return (
-    <form action={executeFormAction} className="space-y-4">
+    <form action={adaptExecuteFormAction} className="space-y-4">
       <ScrollArea className="h-[calc(100vh-200px)]  pr-4">
         <div className="space-y-4 p-4">
           <input type="hidden" name="id" value={initialData?.id || ''} />
