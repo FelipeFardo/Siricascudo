@@ -45,7 +45,6 @@ export function ReservationTemplate({
             border: '1px solid #dddddd',
           }}
         >
-          {/* Cabeçalho */}
           <Heading
             style={{
               textAlign: 'center',
@@ -58,7 +57,6 @@ export function ReservationTemplate({
             Siricascudo
           </Heading>
 
-          {/* Saudação */}
           <Text
             style={{
               fontSize: '16px',
@@ -78,8 +76,6 @@ export function ReservationTemplate({
             Sua reserva no <strong>{orgName}</strong> foi confirmada com
             sucesso!
           </Text>
-
-          {/* Detalhes da Reserva */}
 
           <Section
             style={{
@@ -109,19 +105,6 @@ export function ReservationTemplate({
             </Text>
           </Section>
 
-          {/* Contato */}
-          {/* <Text
-            style={{
-              fontSize: '16px',
-              lineHeight: '1.5',
-              marginBottom: '20px',
-            }}
-          >
-            Caso precise alterar ou cancelar sua reserva, entre em contato
-            conosco pelo telefone <strong>(00) 1234-5678</strong>.
-          </Text> */}
-
-          {/* Rodapé */}
           <Text
             style={{ fontSize: '14px', color: '#888', textAlign: 'center' }}
           >
