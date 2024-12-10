@@ -126,8 +126,8 @@ export async function createCheckout(app: FastifyInstance) {
           payment_method_types: ['card'],
           mode: 'payment',
           line_items: lineItems,
-          success_url: 'http://localhost:3000/orders', // URL de sucesso
-          cancel_url: 'http://localhost:3000/checkout/cancel', // URL de cancelamento
+          success_url: `http://${`localhost:3000`}/orders`, // URL de sucesso
+          cancel_url: `http://${`localhost:3000`}/checkout/cancel`, // URL de cancelamento
           metadata: {
             orderId: order.id,
           },

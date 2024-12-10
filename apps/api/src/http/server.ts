@@ -116,7 +116,7 @@ app.register(fastifyCookie, {
 })
 
 app.register(fastifyCors, {
-  origin: 'http://localhost:3000',
+  origin: `http://localhost:3000`,
   credentials: true,
 })
 
@@ -188,6 +188,6 @@ app.register(getReservations)
 app.register(arrivedReservation)
 app.register(createCheckout)
 
-app.listen({ port: env.PORT }).then(() => {
+app.listen({ port: env.PORT, host: '0.0.0.0' }).then(() => {
   console.log('HTTP server running!')
 })

@@ -1,3 +1,4 @@
+import { env } from '@siricascudo/env'
 import Link from 'next/link'
 
 export default async function Footer() {
@@ -15,7 +16,7 @@ export default async function Footer() {
               </li>
               <li>
                 <Link
-                  href="http://localhost:3333/docs"
+                  href={`http://${env.NEXT_PUBLIC_API_URL}/docs`}
                   className="hover:underline"
                 >
                   Documentação API
